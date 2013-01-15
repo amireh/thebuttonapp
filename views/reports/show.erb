@@ -1,0 +1,80 @@
+<% content_for :layout_classes do %>reports<% end %>
+
+<h2>Activity from
+  <em class="highlight"><%= @date[:b].strftime('%D') %></em>
+  to
+  <em class="highlight"><%= @date[:e].strftime('%D') %></em>
+</h2>
+
+
+<section>
+  <h3>Work sessions</h3>
+  <p><%= @sessions.count %> work sessions tagged with <%= @tags.collect { |t| "<b>##{t.name}</b>" }.join(', ') %>:</p>
+  <table>
+    <thead>
+      <tr>
+        <th width="15%">Duration</th>
+        <th width="60%">Task</th>
+        <th>Completion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @sessions.each do |ws| %>
+        <tr>
+          <td><%= pretty_time ws.duration %></td>
+          <td><%= ws.task.name %>
+            <% if ws.notes.any? %>
+              <p><strong>Session notes:</strong></p>
+              <ol>
+                <% ws.notes.each do |note| %>
+                  <li><%= note.content %></li>
+                <% end %>
+              </ol>
+            <% end %>
+          </td>
+          <td><%= ws.finished_at.strftime('%D') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h3>Tasks</h3>
+  <p>A task could take a number of work sessions to be complete (displayed above).</p>
+
+  <% @tasks = @sessions.collect { |ws| ws.task }.flatten.uniq %>
+  <table>
+    <thead>
+      <tr>
+        <th width="15%">Duration</th>
+        <th width="60%">Task</th>
+        <th>Status</th>
+        <th>Completion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tasks.each do |t| %>
+        <tr>
+          <td><%= pretty_time t.time_spent %></td>
+          <td><%= t.name %>
+            <% if t.notes.any? %>
+              <p><strong>Notes:</strong></p>
+              <ol>
+                <% t.notes.each do |note| %>
+                  <li><%= note.content %></li>
+                <% end %>
+              </ol>
+            <% end %>
+          </td>
+          <td><%= t.status.to_s.capitalize %></td>
+          <td><%= t.flagged_at.strftime('%D') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>
+
+<p>
+  <small>This report was generated on <%= Time.now.strftime('%D') %> by <%= AppName %>.</small>
+</p>

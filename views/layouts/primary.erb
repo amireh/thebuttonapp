@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>
+    <%= yield_with_default(:title) { "#{AppName} - #{AppSlogan}" } %>
+  </title>
+
+  <link href="/css/common.css" rel="stylesheet" type="text/css" />
+  <link href="/css/skins/light.css" rel="stylesheet" type="text/css" />
+  <link href="/css/fonts/scratch-my-back/stylesheet.css" rel="stylesheet" type="text/css" />
+  <link href="/css/fonts/idolwild/stylesheet.css" rel="stylesheet" type="text/css" />
+  <link href="/css/fonts/architects-daughter/stylesheet.css" rel="stylesheet" type="text/css" />
+  <link href="/js/jquery-ui/css/jquery-ui-theme/jquery-ui-1.9.2.custom.css" rel="stylesheet" type="text/css" />
+
+  <%= yield_content :css %>
+
+  <script type="text/javascript" src="/js/json2.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.1.7.1.min.js"></script>
+  <script type="text/javascript" src="/js/modernizr.js"></script>
+  <script src="/js/jquery-ui/js/jquery-ui-1.9.2.custom.min.js"></script>
+  <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+
+  <script src="/js/dynamism.js"></script>
+  <script src="/js/algol.js"></script>
+  <script src="/js/algol_ui.js"></script>
+  <script src="/js/jqModal.js"></script>
+
+  <%= yield_content :js %>
+  <%= yield_content :scripts %>
+</head>
+
+<body class="<%= @layout.to_s.split('/').last %> <%= current_page %> <%= 'sticky' if content_for?(:sticky) %> <%= yield_content :layout_classes %>">
+
+  <div class="stuff">
+    <header>
+      <h1><a href="/">the<em>button</em>app</a></h1>
+      <span class="subtitle"><%= yield_content :subtitle %></span>
+      <div class="subheader">
+        <span class="account_name">
+          <%= current_user.name %>
+          <a href="/settings/account">
+            <%= gravatar_tag current_user.gravatar_email, :icon %>
+          </a>
+          <% if current_user.notice_count > 0 %>
+            <a href="/settings/notifications">
+              <span class="notifications blinky" title="You have <%= current_user.notice_count %> pending notifications">
+                <%= current_user.notice_count %>
+              </span>
+            </a>
+          <% end %>
+        </span>
+        <%= yield_content :subheader %>
+      </div>
+      <%= partial "layouts/_flashes" %>
+    </header>
+
+    <nav>
+      <ol>
+      </ol>
+    </nav>
+
+    <div id="content" class="<%= request.path.gsub('/', ' ').strip.sanitize.split('-').first %>">
+      <%= yield %>
+    </div>
+
+    <% if content_for?(:sticky) %>
+      <div class="sticky">
+        <%= yield_content :sticky  %>
+      </div>
+    <% end %>
+
+    <% partial "layouts/footer" %>
+  </div>
+
+  <aside class="modal alert" hidden="hidden" id="html5_compatibility_notice">
+    <h2>Unsupported Browser</h2>
+
+    <p>The brower you are currently using does not appear to support
+      the latest HTML5 standards which are required for PageHub to
+      function correctly.
+    </p>
+    <p>Please update your browser or use a recent version of the
+      officially supported browsers: Google Chrome, Safari 5, or Mozilla Firefox.
+    </p>
+  </aside>
+
+  <%= partial "/shared/_confirmation_dlg" %>
+  <%= yield_content :deferred_js %>
+  <script>
+    $(function() {
+      $("nav li a[id='nav_<%=current_page%>']").addClass("highlighted");
+    })
+  </script>
+</body>
+
+</html>

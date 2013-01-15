@@ -1,0 +1,5 @@
+<ol>
+  <% @tasks.each do |t| %>
+    <li><%= tagify t.name %> <span class="bubbly">[ <%= pretty_time t.time_spent %> ]</span></li>
+  <% end %>
+</ol>

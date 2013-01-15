@@ -1,0 +1,4 @@
+*.zip
+*.tar
+config/credentials.yml
+*.tmp

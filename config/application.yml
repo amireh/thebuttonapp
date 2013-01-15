@@ -1,0 +1,11 @@
+development: &common
+  courier:
+    enabled:  true
+    from:     'noreply@thebuttonapp.com'
+
+production:
+  <<: *common
+
+test:
+  courier:
+    enabled: false

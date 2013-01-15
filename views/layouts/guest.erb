@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>
+    <%= yield_with_default(:title) { "#{AppName} - #{AppSlogan}" } %>
+  </title>
+
+  <script type="text/javascript" src="/js/jquery.1.7.1.min.js"></script>
+  <link href="/css/common.css" rel="stylesheet" type="text/css" />
+  <link href="/css/guest.css"  rel="stylesheet" type="text/css" />
+
+  <%= yield_content :scripts %>
+
+  <link href="/css/skins/light.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="<%= @layout.to_s.split('/').last %> <%= yield_content :layout_classes %>">
+
+  <div class="stuff">
+    <div class="subheader">
+      <%= partial "layouts/_flashes" %>
+    </div>
+
+    <nav>
+      <div class="left tri"></div>
+      <ol>
+        <li><a id="nav_signup" href="/users/new">Sign up</a></li>
+        <li><a id="nav_welcome" href="/">Home</a></li>
+        <li><a id="nav_signin" href="/sessions/new">Sign in</a></li>
+      </ol>
+      <div class="right tri"></div>
+    </nav>
+
+    <header>
+      <h1><a href="/"><%= AppName %></a></h1>
+    </header>
+
+    <div id="content">
+      <%= yield %>
+    </div>
+
+    <%= partial :"layouts/footer" %>
+  </div>
+
+  <%= yield_content :deferred_js %>
+  <script>
+    $(function() {
+      $("nav li a[id='nav_<%=current_page%>']").addClass("highlighted");
+    })
+  </script>
+</body>
+
+</html>

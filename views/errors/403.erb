@@ -1,0 +1,12 @@
+<% content_for :title do %> 403 - Forbidden | <%= AppName %> <% end %>
+
+<h2>403 - Forbidden</h2>
+
+<code class="negative"><strong><%= response.body.first %></strong></code>
+
+<p>To visit this page, you must first <a href="/sessions/new">sign-in</a>
+  and you may also need the proper privileges.
+</p>
+
+<h3>But,</h3>
+<p>How about a snowman instead? <span class="snowman"></span></p>

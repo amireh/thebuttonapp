@@ -1,0 +1,4 @@
+<h4>Tags</h4>
+<% @user.tags.each do |tag| %>
+  <strong><%= tagify("##{tag.name}") %></strong>
+<% end %>

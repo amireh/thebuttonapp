@@ -1,0 +1,550 @@
+body {
+  margin: 0;
+  padding: 0;
+  font: 14px "Gill Sans", Verdana, Arial, Helvetica, sans-serif;
+  background: url(/images/bgs/subtle_grunge/subtle_grunge2.png) repeat;
+}
+
+body * {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+nav {
+}
+header {
+  position: relative;
+}
+
+header h1 {
+  display: inline-block;
+  padding-top: 10px;
+}
+
+.subheader {
+  font-size: 12px;
+  font-weight: normal;
+  letter-spacing: 1px;
+  position: absolute;
+  right: 0;
+  top: 25px;
+}
+
+@-keyframes         blinky_notifications { 50% { background: none; } }
+@-webkit-keyframes  blinky_notifications { 50% { background: none; } }
+@-moz-keyframes     blinky_notifications { 50% { background: none; } }
+@-o-keyframes       blinky_notifications { 50% { background: none; } }
+
+.blinky.notifications {
+  animation:          blinky_notifications infinite linear 1s alternate;
+  -webkit-animation:  blinky_notifications infinite linear 1s alternate;
+  -moz-animation:     blinky_notifications infinite linear 1s alternate;
+  -o-animation:       blinky_notifications infinite linear 1s alternate;
+}
+.subheader .notifications {
+  color: white;
+  /*box-shadow: 0 0 2px 1px black inset;*/
+  background: red;
+  padding: 3px 4px 4px 7px;
+  text-align: center;
+  position: absolute;
+  right: -18px;
+  top: 5px;
+  z-index: 1;
+  border-radius: 0 3px 3px 0;
+}
+.gravatar { vertical-align: middle; box-shadow: 0 0 3px 1px #555; border: 1px solid #000; position: relative; z-index: 2;}
+  /* jqModal base Styling courtesy of;
+    Brice Burgess <bhb@iceburg.net> */
+
+  /* The Window's CSS z-index value is respected (takes priority). If none is supplied,
+    the Window's z-index value will be set to 3000 by default (via jqModal.js). */
+
+  .jqmWindow {
+      display: none;
+
+      position: fixed;
+      top: 17%;
+      left: 50%;
+
+      margin-left: -300px;
+      width: 600px;
+      /*
+      background-color: #EEE;
+      color: #333;
+      border: 1px solid black;
+      padding: 12px;*/
+  }
+
+  .jqmOverlay { background-color: rgba(0,0,0,0.5); }
+
+  div.jqmConfirm { /* contains + positions the alert window */
+    display: none;
+
+    position: fixed;
+    top: 17%;
+    width: 100%;
+    left: 0;
+  }
+
+  div.jqmConfirmWindow {
+    height: auto;
+    width: auto;
+    margin: auto;
+    max-width: 420px;
+    padding: 0;
+    background: white;
+    border: 1px solid #aaa;
+    box-shadow: 0 0 1px 5px #BBB;
+    border-radius: 3px;
+    position: relative;
+    padding-bottom: 50px;
+  }
+
+  .jqmConfirmTitle{
+    margin: 0;
+    height: auto;
+    color: black;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    text-shadow: 0 1px 0 white;
+    font-weight: normal;
+    border-bottom: 1px solid #bbb;
+    text-transform: capitalize;
+  }
+  .jqmConfirmTitle h2 {
+    margin:5px 2px;
+    padding: 5px 6px;
+    /*font-size:18px;*/
+    text-transform:capitalize;
+    letter-spacing: 1px;
+    font-weight: normal;
+  }
+
+  div.jqmConfirmContent{
+    color: black;
+    font-size: 14px;
+    padding: 0 15px;
+    margin: 15px 0;
+    line-height: 18px;
+  }
+
+  div.jqmConfirm div.jqmActions {
+    display: block;
+  }
+  div.jqmConfirm input#confirm_accepted {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+  }
+  div.jqmConfirm input#confirm_rejected {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+  }
+
+  .modal {
+      display: none;
+  }
+  .modal.alert {
+    background: white;
+    position: fixed;
+    top: 45%;
+    left: 45%;
+  }
+
+/* Twitter Bootstrap */
+.tooltip {
+  position: absolute;
+  z-index: 1030;
+  display: block;
+  visibility: visible;
+  padding: 5px;
+  font-size: 11px;
+  line-height: 16px;
+  opacity: 0;
+}
+.tooltip.fade {
+  -webkit-transition: opacity 0.25s ease 0s;
+  -moz-transition:    opacity 0.25s ease 0s;
+  -ms-transition:     opacity 0.25s ease 0s;
+  -o-transition:      opacity 0.25s ease 0s;
+  transition:         opacity 0.25s ease 0s;
+}
+.tooltip.in {
+  opacity: 0.9;
+}
+.tooltip.top {
+  margin-top: -3px;
+}
+.tooltip.right {
+  margin-left: 3px;
+}
+.tooltip.bottom {
+  margin-top: 3px;
+}
+.tooltip.left {
+  margin-left: -3px;
+}
+.tooltip-inner {
+  max-width: 200px;
+  padding: 3px 8px;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+  background-color: #333;
+  -webkit-border-radius:  4px;
+  -moz-border-radius:     4px;
+  border-radius:          4px;
+}
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+.tooltip.top .tooltip-arrow {
+  bottom: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: #333;
+}
+.tooltip.right .tooltip-arrow {
+  top: 50%;
+  left: 0;
+  margin-top: -5px;
+  border-width: 5px 5px 5px 0;
+  border-right-color: #333;
+}
+.tooltip.left .tooltip-arrow {
+  top: 50%;
+  right: 0;
+  margin-top: -5px;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #333;
+}
+.tooltip.bottom .tooltip-arrow {
+  top: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: #333;
+}
+
+.stuff {
+  width: 720px;
+  margin: 0 auto;
+  position: relative;
+}
+.dashboard fieldset {
+  border: none;
+  padding: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.dashboard fieldset ol {
+  list-style-type: none;
+}
+.dashboard textarea {
+  vertical-align: middle;
+}
+
+.hint {
+  color: #555;
+  font-style: italic;
+  font-size: small;
+  margin: 0;
+}
+
+.flashes {
+  position: relative;
+}
+
+.flashes ol {
+  margin: 0;
+  padding: 0 30px;
+}
+
+.flashes > span {
+  display: block;
+}
+.flashes button {
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 5px;
+  background: none;
+  border: none;
+}
+.flashes button:not(:hover) { color: white; }
+.flashes button:hover { color: white; background: rgba(0,0,0,0.8); }
+
+
+footer {
+  margin-top: 15px;
+}
+
+textarea {
+  max-width: 720px;
+}
+
+.dashboard form ol {
+  padding: 0;
+  margin: 0;
+}
+.dashboard section h3 {
+  padding: 10px 0;
+}
+section:nth-of-type(1) h3:before { content: '1. '; color: #aaa; margin-left: -25px; }
+section:nth-of-type(2) h3:before { content: '2. '; color: #aaa; margin-left: -25px; }
+section:nth-of-type(3) h3:before { content: '3. '; color: #aaa; margin-left: -25px; }
+section:nth-of-type(4) h3:before { content: '4. '; color: #aaa; margin-left: -25px; }
+
+.dashboard .thebutton {
+  padding: 5px 25px;
+}
+button:not(:disabled),
+input[type=submit]:not(:disabled) {
+  cursor: pointer;
+}
+
+.small {
+  font-size: small;
+  font-weight: normal;
+}
+
+body.sticky {
+  padding-bottom: 80px;
+}
+
+div.sticky {
+  width: 720px;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  border-top: 1px solid #ddd;
+  background: white;
+}
+
+em.highlight {
+  background: yellow;
+}
+
+a:hover {
+  color: red;
+}
+
+h1 {
+  font-family: 'ScratchmybackRegular';
+  font-weight: normal;
+}
+
+h2,h3,h4 {
+  /*font-family: 'IdolwildRegular';*/
+  font-family: 'ArchitectsDaughterRegular';
+  /*font-weight: normal;*/
+  font-size: 2em;
+  margin: 25px 0 0 0;
+}
+h3 {
+  font-size: 1.75em;
+}
+h4 {
+  color: #777;
+  font-size: 1.5em;
+}
+
+header h1 {  margin-left: -10px; }
+header h1 em { color: orange; font-style: normal;  }
+header h1 a  { text-decoration: none; }
+
+
+
+.snowman {
+  display: block;
+  font-size: 0;
+  margin-top: 40px;
+  margin-bottom: -30px;
+}
+.snowman:after { content: '\2603'; font-size: 256px; }
+
+
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  position: relative;
+}
+hr:after {
+  text-align: center;
+  content: '\26A1';
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  color: #777;
+}
+
+hr + h2,
+hr + h3,
+hr + h4 {
+  margin-top: 0;
+}
+
+#content h3:first-of-type {
+  margin-top: 0;
+}
+
+span.bubbly {
+  color: #777;
+  font-size: small;
+}
+
+.thebutton.end {
+  background: rgb(255,48,25); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(255,48,25,1) 0%, rgba(207,4,4,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,48,25,1)), color-stop(100%,rgba(207,4,4,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(255,48,25,1) 0%,rgba(207,4,4,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(255,48,25,1) 0%,rgba(207,4,4,1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(255,48,25,1) 0%,rgba(207,4,4,1) 100%); /* IE10+ */
+  background: linear-gradient(to bottom, rgba(255,48,25,1) 0%,rgba(207,4,4,1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3019', endColorstr='#cf0404',GradientType=0 ); /* IE6-9 */
+  color: white;
+}
+
+input[type=submit],
+button {
+
+  padding: 5px 15px;
+
+  border:  1px solid #FFB40B;
+  border-radius: 2px;
+  box-shadow: none;
+
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%); /* W3C */
+  border-color: #C60 #C60 #AD5700;
+  border-color: rgba(0, 0, 0, 0.10) rgba(0, 0, 0, 0.10) rgba(0, 0, 0, 0.3);
+
+  outline: none;
+
+  -webkit-transition: all 0.25s ease 0s;
+  -moz-transition:    all 0.25s ease 0s;
+  -ms-transition:     all 0.25s ease 0s;
+  -o-transition:      all 0.25s ease 0s;
+  transition:         all 0.25s ease 0s;
+}
+
+button:focus:not(:disabled),
+input[type=submit]:focus:not(:disabled) {
+  background: orange;
+  color: #fff;
+}
+button:active:not(:disabled),
+.button:active:not(:disabled),
+input[type=submit]:active:not(:disabled) {
+  background: #333;
+  color: #fff;
+}
+button:hover:not(:disabled),
+input[type=submit]:hover:not(:disabled) {
+  box-shadow: 0 0 2px 0 rgba(0,0,0,0.75) ;
+}
+
+
+input[type=text],
+input[type=number],
+input[type=email],
+input[type=password],
+textarea {
+  margin: 0;
+  border-radius: 2px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  outline: none;
+  box-shadow: 0 0 0 1px #fff inset;
+  background: rgba(255, 255, 255, 0.25);
+  color: #111;
+
+  -webkit-transition: background-color 0.25s ease 0s;
+  -moz-transition:    background-color 0.25s ease 0s;
+  -ms-transition:     background-color 0.25s ease 0s;
+  -o-transition:      background-color 0.25s ease 0s;
+  transition:         background-color 0.25s ease 0s;
+}
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=password]:focus,
+textarea:focus {
+  background: rgba(255, 255, 255, 0.75);
+  color: #333;
+}
+
+em.highlight {
+  font-style: normal;
+}
+
+h2.status em {
+  font-size: smaller;
+  font-weight: normal;
+}
+/*.bubble.status:before {
+  content: 'STATUS: ';
+  position: absolute;
+  left: -150px;
+  color: #aaa;
+}*/
+
+section h3 + p { margin-top: 0;}
+
+input[type=submit].thebutton.end {
+  padding: 20px 40px;
+}
+
+.ui-datepicker {
+  background: white;
+  border: 1px solid #DDD;
+}
+
+.reports table {
+  width: 100%;
+}
+.reports table th {
+  text-align: left;
+}
+
+.reports th,
+.reports td {
+  padding: 5px 5px 5px 0;
+  vertical-align: top;
+}
+.reports tr:nth-of-type(even) {
+  background: rgba(0, 0, 0, 0.025);
+}
+
+.jqmConfirm textarea {
+  width:      390px;
+  max-width:  390px;
+}
+
+h2:first-of-type:before,
+.page_title:before {
+  content: '>> ';
+  color: #aaa;
+  margin-left: -50px;
+}
+h2:first-of-type:after,
+.page_title:after {
+  content: ' <<';
+  color: #aaa;
+}

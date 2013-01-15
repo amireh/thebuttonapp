@@ -1,0 +1,19 @@
+<% content_for :title do %> 404 - Not Found | <%= AppName %> <% end %>
+
+<h2>404 - No such page</h2>
+
+<% error = response.body.first || "" %>
+<% if !error.to_s.include?("\n") then %>
+
+  <p>It's not very nice to be sniffing around. The server says:</p>
+
+  <code class="negative"><strong><%= error %></strong></code>
+
+  <h2>But...</h2>
+  <p>How about a snowman instead? <span class="snowman"></span></p>
+
+<% else %>
+  <p>The page you were looking for does not exist, but here's a snowman instead: <br />
+    <span class="snowman"></span>
+  </p>
+<% end %>

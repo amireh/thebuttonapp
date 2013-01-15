@@ -1,0 +1,5 @@
+AppName       = "thebuttonapp"
+AppSlogan     = "Track your hours"
+AppURL        = "http://www.thebuttonapp.com"
+AppGithubURL  = "https://github.com/amireh/thebuttonapp"
+AppIssueURL   = "#{AppGithubURL}/issues"

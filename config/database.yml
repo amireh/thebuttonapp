@@ -1,0 +1,15 @@
+production:
+  database: &common
+    host: 'localhost'
+    un:   'root'
+    pw:   ''
+    db:   'thebuttonapp'
+
+test:
+  database:
+    <<: *common
+    db: 'thebuttonapp_test'
+
+development:
+  database:
+    <<: *common

@@ -1,0 +1,63 @@
+<% content_for :js do %>
+  <script>
+    $(function() {
+      $("input[type=radio][name=whatimgoingtodo]").change(function() {
+        console.log($(this))
+        console.log($(this).is(":checked"))
+        // var checked = $(this).parent.find(":checked");
+        var checked = $(this);
+        $("form fieldset").hide();
+        $("#thebutton").attr("disabled", "disabled")
+        var fieldset = $("fieldset#" + checked.attr("value") + "_task");
+        if (fieldset.length > 0) {
+          console.log(fieldset)
+          fieldset.show()
+        }
+      });
+
+      $("input[type=radio][name=task\\\[id\\\]]").change(function() {
+        $("#thebutton").attr("disabled", null);
+      });
+
+    });
+  </script>
+<% end %>
+
+<form method="POST" action="/work_sessions">
+  <section>
+    <h3>I'm going to...</h3>
+    <label><input name="whatimgoingtodo" value="nothing"  type="radio" checked="checked">Do nothing</label><br />
+    <label><input name="whatimgoingtodo" value="new"      type="radio">Work on something new</label><br />
+    <label><input name="whatimgoingtodo" value="resume"   type="radio"
+      <%= 'disabled="disabled"' if !@user.active_tasks.any? %>>Pick up a job I've started earlier
+      <% if @user.active_tasks.empty? %>
+        <span class="hint">(you haven't started any tasks yet)</span>
+      <% end %>
+    </label>
+  </section>
+
+  <section>
+    <fieldset class="hidden" id="new_task">
+      <h3>What is it?</h3>
+      <textarea name="task[name]" id="task_name" placeholder="Writing test specs for thebuttonapp #algol-labs"
+        rows="3" cols="60"></textarea>
+      <p class="hint" style="margin-top: 5px;"><strong>Tip: </strong>
+        You can track the company or person you're working for by #hash-tagging their name.
+        Tags can contain letters, numbers, -dashes- and _underscores_.</p>
+    </fieldset>
+
+    <fieldset class="hidden" id="resume_task">
+      <h3>Which job?</h3>
+      <ol>
+        <% current_user.active_tasks.each do |t| %>
+          <li>
+            <label><input type="radio" name="task[id]" value="<%= t.id %>"><%= tagify t.name %></label>
+          </li>
+        <% end %>
+      </ol>
+    </fieldset>
+  </section>
+
+  <br />
+  <input data-linked-to="task_name" type="submit" id="thebutton" value="Start session" class="thebutton" />
+</form>
