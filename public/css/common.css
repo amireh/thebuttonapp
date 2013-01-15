@@ -19,7 +19,7 @@ header {
 
 header h1 {
   display: inline-block;
-  padding-top: 10px;
+  padding: 10px 0;
 }
 
 .subheader {
@@ -304,11 +304,11 @@ textarea {
 .dashboard section h3 {
   padding: 10px 0;
 }
-section:nth-of-type(1) h3:before { content: '1. '; color: #aaa; margin-left: -25px; }
-section:nth-of-type(2) h3:before { content: '2. '; color: #aaa; margin-left: -25px; }
-section:nth-of-type(3) h3:before { content: '3. '; color: #aaa; margin-left: -25px; }
-section:nth-of-type(4) h3:before { content: '4. '; color: #aaa; margin-left: -25px; }
-section:nth-of-type(5) h3:before { content: '5. '; color: #aaa; margin-left: -25px; }
+section:nth-of-type(1) h3:before { content: '1. '; color: #aaa; margin-left: -21px; }
+section:nth-of-type(2) h3:before { content: '2. '; color: #aaa; margin-left: -21px; }
+section:nth-of-type(3) h3:before { content: '3. '; color: #aaa; margin-left: -21px; }
+section:nth-of-type(4) h3:before { content: '4. '; color: #aaa; margin-left: -21px; }
+section:nth-of-type(5) h3:before { content: '5. '; color: #aaa; margin-left: -21px; }
 
 .dashboard .thebutton {
   padding: 5px 25px;
@@ -327,10 +327,10 @@ input[type=submit]:not(:disabled) {
   font-weight: normal;
 }
 
-body.sticky {
+/*body.sticky {
   padding-bottom: 80px;
 }
-/*
+*//*
 div.sticky {
   width: 720px;
   padding: 10px 0;
@@ -347,13 +347,13 @@ em.highlight {
 a:hover {
   color: red;
 }
-
+/*
 h1 {
   font-family: 'ScratchmybackRegular';
   font-weight: normal;
-}
+}*/
 
-h2,h3,h4 {
+h1, h2,h3,h4 {
   /*font-family: 'IdolwildRegular';*/
   font-family: 'ArchitectsDaughterRegular';
   /*font-weight: normal;*/
@@ -368,11 +368,10 @@ h4 {
   font-size: 1.5em;
 }
 
-header h1 {  margin-left: -10px; }
-header h1 em { color: orange; font-style: normal;  }
+/*header h1 {  margin-left: -10px; }*/
+header h1 {  margin-top: 5px; }
+header h1 a em { color: orange; font-style: normal;  }
 header h1 a  { text-decoration: none; }
-
-
 
 .snowman {
   display: block;
@@ -403,7 +402,8 @@ hr + h4 {
   margin-top: 0;
 }
 
-#content h3:first-of-type {
+#content h3:first-of-type,
+#content h2:first-of-type {
   margin-top: 0;
 }
 
@@ -416,8 +416,19 @@ span.bubbly {
 
 }
 
+.inline { display: inline-block; }
+
+a.button {
+  text-decoration: none;
+  color: inherit;
+}
+
+.bad {
+  color: red;
+}
 input[type=submit],
-button {
+button,
+.button {
 
   padding: 5px 15px;
 
@@ -456,6 +467,7 @@ input[type=submit]:active:not(:disabled) {
   color: #fff;
 }
 button:hover:not(:disabled),
+.button:hover,
 input[type=submit]:hover:not(:disabled) {
   box-shadow: 0 0 2px 0 rgba(0,0,0,0.75) ;
 }
@@ -591,4 +603,27 @@ ul.hint li { margin: 10px 0; }
 .delete_note {
   position: absolute;
   left: -20px;
+}
+
+img + .attached {
+  margin-left: -4px;
+  margin-top: 1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+#user_signup input { margin-bottom: 5px; }
+
+.flashes.error { color: red; }
+.flashes.notice { color: green; }
+.flashes.warning { color: orange; }
+
+.numbered { position: relative; }
+.numbered > span:first-child {
+  position: absolute;
+  left: -2em;
+  opacity: 0.25;
+}
+.numbered > span:first-child:before {
+  content: '#';
 }

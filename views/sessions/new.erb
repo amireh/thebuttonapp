@@ -1,7 +1,7 @@
 <% content_for :title do %> Sign in | <%= AppName %> <% end %>
-<% content_for :layout_classes do %>sessions<% end %>
-<h1>Use your <%= AppName %>&trade; account</h1>
 
+<h2>Sign in</h2>
+<br />
 <form action="/sessions" method="POST">
   <input placeholder="your@email.com" type="text" name="email" />
   <input class="very_fat" type="password" name="password" placeholder="your_password" />
@@ -10,8 +10,6 @@
   <input type="submit" class="inline" value="Login" />
 </form>
 
-<h2>Or, 3rd party sign-in</h2>
+<h2 class="title">Or, 3rd party sign-in</h2>
+<br />
 <%= partial "static/oauth_signin" %>
-<p>We will only ask for the lowest level of permission from your 3rd-party account as we only need the email address and name.</p>
-
-<%= partial "/static/browser_notice" %>

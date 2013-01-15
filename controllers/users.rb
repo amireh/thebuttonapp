@@ -125,7 +125,7 @@ post '/users', auth: :guest do
   u = build_user_from_algol
   if !u.valid? || !u.save || !u.saved?
     flash[:error] = u.all_errors
-    return redirect '/users/new'
+    return redirect '/'
   end
 
   flash[:notice] = "Welcome to #{AppName}! Your new personal account has been registered."

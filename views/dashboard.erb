@@ -4,9 +4,10 @@
 <% else %>
   <%= partial "dashboard/idle" %>
   <% partial "dashboard/tags" %>
-  <% partial "dashboard/history" %>
   <% partial "dashboard/report" %>
 <% end %>
 <hr />
-<p>You can also browse the work you <a href="/tasks/history">finished earlier</a>, or
-  <a href="/reports/new">generate a report</a>.</p>
+<p>You can also browse
+  the work you're <a href="/tasks/current">currently busy with</a>,
+  work you <a href="/tasks/history">finished earlier</a>,
+  or you can <a href="/reports/new">generate a report</a>.</p>

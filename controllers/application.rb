@@ -1,6 +1,5 @@
 def set_layout()
   @layout ||= "layouts/#{logged_in? ? 'primary' : 'guest' }".to_sym
-  @layout = false if request.xhr?
 end
 
 # anonymous vs authenticated view layouts

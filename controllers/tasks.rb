@@ -11,11 +11,15 @@ route_namespace '/tasks' do
       halt 400, "No such task"
     end
 
-    erb :"/tasks/new"
+    erb :"/tasks/new", layout: false
   end
 
   get '/history' do
     erb :"/tasks/history"
+  end
+
+  get '/current' do
+    erb :"/tasks/current"
   end
 
   get '/:id/mark' do |task_id|

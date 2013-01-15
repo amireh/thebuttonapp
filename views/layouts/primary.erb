@@ -55,11 +55,6 @@
       <%= partial "layouts/_flashes" %>
     </header>
 
-    <nav>
-      <ol>
-      </ol>
-    </nav>
-
     <div id="content" class="<%= request.path.gsub('/', ' ').strip.sanitize.split('-').first %>">
       <%= yield %>
       <% if content_for?(:sticky) %>
@@ -88,11 +83,6 @@
 
   <%= partial "/shared/_confirmation_dlg" %>
   <%= yield_content :deferred_js %>
-  <script>
-    $(function() {
-      $("nav li a[id='nav_<%=current_page%>']").addClass("highlighted");
-    })
-  </script>
 </body>
 
 </html>

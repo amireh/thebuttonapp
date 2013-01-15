@@ -1,0 +1,28 @@
+<% content_for :deferred_js do %>
+  <script>
+    $(function() {
+      $("button").click(function() {
+        $(".notes").toggle();
+        var alt = $(this).attr("data-alt");
+        $(this).attr("data-alt", $(this).html());
+        $(this).html(alt);
+      })
+    })
+  </script>
+<% end %>
+
+
+<%= partial "/tasks/_listing", locals: {
+    title: "Work put on hold (pending)",
+    tasks: @user.active_tasks.all({ :conditions => { :status => :pending }, order: [ :created_at.desc]  }),
+    task_status: 'active'
+  }
+%>
+
+
+<%= partial "/tasks/_listing", locals: {
+    title: "Work you're busy with (active)",
+    tasks: @user.active_tasks.all({ :conditions => { :status => :active }, order: [ :created_at.desc]  }),
+    task_status: 'active'
+  }
+%>
