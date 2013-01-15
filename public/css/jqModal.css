@@ -3,26 +3,27 @@
 
 /* The Window's CSS z-index value is respected (takes priority). If none is supplied,
 	the Window's z-index value will be set to 3000 by default (via jqModal.js). */
-	
+
 .jqmWindow {
     display: none;
-    
+
     position: fixed;
-    top: 17%;
-    left: 50%;
-    
-    margin-left: -300px;
+/*    top: 17%;
+    left: 50%;*/
+
+/*    margin-left: -300px;
     width: 600px;
-    
+
     background-color: #EEE;
     color: #333;
-    border: 1px solid black;
-    padding: 12px;
+    border: 1px solid black;*/
+    padding: 10px;
+    position: absolute;
 }
 
 .jqmOverlay { background-color: rgba(0,0,0,0.5); }
 
-div.jqmConfirm input[type="submit"] { 
+div.jqmConfirm input[type="submit"] {
     /*padding: 4px; margin: 10px 30px; background: #000; color: #FFF; border: 1px solid #AAA;*/
 }
 
@@ -36,7 +37,7 @@ div.jqmConfirm input#confirm_accepted {
 
 div.jqmConfirm { /* contains + positions the alert window */
   display: none;
-  
+
   position: fixed;
   top: 17%;
   width: 100%;
@@ -50,7 +51,7 @@ div.jqmConfirmWindow {
 
   max-width: 420px;
   padding: 0 10px 10px;
-  
+
   background:#FFF;
   border:1px dotted #FFF;
 }
@@ -87,7 +88,7 @@ div.jqmConfirm .jqmClose {
 
 div.jqmConfirm a.jqmClose:hover{ background-position: 0 -20px; }
 
-div.jqmConfirmContent{
+div.jqmConfirmContent {
   color:#000;
   /*font:11px/14pt arial;*/
   font-size: 14px;
@@ -100,10 +101,10 @@ div.jqmConfirmContent{
 }
 
 .clearfix:after {
-    content: "."; 
-    display: block; 
-    height: 0; 
-    clear: both; 
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
     visibility: hidden;
 }
 

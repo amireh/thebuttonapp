@@ -1,25 +1,16 @@
 <% @t ||= @user.tasks.new %>
-<form method="POST" action="/tasks">
+<div class="jqmConfirmTitle">
+  <h2>Edit task</h2>
+</div>
+<form method="POST" action="/tasks/<%= @t.id %>">
   <fieldset>
     <ol>
       <li>Name*</li>
-      <li><input type="text" name="name" value="<%= @t.name %>" /></li>
+      <li><input type="text" name="task[name]" value="<%= @t.name %>" /></li>
 
-      <li>Note</li>
-      <li><textarea name="notes[]" placeholder="Writing integration specs using Cucumber..."><%= @t.notes.any? ? @t.notes.first.content : '' %></textarea>
-      </li>
-
-      <li>Employer</li>
-      <li>
-        <select name="employer_id">
-          <% current_user.employers.each do |e| %>
-            <option value="<%= e.id %>" <%= 'selected="selected"' if @t.employer == e %>><%= e.name %></option>
-          <% end %>
-        </select>
-        <span class="hint"><a href="/employers/new">New employer</a></span>
-      </li>
-
-      <li><input type="submit" value="Create task" /></li>
+      <li><label>Details</label></li>
+      <li><textarea rows="8" type="text" name="task[details]"><%= @t.details %></textarea></li>
     </ol>
   </fieldset>
+  <input type="submit" value="<%= @t.saved? ? 'Update' : 'Create' %> task" />
 </form>

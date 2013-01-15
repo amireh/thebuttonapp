@@ -5,6 +5,14 @@
         $("body").append($("#end_session").detach())
         $("#end_session").submit();
       }
+
+      $('#task_editor').jqm({
+        overlay: 88,
+        ajax: $("a#edit_task").attr("href"),
+        trigger: 'a#edit_task',
+        onLoad: function() { $('.jqmWrap').show(); }
+      });
+
     })
   </script>
 <% end %>
@@ -15,11 +23,18 @@
     <em class="highlight">for <%= pretty_time(Time.now.to_i - @user.current_session.started_at.to_time.to_i) %></em>
     on
   </h3>
-  <p><%= (tagify t.name.capitalize).split("\n").collect { |p| p.capitalize }.join('<br />') %>
+  <p><%= md tagify t.name %>
   </p>
   <% if !t.details.empty? %>
-    <p><%= tagify t.details.gsub("\n", '<br />') %></p>
+    <p><%= md tagify t.details.gsub("\n", '<br />') %></p>
   <% end %>
+
+  <a href="/tasks/<%= t.id %>/edit" id="edit_task">Edit</a>
+  <div class="jqmWrap">
+    <div class="jqmWindow" id="task_editor">
+    </div>
+  </div>
+
 </section>
 <section>
   <h3>Got an update?</h3>
@@ -55,8 +70,14 @@
   <% if t.notes.any? %>
     <ol class="styleless">
     <% t.notes.each do |note| %>
-      <li><span class="hint"><%= note.created_at.strftime("On %D: ") %></span>
-        <div class="indented"><%= md tagify note.content %></div>
+      <li><span class="hint note_date"><%= note.created_at.strftime("On %D: ") %>
+            <a class="confirm delete_note" data-confirm="Are you sure you want to delete this note?" href="/tasks/<%= t.id %>/notes/<%= note.id %>/destroy">x</a>
+
+      </span>
+        <div class="indented"><%= md tagify note.content %>
+
+        </div>
+
       </li>
     <% end %>
     </ol>

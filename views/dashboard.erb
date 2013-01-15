@@ -3,10 +3,10 @@
   <%= partial "dashboard/active" %>
 <% else %>
   <%= partial "dashboard/idle" %>
-  <hr />
-  <p>You can also browse the work you <a href="/tasks/history">finished earlier</a>, or
-    <a href="/reports/new">generate a report</a>.</p>
   <% partial "dashboard/tags" %>
   <% partial "dashboard/history" %>
   <% partial "dashboard/report" %>
 <% end %>
+<hr />
+<p>You can also browse the work you <a href="/tasks/history">finished earlier</a>, or
+  <a href="/reports/new">generate a report</a>.</p>

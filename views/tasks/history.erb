@@ -13,7 +13,7 @@
 
 <% tasks = @user.inactive_tasks.all({ conditions: { status: :complete }, order: [ :created_at.desc]  }) %>
 
-<h2>Finished work</h2>
+<h2 class="title">Finished work</h2>
 <p><em class="highlight"><%= 'task'.pluralize(tasks.count) %></em> complete tagged with
 <% tasks.collect { |t| t.tags }.flatten.uniq.each do |tag| %>
   <strong><%= tagify("##{tag.name}") %></strong>
