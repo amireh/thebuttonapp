@@ -17,11 +17,8 @@
         }
 
         if($(this).attr("id") == 'confirm_accepted') {
-          // console.log("jqModal-Confirm has been accepted");
-
           if (typeof callback == "string") {
             window.location.href = callback;
-            // console.log("JS-driven page redirection failed");
           } else {
             try {
               callback();
@@ -64,7 +61,7 @@
 
     $('#confirm').jqm({overlay: 88, modal: true, trigger: false});
 
-    $('.confirm,a.bad').click(function(e) {
+    $('.confirm, a.bad, a[data-confirm]').click(function(e) {
       var a = $(this);
       try {
         var msg = a.attr("data-confirm");
@@ -95,8 +92,11 @@
           obj = confirmable_parent;
           if (confirmable_parent.length > 0) {
             var id = confirmable_parent.attr("data-confirmable");
-                id += '_' + a.html().toLowerCase() + '_';
-                id += 'confirmation';
+            var infix =
+              confirmable_parent.attr("data-confirmable-infix") ||
+              a.html().toLowerCase();
+            id += '_' + infix + '_';
+            id += 'confirmation';
 
             confirmable = $('#' + id);
 

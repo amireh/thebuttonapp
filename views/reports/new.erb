@@ -57,11 +57,21 @@
     </p>
   </section>
   <section>
-    <h3>Filter</h3>
+    <h3>Tag filters</h3>
     <% @user.tags.each do |tag| %>
       <label><input type="checkbox" value="<%= tag.id %>" name="tags[]" /><%= tagify("##{tag.name}") %></label>
     <% end %>
   </section>
+
+  <section>
+    <h3>Duration filters</h3>
+    <label>
+      <input type="checkbox" name="hide_short_sessions" value="yes" />
+      Don't count really short work sessions (&lt; 5 minutes long)
+    </label>
+
+  </section>
+
   <br />
   <input type="submit" value="Generate" />
 </form>

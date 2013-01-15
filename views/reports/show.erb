@@ -6,75 +6,91 @@
   <em class="highlight"><%= @date[:e].strftime('%D') %></em>
 </h2>
 
-
-<section>
-  <h3>Work sessions</h3>
-  <p><%= @sessions.count %> work sessions tagged with <%= @tags.collect { |t| "<b>##{t.name}</b>" }.join(', ') %>:</p>
-  <table>
-    <thead>
-      <tr>
-        <th width="15%">Duration</th>
-        <th width="60%">Task</th>
-        <th>Completion</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @sessions.each do |ws| %>
-        <tr>
-          <td><%= pretty_time ws.duration %></td>
-          <td><%= ws.task.name %>
-            <% if ws.notes.any? %>
-              <p><strong>Session notes:</strong></p>
-              <ol>
-                <% ws.notes.each do |note| %>
-                  <li><%= note.content %></li>
-                <% end %>
-              </ol>
-            <% end %>
-          </td>
-          <td><%= ws.finished_at.strftime('%D') %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</section>
+<% tag_names = @tags.collect { |t| "<b>##{t.name}</b>" } %>
 
 <section>
   <h3>Tasks</h3>
-  <p>A task could take a number of work sessions to be complete (displayed above).</p>
 
   <% @tasks = @sessions.collect { |ws| ws.task }.flatten.uniq %>
-  <table>
-    <thead>
-      <tr>
-        <th width="15%">Duration</th>
-        <th width="60%">Task</th>
-        <th>Status</th>
-        <th>Completion</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @tasks.each do |t| %>
+  <% if @tasks.any? %>
+    <p class="hint">A task might have been worked on during a number of work sessions (listed below).</p>
+    <table>
+      <thead>
         <tr>
-          <td><%= pretty_time t.time_spent %></td>
-          <td><%= t.name %>
-            <% if t.notes.any? %>
-              <p><strong>Notes:</strong></p>
-              <ol>
-                <% t.notes.each do |note| %>
-                  <li><%= note.content %></li>
-                <% end %>
-              </ol>
-            <% end %>
-          </td>
-          <td><%= t.status.to_s.capitalize %></td>
-          <td><%= t.flagged_at.strftime('%D') %></td>
+          <th width="15%">Duration</th>
+          <th width="60%">Task</th>
+          <th>Status</th>
+          <th>Completion</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% totals = { time_spent: 0 } %>
+        <% @tasks.each do |t| %>
+          <tr>
+            <td><%= pretty_time t.time_spent %><% totals[:time_spent] += t.time_spent %></td>
+            <td><%= md tagify t.name %>
+              <% if !t.details.empty? %>
+                <p><strong>Detailed description:</strong></p>
+                <p><%= md tagify t.details %></p>
+              <% end %>
+              <% if t.notes.any? %>
+                <p><strong>Notes:</strong></p>
+                <ol>
+                  <% t.notes.each do |note| %>
+                    <li><%= md tagify note.content %></li>
+                  <% end %>
+                </ol>
+              <% end %>
+            </td>
+            <td><%= t.status.to_s.capitalize %></td>
+            <td><%= t.flagged_at.strftime('%D') %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td colspan="4"><strong>Total</strong></td>
+        </tr>
+        <tr>
+          <td><%= pretty_time totals[:time_spent] %></td>
+          <td colspan="3"><%= 'task'.pluralize @tasks.count %></td>
+        </tr>
+
+      </tbody>
+    </table>
+  <% end %>
+</section>
+
+
+<section>
+  <h3>Work sessions</h3>
+  <p><%= @sessions.count %> work sessions<% if tag_names.any? %> tagged with<%= tag_names.join(', ') %><% end %>:</p>
+  <% if @sessions.any? %>
+    <table>
+      <thead>
+        <tr>
+          <th width="15%">Worked for</th>
+          <th width="30%">Task</th>
+          <th width="40%">Summary</th>
+          <th>On</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sessions.each do |ws| %>
+          <tr>
+            <td><%= pretty_time ws.duration %></td>
+            <td><%= md tagify ws.task.name %></td>
+            <td>
+              <% if ws.notes.any? %>
+                <%= md ws.notes.collect { |n| tagify n.content }.join("\n") %>
+              <% end %>
+            </td>
+            <td><%= ws.finished_at.strftime('%D') %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
 </section>
 
 <p>
-  <small>This report was generated on <%= Time.now.strftime('%D') %> by <%= AppName %>.</small>
+  <small>This report was generated on <%= Time.now.strftime('%D') %> by <%= AppName %>. <a href="/reports/new">Generate another.</a></small>
 </p>

@@ -11,7 +11,7 @@
   </script>
 <% end %>
 
-<% tasks = @user.inactive_tasks.all({ order: [ :created_at.desc]  }) %>
+<% tasks = @user.inactive_tasks.all({ conditions: { status: :complete }, order: [ :created_at.desc]  }) %>
 
 <h2>Finished work</h2>
 <p><em class="highlight"><%= 'task'.pluralize(tasks.count) %></em> complete tagged with
@@ -27,12 +27,45 @@
 <ol>
   <% tasks.each do |t| %>
     <li><%= tagify t.name %> <span class="bubbly">[ <%= pretty_time t.time_spent %> on <%= t.flagged_at.strftime('%D') %> ]</span>
-      <div class="notes">
-        <p><strong>Notes: </strong></p>
-        <ol>
-          <%= t.notes.collect { |n| "<li>#{n.content}</li>" }.join('') %>
-        </ol>
-      </div>
+      <% if t.notes.any? %>
+        <div class="notes">
+          <p><strong>Notes: </strong></p>
+          <ol>
+            <%= t.notes.collect { |n| "<li>#{n.content}</li>" }.join('') %>
+          </ol>
+        </div>
+      <% end %>
     </li>
   <% end %>
 </ol>
+
+
+<h2 class="page_title">Abandoned work</h2>
+
+<% tasks = @user.inactive_tasks.all({ :conditions => { :status => :abandoned }, order: [ :created_at.desc]  }) %>
+<% tags = tasks.collect { |t| t.tags }.flatten.uniq %>
+
+<p><em class="highlight"><%= 'task'.pluralize(tasks.count) %></em> abandoned
+  <% if tags.any? %>
+    tagged with
+    <% tags.each do |tag| %>
+      <strong><%= tagify("##{tag.name}") %></strong>
+    <% end %>
+  <% end %>
+</p>
+
+<ol>
+  <% tasks.each do |t| %>
+    <li><%= tagify t.name %> <span class="bubbly">[ <%= pretty_time t.time_spent %> on <%= t.flagged_at.strftime('%D') %> ]</span>
+      <% if t.notes.any? %>
+        <div class="notes">
+          <p><strong>Notes: </strong></p>
+          <ol>
+            <%= t.notes.collect { |n| "<li>#{n.content}</li>" }.join('') %>
+          </ol>
+        </div>
+      <% end %>
+    </li>
+  <% end %>
+</ol>
+

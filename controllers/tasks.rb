@@ -27,6 +27,26 @@ route_namespace '/tasks' do
     redirect '/'
   end
 
+  get '/:id/resume' do |task_id|
+    unless t = current_user.tasks.get(task_id.to_i)
+      halt 400, "No such task"
+    end
+
+    if cws = @user.current_session
+      cws.finish
+    end
+
+    t.update({ status: :active })
+
+    unless ws = @user.work_sessions.create({ task: t, active: true })
+      flash[:error] = ws.all_errors
+    else
+      flash[:notice] = "Work session started!"
+    end
+
+    return redirect '/'
+  end
+
   post '/:id/notes' do |task_id|
     unless t = current_user.tasks.get(task_id.to_i)
       halt 400, "No such task"

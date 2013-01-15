@@ -145,8 +145,12 @@ helpers do
     html
   end
 
+  def md(s)
+    s.to_markdown
+  end
+
   def tagify(s)
-    s.gsub!(/#\S+/) { |match|
+    s.gsub(/#\S+/) { |match|
       name = match.strip.gsub('#', '')
       t = current_user.tags.first({ name: name })
       if t
@@ -174,3 +178,4 @@ helpers do
   end
 
 end
+

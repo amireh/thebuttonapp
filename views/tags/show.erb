@@ -2,4 +2,4 @@
 
 <p>Total work time: <strong><%= pretty_time @tag.time_spent %></strong></p>
 
-<%= partial "/tasks/listing" %>
+<%= partial "/tasks/listing", locals: { show_status: true, with_actions: true } %>

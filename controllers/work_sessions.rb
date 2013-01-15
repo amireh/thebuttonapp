@@ -7,6 +7,8 @@ route_namespace '/work_sessions' do
     case params[:whatimgoingtodo]
     when 'new'
 
+      puts params.inspect
+
       # any tagged entity?
       tn = params[:task][:name]
       tags = []
@@ -21,10 +23,17 @@ route_namespace '/work_sessions' do
         end
       end
 
-      t = @user.tasks.create({ name: tn, tags: tags })
-    when 'resume'
-      puts "resuming task #{params[:task][:id]}"
+      # any detailed description written? (has to push two \n\n after the task name)
+      parts = tn.split("\n")
+      details = ''
+      if parts.length > 2
+        # it has a detailed description
+        tn      = parts[0]
+        details = parts[2..-1].join("\n")
+      end
 
+      t = @user.tasks.create({ name: tn, details: details, tags: tags })
+    when 'resume'
       unless t = @user.tasks.get(params[:task][:id].to_i)
         halt 400, "No such task"
       end
@@ -36,6 +45,8 @@ route_namespace '/work_sessions' do
     if cws = @user.current_session
       cws.finish
     end
+
+    t.update({ status: :active })
 
     unless ws = @user.work_sessions.create({ task: t, active: true })
       flash[:error] = ws.all_errors

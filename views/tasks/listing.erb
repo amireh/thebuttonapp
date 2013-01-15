@@ -1,5 +1,29 @@
-<ol>
+<%
+  show_status ||= false
+  with_actions ||= false
+%>
+<ol data-confirmable="task" data-confirmable-infix="resume">
   <% @tasks.each do |t| %>
-    <li><%= tagify t.name %> <span class="bubbly">[ <%= pretty_time t.time_spent %> ]</span></li>
+    <li>
+      <% if with_actions && t.resumable? %>
+        <a class="confirm" href="/tasks/<%= t.id %>/resume"><%= tagify t.name %></a>
+      <% else %>
+        <%= tagify t.name %>
+      <% end %>
+      <span class="bubbly">[ <%= pretty_time t.time_spent %> ]</span>
+      <% if show_status %>
+        <em class="highlight"><%= t.status.to_s %></em>
+      <% end %>
+    </li>
   <% end %>
 </ol>
+
+<div class="hidden" id="task_resume_confirmation">
+  <p>Resume task?
+    <% if @user.current_session %>
+    <br /><br />
+    <strong>WARNING: </strong> resuming the task will end your current session
+    working on <%= @user.current_task.name %>.
+    <% end %>
+  </p>
+</div>

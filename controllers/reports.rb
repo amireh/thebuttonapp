@@ -33,10 +33,16 @@ post '/reports' do
   puts "Generating a report from #{date[:b].strftime('%d')} to #{date[:e].strftime('%d')}"
   puts "Filters: #{tags.collect { |t| t.name }.join(', ')}"
 
-  @sessions = @user.work_sessions({
+  q = {
     :started_at.gte => date[:b],
     :finished_at.lte => date[:e]
-  })
+  }
+
+  if params[:hide_short_sessions] == 'yes'
+    q.merge!({ :duration.gte => 300 })
+  end
+
+  @sessions = @user.work_sessions(q)
 
   tag_names = tags.collect { |t| t.name }
 

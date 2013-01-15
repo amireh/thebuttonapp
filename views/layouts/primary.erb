@@ -32,7 +32,7 @@
 
 <body class="<%= @layout.to_s.split('/').last %> <%= current_page %> <%= 'sticky' if content_for?(:sticky) %> <%= yield_content :layout_classes %>">
 
-  <div class="stuff">
+  <!-- <div class="stuff"> -->
     <header>
       <h1><a href="/">the<em>button</em>app</a></h1>
       <span class="subtitle"><%= yield_content :subtitle %></span>
@@ -62,16 +62,17 @@
 
     <div id="content" class="<%= request.path.gsub('/', ' ').strip.sanitize.split('-').first %>">
       <%= yield %>
+      <% if content_for?(:sticky) %>
+        <br />
+        <div class="sticky">
+          <%= yield_content :sticky  %>
+        </div>
+      <% end %>
     </div>
 
-    <% if content_for?(:sticky) %>
-      <div class="sticky">
-        <%= yield_content :sticky  %>
-      </div>
-    <% end %>
 
-    <% partial "layouts/footer" %>
-  </div>
+    <%= partial "layouts/footer" %>
+  <!-- </div> -->
 
   <aside class="modal alert" hidden="hidden" id="html5_compatibility_notice">
     <h2>Unsupported Browser</h2>

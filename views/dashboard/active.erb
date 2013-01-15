@@ -2,13 +2,8 @@
   <script>
     $(function() {
       submit_form = function() {
-        // $("div[data-confirm]").html( $(".jqmConfirmMsg").html() );
-        console.log("here")
-        console.log($("#end_session").serialize())
         $("body").append($("#end_session").detach())
         $("#end_session").submit();
-        // .append($("#thebutton")).parent().submit();
-        // return true;
       }
     })
   </script>
@@ -20,26 +15,48 @@
     <em class="highlight">for <%= pretty_time(Time.now.to_i - @user.current_session.started_at.to_time.to_i) %></em>
     on
   </h3>
-  <p><%= tagify @user.current_task.name.capitalize %></p>
+  <p><%= (tagify t.name.capitalize).split("\n").collect { |p| p.capitalize }.join('<br />') %>
+  </p>
+  <% if !t.details.empty? %>
+    <p><%= tagify t.details.gsub("\n", '<br />') %></p>
+  <% end %>
 </section>
 <section>
   <h3>Got an update?</h3>
-  <p>
+  <div>
     <span class="small">Mark as:
-      <a href="/tasks/<%= t.id %>/mark?as=complete">complete</a> |
-      <a href="/tasks/<%= t.id %>/mark?as=abandoned">abandoned</a> |
-      <a href="/tasks/<%= t.id %>/mark?as=pending">pending</a>
+      <a class="confirm" href="/tasks/<%= t.id %>/mark?as=complete">complete</a> |
+      <div class="hidden" data-confirm>
+        <p>Marking the task as complete will end the current session and will prevent you from resuming work on it again.
+          <br /><br />Are you sure?
+        </p>
+      </div>
+      <a class="confirm" href="/tasks/<%= t.id %>/mark?as=abandoned">abandoned</a>
+      <div class="hidden" data-confirm>
+        <p>Abandoning this task will end the current session and will prevent you from resuming work on it again.
+          <br /><br />Are you sure?
+        </p>
+      </div>
+      <% if t.status == :active %>
+        | <a class="confirm" href="/tasks/<%= t.id %>/mark?as=pending">pending</a>
+        <div class="hidden" data-confirm>
+          <p>Marking the task as pending will end the current session, but you can still work on it later if you like.
+            <br /><br />Proceed?
+          </p>
+        </div>
+      <% end %>
     </span>
-  </p>
+  </div>
 </section>
 
 
 <section id="task_notes">
   <h3>Any notes?</h3>
   <% if t.notes.any? %>
-    <ol>
+    <ol class="styleless">
     <% t.notes.each do |note| %>
-      <li><%= note.content %><span class="hint"><%= note.created_at.strftime(" (on %D)") %></span>
+      <li><span class="hint"><%= note.created_at.strftime("On %D: ") %></span>
+        <div class="indented"><%= md tagify note.content %></div>
       </li>
     <% end %>
     </ol>
@@ -49,12 +66,36 @@
   <form method="POST" action="/tasks/<%= t.id %>/notes">
     <textarea name="content" rows="2" cols="45" placeholder="You can use this to attach notes to your current work session or task"></textarea>
     <input type="submit" value="Save note" />
+    <p class="hint"><strong>Tip: </strong> notes can be formatted using Markdown syntax.</p>
   </form>
+</section>
+
+<section>
+  <h3>Done?</h3>
+  <input
+    data-confirm-cb="submit_form"
+    data-confirm-heading="End session"
+    data-confirm-accept="Ok"
+    data-linked-to="task_name" type="submit" id="thebutton" value="End session" class="thebutton confirm end" />
+  <div data-confirm="move" class="hidden">
+    <form method="POST" id="end_session" action="/work_sessions/<%= @user.current_session.id %>">
+      <p>Would you like to mark the task?</p>
+      <label><input type="radio" name="task[status]" value="unchanged" <%= 'checked="checked"' if t.status == :active %> /> Active
+        <% if t.status == :active %><span class="hint">(current)</span><% end %>
+      </label><br />
+      <label><input type="radio" name="task[status]" value="unchanged" <%= 'checked="checked"' if t.status == :pending %> /> Pending</label><br />
+      <label><input type="radio" name="task[status]" value="unchanged" /> Complete</label><br />
+      <label><input type="radio" name="task[status]" value="unchanged" /> Abandoned</label><br />
+
+      <p><label for="session_note">Summary</label></p>
+      <textarea name="session[note]" cols="40" id="session_note" placeholder="A brief summary of what you've done during this session"></textarea>
+    </form>
+  </div>
 </section>
 
 <% if t.work_sessions.count > 1 %>
   <section>
-    <h3>Related sessions</h4>
+    <h4>Related sessions</h4>
     <p>You've worked <%= 'time'.pluralize(t.work_sessions.count - 1) %>  on this task:</p>
     <ol>
       <% t.work_sessions.each do |ws| %>
@@ -65,25 +106,3 @@
     </ol>
   <% end %>
 </section>
-
-<% content_for :sticky do %>
-    <input
-      data-confirm-cb="submit_form"
-      data-confirm-heading="End session"
-      data-confirm-accept="Ok"
-      data-linked-to="task_name" type="submit" id="thebutton" value="End session" class="thebutton confirm end" />
-    <div data-confirm="move" class="hidden">
-      <form method="POST" id="end_session" action="/work_sessions/<%= @user.current_session.id %>">
-        <p>Would you like to mark the task?</p>
-        <label><input type="radio" name="task[status]" value="unchanged" <%= 'checked="checked"' if t.status == :active %> /> Active
-          <% if t.status == :active %><span class="hint">(current)</span><% end %>
-        </label><br />
-        <label><input type="radio" name="task[status]" value="unchanged" <%= 'checked="checked"' if t.status == :pending %> /> Pending</label><br />
-        <label><input type="radio" name="task[status]" value="unchanged" /> Complete</label><br />
-        <label><input type="radio" name="task[status]" value="unchanged" /> Abandoned</label><br />
-
-        <p><label for="session_note">Summary</label></p>
-        <textarea name="session[note]" cols="40" id="session_note" placeholder="A brief summary of what you've done during this session"></textarea>
-      </form>
-    </div>
-<% end %>

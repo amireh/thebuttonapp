@@ -54,6 +54,10 @@ class String
     Vowels.include?(self[0]) ? "an #{self}" : "a #{self}"
   end
 
+  def to_markdown
+    PageHub::Markdown.render!(self)
+  end
+
   # expected format: "MM/DD/YYYY"
   def to_date(graceful = true)
     m,d,y = self.split(/\/|\-/)

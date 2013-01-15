@@ -4,7 +4,8 @@ class Task
   Statuses = [ :active, :pending, :abandoned, :complete ]
 
   property    :id,          Serial
-  property    :name,        Text, required: true
+  property    :name,        Text, allow_blank: false
+  property    :details,     Text, default: ''
   property    :created_at,  DateTime, default: lambda { |*_| DateTime.now }
   property    :flagged_at,  DateTime, default: lambda { |*_| DateTime.now }
   property    :status,      Enum[ :active, :pending, :abandoned, :complete ], default: :active
@@ -31,5 +32,9 @@ class Task
       duration += t.duration
     end
     duration
+  end
+
+  def resumable?
+    !([ :abandoned, :complete ].include? status)
   end
 end
