@@ -1,4 +1,8 @@
-post '/reports' do
+# sets 3 instance vars:
+# => @sessions: [ WorkSession ]
+# => @tags: [ Tag ]
+# => @date: { b: DateTime, e: DateTime }
+def generate_report()
   tags = []
   if params[:tags] && params[:tags].is_a?(Array)
     params[:tags].each do |tag_id|
@@ -42,7 +46,7 @@ post '/reports' do
     q.merge!({ :duration.gte => 300 })
   end
 
-  @sessions = @user.work_sessions(q)
+  @sessions = @user.work_sessions(q.merge({ order: [ :started_at.asc ] }))
 
   tag_names = tags.collect { |t| t.name }
 
@@ -66,7 +70,46 @@ post '/reports' do
   end
 
   @date = date
+end
+
+post '/reports' do
+  generate_report
+
   erb :"/reports/show"
+end
+
+post '/reports.pdf' do
+  content_type 'application/pdf'
+
+  generate_report
+
+  footer_html = erb :'/reports/_pdf_footer', layout: false
+  footer_path = File.join settings.tmp_folder, 'reports', "#{Time.now.to_i.to_s}_footer_#{Algol.tiny_salt}.html"
+  footer_file = File.open(footer_path, 'w')
+  footer_file.write(footer_html)
+  footer_file.close
+
+  # cover_html = erb :'/reports/_pdf_cover', layout: false
+  # cover_path = File.join settings.tmp_folder, 'reports', "#{Time.now.to_i.to_s}_cover_#{Algol.tiny_salt}.html"
+  # cover_file = File.open(cover_path, 'w')
+  # cover_file.write(cover_html)
+  # cover_file.close
+
+  html = erb :"/reports/show"
+  kit = PDFKit.new(html, {
+    footer_html: footer_path,
+    # cover: cover_path,
+    # allow: settings.public_folder,
+    title: "Report %s - %s, %s" %[@date[:b].strftime('%D'), @date[:e].strftime('%D'), @user.name]
+  })
+
+  kit.stylesheets << File.join(settings.public_folder, 'css', 'common.css')
+  kit.stylesheets << File.join(settings.public_folder, 'css', 'pdf.css')
+  # kit.to_file("report.pdf")
+  pdf = kit.to_pdf
+  File.delete(footer_path)
+  # File.delete(cover_path)
+  pdf
 end
 
 get '/reports/new' do

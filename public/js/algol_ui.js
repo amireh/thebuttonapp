@@ -55,6 +55,20 @@ algol_ui = function() {
           $("a[data-disabled], a.disabled").click(function(e) { e.preventDefault(); return false; });
         },
 
+        // Togglable sections
+        function() {
+          $("section[data-togglable]").
+            find("> h1:first-child, > h2:first-child, > h3:first-child, > h4:first-child").
+            addClass("togglable");
+
+          $("section > .togglable").click(function() {
+            // $(this).parent().toggle();
+            $(this).siblings(":not([data-untogglable])").toggle(500);
+            $(this).toggleClass("toggled");
+          });
+          $("section[data-togglable][data-collapsed] > .togglable").click();
+        },
+
         // listlike menu anchors
         function() {
           $("a.listlike:not(.selected),a[data-listlike]:not(.selected)").bind('click', show_list);

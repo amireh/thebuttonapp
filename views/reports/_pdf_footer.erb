@@ -1,0 +1,46 @@
+<html><head><script>
+  function subst() {
+    var vars={};
+    var x=document.location.search.substring(1).split('&');
+    for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+    var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+    for(var i in x) {
+      var y = document.getElementsByClassName(x[i]);
+      for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+    }
+  }
+  </script>
+  <style>
+
+    .pdf_footer {
+      margin: 0;
+      border: none;
+      padding: 0;
+      text-align: left;
+      font-size: small;
+    }
+    .pdf_footer hr {
+      margin-top: 0;
+    }
+    .pdf_footer p {
+      display: block;
+      color: #555;
+    }
+    .right {
+      float: right;
+    }
+    p { margin: 0;}
+  </style>
+</head>
+  <body class="pdf_footer" onload="subst()">
+    <hr />
+    <p>
+      <span class="left">
+        This report was generated on <%= Time.now.strftime('%D') %> at <a href="<%= AppURL %>">www.thebuttonapp.com</a>
+      </span>
+      <span class="right">
+        <span class="page"></span>/<span class="topage"></span>
+      </span>
+    </p>
+  </body>
+  </html>

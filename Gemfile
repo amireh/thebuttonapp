@@ -31,6 +31,8 @@ gem 'omniauth-github'
 # gem 'omniauth-twitter', '0.0.9'
 gem 'omniauth-google-oauth2'
 gem 'pagehub-markdown', '>=0.1.3', :require => 'pagehub-markdown'
+gem 'pdfkit'
+gem 'wkhtmltopdf-binary'
 
 group :development do
   gem 'thin'

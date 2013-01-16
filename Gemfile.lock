@@ -117,6 +117,7 @@ GEM
       json (>= 1.7.0)
       nokogiri (>= 1.5.5)
       redcarpet (>= 2.1.1)
+    pdfkit (0.5.2)
     polyglot (0.3.3)
     pony (1.4)
       mail (> 2.0)
@@ -169,6 +170,7 @@ GEM
       macaddr (~> 1.0)
     uuidtools (2.1.3)
     websocket (1.0.6)
+    wkhtmltopdf-binary (0.9.9.1)
     xpath (1.0.0)
       nokogiri (~> 1.3)
 
@@ -196,6 +198,7 @@ DEPENDENCIES
   omniauth-github
   omniauth-google-oauth2
   pagehub-markdown (>= 0.1.3)
+  pdfkit
   pony
   rake
   rspec
@@ -206,3 +209,4 @@ DEPENDENCIES
   thin
   timetastic (>= 0.1.4)!
   uuid
+  wkhtmltopdf-binary

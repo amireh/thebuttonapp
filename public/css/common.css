@@ -340,7 +340,7 @@ div.sticky {
   background: white;
 }*/
 
-em.highlight {
+.highlight {
   background: yellow;
 }
 
@@ -627,3 +627,15 @@ img + .attached {
 .numbered > span:first-child:before {
   content: '#';
 }
+
+td .task_status {
+  padding: 2px 5px;
+  font-size: 11px;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+.task_status.complete   { background-color: green;  color: white; }
+.task_status.active     { background-color: black;  color: white; }
+.task_status.pending    { background-color: orange; color: white; }
+.task_status.abandoned  { background-color: red;    color: white; }

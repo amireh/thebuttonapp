@@ -1,0 +1,17 @@
+<html>
+<head>
+  <style>
+
+  </style>
+</head>
+
+<body class="pdf_cover">
+  <img src="<%= settings.public_folder %>/images/logo.png" />
+  <p>
+    <strong>Report #<%= rand(100 ** 2 + 1000) %></strong><br />
+    <strong>Contractor:</strong> <%= @user.name %><br />
+    <strong>Company:</strong> Instructure, Inc.
+  </p>
+</body>
+
+</html>

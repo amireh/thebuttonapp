@@ -20,6 +20,11 @@ helpers do
     end
   end
 
+  def pdf?
+    (request && request.content_type && request.content_type =~ /pdf/) ||
+    (response && response.content_type && response.content_type =~ /pdf/)
+  end
+
   # Used in the generation of email verification links
   def __host
     request.referer && request.referer.scan(/http:\/\/[^\/]*\//).first[0..-2]

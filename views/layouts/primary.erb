@@ -7,9 +7,9 @@
   </title>
 
   <link href="/css/common.css" rel="stylesheet" type="text/css" />
-  <link href="/css/skins/light.css" rel="stylesheet" type="text/css" />
-  <link href="/css/fonts/scratch-my-back/stylesheet.css" rel="stylesheet" type="text/css" />
-  <link href="/css/fonts/idolwild/stylesheet.css" rel="stylesheet" type="text/css" />
+  <!-- <link href="/css/skins/light.css" rel="stylesheet" type="text/css" /> -->
+  <!-- <link href="/css/fonts/scratch-my-back/stylesheet.css" rel="stylesheet" type="text/css" /> -->
+  <!-- <link href="/css/fonts/idolwild/stylesheet.css" rel="stylesheet" type="text/css" /> -->
   <link href="/css/fonts/architects-daughter/stylesheet.css" rel="stylesheet" type="text/css" />
   <link href="/js/jquery-ui/css/jquery-ui-theme/jquery-ui-1.9.2.custom.css" rel="stylesheet" type="text/css" />
 
@@ -65,8 +65,9 @@
       <% end %>
     </div>
 
-
-    <%= partial "layouts/footer" %>
+    <% unless pdf? %>
+      <%= partial "layouts/footer" %>
+    <% end %>
   <!-- </div> -->
 
   <aside class="modal alert" hidden="hidden" id="html5_compatibility_notice">

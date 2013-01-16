@@ -1,6 +1,15 @@
+<%
+  # params[:date] ||= {
+  #   b: to_jQueryUI_date(Time.now),
+  #   e: to_jQueryUI_date(Time.now),
+  #   range: 'current_month'
+  # }
+  # params[:hide_short_sessions] ||= false
+%>
 <% content_for :deferred_js do %>
   <script>
     $(function() {
+
       $( "#from" ).datepicker({
         defaultDate: "+1w",
         inline: false,
@@ -25,6 +34,30 @@
         else
           $("#report_date_selector").hide();
       });
+
+      var form_url = $("form").attr("action");
+
+      $("input[name=type]").change(function() {
+        var form = $(this).parents("form:first")
+        if ($(this).attr("value") == 'PDF') {
+          form.attr("action", form_url + '.pdf')
+        } else {
+          form.attr("action", form_url)
+        }
+      });
+
+      <% if false %>
+        $("input[type=radio][value=<%= params[:date][:range] %>]").attr("checked", "checked").change();
+        <% @tags && @tags.each do |t| %>
+          $("input[type=checkbox][name^=tags][value=<%=t.id%>]").attr("checked", "checked");
+        <% end %>
+        <% if params[:hide_short_sessions] %>
+          $("input[type=checkbox][name=hide_short_sessions]").attr("checked", "checked");
+        <% end %>
+      <% end %>
+
+      return false;
+
     });
   </script>
 <% end %>
@@ -33,10 +66,10 @@
 
 <form method="POST" id="generate_report" action="/reports">
   <section>
-    <h3>Choose a period</h3>
+    <h3>Period</h3>
     <p>
       <label>
-        <input type="radio" name="date[range]" value="current_month" checked="checked">Current month (<%= Time.now.strftime('%B') %>)</option>
+        <input type="radio" name="date[range]" value="current_month">Current month (<%= Time.now.strftime('%B') %>)</option>
       </label><br />
       <label>
         <input type="radio" name="date[range]" value="current_year">Current year (<%= Time.now.strftime('%Y') %>)</option>
@@ -69,7 +102,13 @@
       <input type="checkbox" name="hide_short_sessions" value="yes" />
       Don't count really short work sessions (&lt; 5 minutes long)
     </label>
+  </section>
 
+  <section>
+    <h3>Format</h3>
+    <label><input type="radio" name="type" value="HTML" checked="checked" />HTML</label>
+    <label><input type="radio" name="type" value="PDF" />PDF</label>
+    <label><input type="radio" name="type" value="Excel" disabled="disabled" />Excel <span class="hint">(soon)</span></label>
   </section>
 
   <br />

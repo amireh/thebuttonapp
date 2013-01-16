@@ -1,0 +1,28 @@
+header { display: none; }
+.page_title:before,
+.title:before {
+
+}
+
+body {
+  margin: 0 !important;
+}
+
+footer {
+  display: none;
+}
+
+.pdf td,
+.pdf th {
+  padding: 5px;
+}
+.pdf section h3:before { content: ''; margin: 0; }
+
+.pdf.reports tr:nth-of-type(even) {
+  background: rgba(150, 180, 130, 0.25);
+}
+
+.pdf h2:first-of-type {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}

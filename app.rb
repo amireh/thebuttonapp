@@ -33,6 +33,9 @@ configure do
   config_file 'config/application.yml'
   config_file 'config/database.yml'
 
+  set :tmp_folder, File.join(settings.root, 'tmp')
+  FileUtils.mkdir_p File.join(settings.tmp_folder, 'reports')
+
   use Rack::Session::Cookie, :secret => settings.credentials['cookie']['secret']
 
   dbc = settings.database
@@ -58,6 +61,15 @@ configure do
     profile:  { size: 128, html: { :class => 'gravatar' } }
   })
 
+  PDFKit.configure do |config|
+    config.default_options = {
+      page_size: 'A4'
+      # footer_left: '[webpage]',
+      # footer_right: '[page]/[toPage]'
+      # footer_spacing: 15.0,
+      # footer_line: false
+    }
+  end
 end
 
 # skip OmniAuth and Pony in test mode
