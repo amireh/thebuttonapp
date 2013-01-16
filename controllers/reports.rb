@@ -109,15 +109,22 @@ post '/reports.pdf' do
 
   kit.stylesheets << File.join(settings.public_folder, 'css', 'common.css')
   kit.stylesheets << File.join(settings.public_folder, 'css', 'pdf.css')
-  # kit.to_file(report_path)
-  pdf = kit.to_pdf
+  kit.to_file(report_path)
+  # pdf = kit.to_pdf
   File.delete(footer_path)
   # File.delete(cover_path)
-  pdf
-  # send_file(report_path, disposition: 'attachment', filename: report_title)
-  # File.delete(report_path)
+  # pdf
+  send_file(report_path, disposition: 'attachment', filename: report_title)
+  File.delete(report_path)
 end
 
 get '/reports/new' do
+  @tags = @user.tags
+  orphaned_tags = []
+  @tags.each { |tag|
+    orphaned_tags << tag if tag.tasks.empty?
+  }
+  orphaned_tags.each { |t| t.destroy }
+
   erb :"reports/new"
 end

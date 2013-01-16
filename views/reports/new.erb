@@ -91,7 +91,7 @@
   </section>
   <section>
     <h3>Tag filters</h3>
-    <% @user.tags.each do |tag| %>
+    <% @tags.each do |tag| %>
       <label><input type="checkbox" value="<%= tag.id %>" name="tags[]" /><%= tagify("##{tag.name}") %></label>
     <% end %>
   </section>
