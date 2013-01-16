@@ -79,7 +79,7 @@ post '/reports' do
 end
 
 post '/reports.pdf' do
-  content_type 'application/pdf'
+  content_type :pdf
 
   generate_report
 
@@ -95,21 +95,26 @@ post '/reports.pdf' do
   # cover_file.write(cover_html)
   # cover_file.close
 
+  report_title = "Report #{@date[:b].strftime('%m-%d-%y')} - #{@date[:e].strftime('%m-%d-%y')}, #{@user.name}"
+  report_path = File.join settings.tmp_folder, 'reports', "report_#{Algol.tiny_salt}.pdf"
+
   html = erb :"/reports/show"
   kit = PDFKit.new(html, {
     footer_html: footer_path,
     # cover: cover_path,
     # allow: settings.public_folder,
-    title: "Report %s - %s, %s" %[@date[:b].strftime('%D'), @date[:e].strftime('%D'), @user.name]
+    title: report_title
   })
 
   kit.stylesheets << File.join(settings.public_folder, 'css', 'common.css')
   kit.stylesheets << File.join(settings.public_folder, 'css', 'pdf.css')
-  # kit.to_file("report.pdf")
-  pdf = kit.to_pdf
+  kit.to_file(report_path)
+  # pdf = kit.to_pdf
   File.delete(footer_path)
   # File.delete(cover_path)
-  pdf
+  # pdf
+  send_file(report_path, disposition: 'attachment', filename: report_title)
+  File.delete(report_path)
 end
 
 get '/reports/new' do

@@ -33,6 +33,8 @@ configure do
   config_file 'config/application.yml'
   config_file 'config/database.yml'
 
+  mime_type :pdf, 'application/pdf'
+
   set :tmp_folder, File.join(settings.root, 'tmp')
   FileUtils.mkdir_p File.join(settings.tmp_folder, 'reports')
 

@@ -2,3 +2,5 @@
 *.tar
 config/credentials.yml
 *.tmp
+*.pdf
+tmp

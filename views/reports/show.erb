@@ -11,6 +11,10 @@
   <em class="highlight"><%= @date[:e].strftime('%D') %></em>
 </h2>
 
+<% if pdf? %>
+  <p><strong>Client: </strong><%= @user.name %></p>
+<% end %>
+
 <% tag_names = @tags.collect { |t| "<b>##{t.name}</b>" } %>
 
 <section>
@@ -44,6 +48,7 @@
                 <p><strong>Notes:</strong></p>
                 <ol>
                   <% t.notes.each do |note| %>
+                    <% next if note.content.empty? %>
                     <li><%= md tagify note.content %></li>
                   <% end %>
                 </ol>

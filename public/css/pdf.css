@@ -19,7 +19,8 @@ footer {
 .pdf section h3:before { content: ''; margin: 0; }
 
 .pdf.reports tr:nth-of-type(even) {
-  background: rgba(150, 180, 130, 0.25);
+  /*background: rgba(150, 180, 130, 0.25);*/
+  background: rgba(0, 0, 0, 0.075);
 }
 
 .pdf h2:first-of-type {
