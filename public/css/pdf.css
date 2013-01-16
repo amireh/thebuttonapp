@@ -11,7 +11,13 @@ body {
 footer {
   display: none;
 }
+.pdf table {
+  /*page-break-after: always;*/
+}
 
+/*.pdf section:nth-of-type(2) h3 {
+  page-break-before: always;
+}*/
 .pdf td,
 .pdf th {
   padding: 5px;

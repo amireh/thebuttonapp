@@ -20,12 +20,12 @@
   <% tasks.each_with_index do |t, i| %>
     <article class="task">
       <header>
-        <h4 class="numbered"><span><%= i+1 %></span><%= tagify t.name %></h4>
+        <h4 class="numbered"><span><%= i+1 %></span><%= md tagify t.name %></h4>
       </header>
       <p><span class="bubbly">[ took <em class="highlight"><%= pretty_time t.time_spent %></em> across <%= t.work_sessions.count %> sessions, and finished on <%= t.flagged_at.strftime('%D') %> ]</span></p>
 
       <% if t.details.length > 0 %>
-        <p><%= t.details %></p>
+        <p><%= md tagify t.details %></p>
       <% end %>
 
       <% if t.notes.any? %>

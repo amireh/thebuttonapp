@@ -65,7 +65,8 @@ configure do
 
   PDFKit.configure do |config|
     config.default_options = {
-      page_size: 'A4'
+      page_size: 'A4',
+      dpi: '300'
       # footer_left: '[webpage]',
       # footer_right: '[page]/[toPage]'
       # footer_spacing: 15.0,

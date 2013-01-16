@@ -5,6 +5,62 @@
   <%= @user.name %>
 <% end %>
 
+<% params[:format_options] ||= { pdf: { :break => false, :wrap => false }} %>
+
+<% if pdf? %>
+  <style>
+    .something { position: absolute; top: 1000px;}
+    pre { position: absolute; background: white; display: none; }
+  </style>
+  <script src="<%= settings.public_folder %>/js/jquery.1.7.1.min.js" type="text/javascript"></script>
+
+  <% content_for :deferred_js do %>
+    <script>
+      $(function() {
+        var ph = 1039; // magic: this is the height in pixels of an A4 letter @ 300 DPI
+
+        <% if params[:format_options][:pdf][:break] %>
+          var t = $("table:first");
+          var h = t.height() + t.position().top;
+          var remainder = ph - h % ph;
+          $("table:first").after('<div style="height: ' + remainder + 'px;">&nbsp;</div>')
+        <% end %>
+
+        <% if params[:format_options][:pdf][:wrap] %>
+
+          $("tr").each(function() {
+            var h = $(this).height();
+            var t = $(this).position().top;
+
+            if (t % ph + h > ph) {
+              var offset = $(this).index();
+              var current_table = $(this).parents("table:first");
+
+              // we clone the table, cut out 0..self.index rows, and break page
+              var clone = current_table.clone();
+
+              var overflowing_rows = current_table.find("tbody tr").length - offset;
+              for (var i = 0; i < overflowing_rows; ++i) {
+                current_table.find("tbody tr:last").detach();
+              }
+
+              clone.css("page-break-before", "always");
+
+              for (var i = 0; i < offset; ++i) {
+                clone.find("tbody tr:first").detach();
+              }
+              clone.insertAfter(current_table);
+              current_table.after(clone);
+            }
+          });
+        <% end %>
+      });
+    </script>
+  <% end %>
+<% end %>
+
+<!-- <span class="something">foobar</span> -->
+<pre id="debugc"></pre>
 <h2>Activity from
   <em class="highlight"><%= @date[:b].strftime('%D') %></em>
   to
@@ -22,8 +78,8 @@
 
   <% @tasks = @sessions.collect { |ws| ws.task }.flatten.uniq.sort { |a,b| a.flagged_at <=> b.flagged_at } %>
   <% if @tasks.any? %>
-    <p class="hint">A task might have been worked on during a number of work sessions (detailed below).</p>
-    <table>
+    <p class="hint">A task might have been worked on during a number of work sessions (detailed on the following page).</p>
+    <table class="split-me">
       <thead>
         <tr>
           <th width="15%">Duration</th>
@@ -76,7 +132,7 @@
   <h3>Work sessions</h3>
   <p><%= @sessions.count %> work sessions<% if tag_names.any? %> tagged with<%= tag_names.join(', ') %><% end %>:</p>
   <% if @sessions.any? %>
-    <table>
+    <table class="split-me">
       <thead>
         <tr>
           <th width="15%">Duration</th>

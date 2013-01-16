@@ -101,6 +101,7 @@ post '/reports.pdf' do
   html = erb :"/reports/show"
   kit = PDFKit.new(html, {
     footer_html: footer_path,
+    debug_javascript: true,
     # cover: cover_path,
     # allow: settings.public_folder,
     title: report_title
@@ -108,13 +109,13 @@ post '/reports.pdf' do
 
   kit.stylesheets << File.join(settings.public_folder, 'css', 'common.css')
   kit.stylesheets << File.join(settings.public_folder, 'css', 'pdf.css')
-  kit.to_file(report_path)
-  # pdf = kit.to_pdf
+  # kit.to_file(report_path)
+  pdf = kit.to_pdf
   File.delete(footer_path)
   # File.delete(cover_path)
-  # pdf
-  send_file(report_path, disposition: 'attachment', filename: report_title)
-  File.delete(report_path)
+  pdf
+  # send_file(report_path, disposition: 'attachment', filename: report_title)
+  # File.delete(report_path)
 end
 
 get '/reports/new' do
