@@ -1,10 +1,12 @@
 body {
   margin: 0;
   padding: 0;
-  font: 14px "Gill Sans", Verdana, Arial, Helvetica, sans-serif;
+  font: 14px Verdana, Arial, Helvetica, sans-serif;
   background: url(/images/bgs/subtle_grunge/subtle_grunge2.png) repeat;
 }
-
+body.windows {
+  font-family: "Lucida Sans", Calibri, Arial;
+}
 body * {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -353,13 +355,20 @@ h1 {
   font-weight: normal;
 }*/
 
-h1, h2,h3,h4 {
+h1,h2,h3,h4 {
   /*font-family: 'IdolwildRegular';*/
   font-family: 'ArchitectsDaughterRegular';
   /*font-weight: normal;*/
   font-size: 2em;
   margin: 25px 0 0 0;
 }
+.windows h1,
+.windows h2,
+.windows h3,
+.windows h4 {
+  font-family: "Segoe Print";
+}
+
 h3 {
   font-size: 1.75em;
 }

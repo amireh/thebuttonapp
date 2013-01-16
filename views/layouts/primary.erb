@@ -26,6 +26,10 @@
   <script src="/js/algol_ui.js"></script>
   <script src="/js/jqModal.js"></script>
 
+  <script>
+    $(function() { if (navigator.platform.search(/windows/i) > -1) { $("body").addClass("windows"); } });
+  </script>
+
   <%= yield_content :js %>
   <%= yield_content :scripts %>
 </head>
