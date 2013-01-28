@@ -61,7 +61,7 @@
       <ol>
         <% current_user.active_tasks.each do |t| %>
           <li>
-            <label><input type="radio" name="task[id]" value="<%= t.id %>"><%= tagify t.name %></label>
+            <label><input type="radio" name="task[id]" value="<%= t.id %>"><%= md tagify t.name %></label>
           </li>
         <% end %>
       </ol>

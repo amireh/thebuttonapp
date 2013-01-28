@@ -648,3 +648,5 @@ td .task_status {
 .task_status.active     { background-color: black;  color: white; }
 .task_status.pending    { background-color: orange; color: white; }
 .task_status.abandoned  { background-color: red;    color: white; }
+
+.dashboard #resume_task li p { display: inline-block; margin: 0; }
