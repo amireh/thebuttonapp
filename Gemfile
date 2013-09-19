@@ -33,7 +33,7 @@ gem 'omniauth-google-oauth2'
 gem 'pagehub-markdown', '>=0.1.3', :require => 'pagehub-markdown'
 gem 'pdfkit'
 gem 'wkhtmltopdf-binary'
-gem 'sinatra-api-helpers', :path => '/home/kandie/Workspace/Projects/sinatra-api-helpers'
+gem 'sinatra-api-helpers'
 
 group :development do
   gem 'thin'
