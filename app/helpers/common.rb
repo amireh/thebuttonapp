@@ -167,6 +167,10 @@ helpers do
   end
 
   def pretty_time(a)
+    (a/60).to_i.to_s+' minutes'
+  end
+
+  def really_pretty_time(a)
     case a
       when 0 then 'hardly a second!'
       when 1 then 'a second'
