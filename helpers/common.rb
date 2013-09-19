@@ -181,6 +181,5 @@ helpers do
       else ((a+180000)/(60*60*24*7)).to_i.to_s + ' weeks'
     end
   end
-
 end
 

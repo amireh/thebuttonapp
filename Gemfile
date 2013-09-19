@@ -1,4 +1,4 @@
-source :rubygems
+source 'https://rubygems.org'
 
 gem 'sinatra', '=1.3.3'
 gem 'sinatra-contrib', :require => [
@@ -33,6 +33,7 @@ gem 'omniauth-google-oauth2'
 gem 'pagehub-markdown', '>=0.1.3', :require => 'pagehub-markdown'
 gem 'pdfkit'
 gem 'wkhtmltopdf-binary'
+gem 'sinatra-api-helpers', :path => '/home/kandie/Workspace/Projects/sinatra-api-helpers'
 
 group :development do
   gem 'thin'
@@ -43,7 +44,8 @@ group :test do
   gem 'rake'
   gem 'rspec'
   gem 'rspec-core'
-  gem 'capybara-webkit', '>= 0.13.0', :git => 'https://github.com/thoughtbot/capybara-webkit'
+  # gem 'capybara-webkit', '>= 0.13.0', :git => 'https://github.com/thoughtbot/capybara-webkit'
+  gem 'capybara-webkit'
   gem 'capybara', '>= 2.0.2'
   gem 'launchy'
 end

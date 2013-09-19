@@ -1,0 +1,35 @@
+<script>
+  $('form').on('submit', function(e) {
+    var $form = $(this);
+    var $duration = $form.find('[name="duration"]');
+
+    if ($duration.val().length) {
+      $duration.val( parseInt( $duration.val() ) * 60 );
+    }
+
+    return true;
+  });
+
+</script>
+
+<div class="jqmConfirmTitle">
+  <h2>Edit work session</h2>
+</div>
+
+<form method="POST" action="/work_sessions/<%= @ws.id %>/update">
+
+  <fieldset>
+    <label>
+      Duration (minutes):
+      <input type="text" autocomplete="off" name="duration" value="<%= @ws.duration / 60 %>" />
+    </label>
+
+    <label>
+      Summary:
+      <textarea rows="8" type="text" name="summary"><%= @ws.notes.collect { |n| n.content.strip }.join("\n").strip %></textarea>
+    </label>
+
+  </fieldset>
+
+  <input type="submit" value="Update" />
+</form>

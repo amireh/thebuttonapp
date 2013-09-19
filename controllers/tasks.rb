@@ -6,6 +6,14 @@ route_namespace '/tasks' do
     erb :"/tasks/new"
   end
 
+  get '/:id/work_sessions' do |task_id|
+    unless @t = current_user.tasks.get(task_id.to_i)
+      halt 400, "No such task"
+    end
+
+    erb :"/tasks/work_sessions"
+  end
+
   get '/:id/edit' do |task_id|
     unless @t = current_user.tasks.get(task_id.to_i)
       halt 400, "No such task"
@@ -57,40 +65,6 @@ route_namespace '/tasks' do
     end
 
     return redirect '/'
-  end
-
-  post '/:id/notes' do |task_id|
-    unless t = current_user.tasks.get(task_id.to_i)
-      halt 400, "No such task"
-    end
-
-    unless params[:content].strip.empty?
-      if n = t.notes.create({ content: params[:content] })
-        flash[:notice] = "Note attached!"
-      else
-        flash[:error] = n.all_errors
-      end
-    end
-
-    redirect '/'
-  end
-
-  delete '/:id/notes/:note_id' do |task_id, note_id|
-    unless t = current_user.tasks.get(task_id.to_i)
-      halt 400, "No such task"
-    end
-
-    unless n = t.notes.get(note_id.to_i)
-      halt 400, 'No such note'
-    end
-
-    if n.destroy
-      flash[:notice] = "Note removed!"
-    else
-      flash[:error] = n.all_errors
-    end
-
-    redirect '/'
   end
 
   def extract_tags_and_details(params)

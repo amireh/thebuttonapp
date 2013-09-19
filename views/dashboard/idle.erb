@@ -2,9 +2,6 @@
   <script>
     $(function() {
       $("input[type=radio][name=whatimgoingtodo]").change(function() {
-        console.log($(this))
-        console.log($(this).is(":checked"))
-        // var checked = $(this).parent.find(":checked");
         var checked = $(this);
         $("form fieldset").hide();
         $("#thebutton").attr("disabled", "disabled")
@@ -26,14 +23,16 @@
 <form method="POST" action="/work_sessions">
   <section>
     <h3>I'm going to...</h3>
-    <label><input name="whatimgoingtodo" value="nothing"  type="radio" checked="checked">Do nothing</label><br />
-    <label><input name="whatimgoingtodo" value="new"      type="radio">Work on something new</label><br />
-    <label><input name="whatimgoingtodo" value="resume"   type="radio"
-      <%= 'disabled="disabled"' if !@user.active_tasks.any? %>>Pick up a job I've started earlier
-      <% if @user.active_tasks.empty? %>
-        <span class="hint">(you haven't started any tasks yet)</span>
-      <% end %>
-    </label>
+    <label><input name="whatimgoingtodo" value="nothing"  type="radio" checked="checked">Do nothing</label>
+    <label><input name="whatimgoingtodo" value="new"      type="radio">Work on something new</label>
+    <% unless @user.active_tasks.empty? %>
+      <label>
+        <input name="whatimgoingtodo" value="resume" type="radio">Pick up a job I've started earlier
+      </label>
+      <label>
+        <input name="whatimgoingtodo" value="manage" type="radio">Manage a job
+      </label>
+    <% end %>
   </section>
 
   <section>
@@ -61,11 +60,23 @@
       <ol>
         <% current_user.active_tasks.each do |t| %>
           <li>
-            <label><input type="radio" name="task[id]" value="<%= t.id %>"><%= md tagify t.name %></label>
+            <label><input type="radio" name="task[id]" value="<%= t.id %>" /><%= md tagify t.name %></label>
           </li>
         <% end %>
       </ol>
     </fieldset>
+
+    <fieldset class="hidden" id="manage_task">
+      <h3>Which job?</h3>
+      <ol>
+        <% current_user.active_tasks.each do |t| %>
+          <li>
+            <label><input type="radio" name="task[id]" value="<%= t.id %>" /><%= md tagify t.name %></label>
+          </li>
+        <% end %>
+      </ol>
+    </fieldset>
+
   </section>
 
   <br />

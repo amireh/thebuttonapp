@@ -4,17 +4,20 @@ GIT
   specs:
     timetastic (0.1.4)
 
-GIT
-  remote: https://github.com/thoughtbot/capybara-webkit
-  revision: 8a8d12af5cb644537f6220cd332cc916c4b1f5ef
+PATH
+  remote: /home/kandie/Workspace/Projects/sinatra-api-helpers
   specs:
-    capybara-webkit (0.13.0)
-      capybara (>= 2.0.1)
+    sinatra-api-helpers (1.0.0)
+      activesupport
       json
+      sinatra
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
+    activesupport (3.2.13)
+      i18n (= 0.6.1)
+      multi_json (~> 1.0)
     addressable (2.2.8)
     albino (1.3.3)
       posix-spawn (>= 0.3.6)
@@ -27,6 +30,9 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
       xpath (~> 1.0.0)
+    capybara-webkit (1.0.0)
+      capybara (~> 2.0, >= 2.0.2)
+      json
     childprocess (0.3.6)
       ffi (~> 1.0, >= 1.0.6)
     daemons (1.1.9)
@@ -180,7 +186,7 @@ PLATFORMS
 DEPENDENCIES
   addressable
   capybara (>= 2.0.2)
-  capybara-webkit (>= 0.13.0)!
+  capybara-webkit
   dm-constraints (>= 1.2.0)
   dm-core (>= 1.2.0)
   dm-migrations (>= 1.2.0)
@@ -204,6 +210,7 @@ DEPENDENCIES
   rspec
   rspec-core
   sinatra (= 1.3.3)
+  sinatra-api-helpers!
   sinatra-contrib
   sinatra-flash
   thin

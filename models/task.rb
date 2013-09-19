@@ -37,4 +37,12 @@ class Task
   def resumable?
     !([ :abandoned, :complete ].include? status)
   end
+
+  def abandoned?
+    status == :abandoned
+  end
+
+  def url
+    "/tasks/#{id}"
+  end
 end

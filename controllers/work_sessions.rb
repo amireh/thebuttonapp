@@ -1,13 +1,17 @@
 route_namespace '/work_sessions' do
+  Sinatra::API.alias_resource :work_session, :ws
+
   condition do restrict_to(:user) end
+
+  get '/:work_session_id/edit', requires: [ :work_session ] do
+    erb :"/work_sessions/edit", layout: false
+  end
 
   post do
     t = nil
 
     case params[:whatimgoingtodo]
     when 'new'
-
-      puts params.inspect
 
       # any tagged entity?
       tn = params[:task][:name]
@@ -37,6 +41,12 @@ route_namespace '/work_sessions' do
       unless t = @user.tasks.get(params[:task][:id].to_i)
         halt 400, "No such task"
       end
+    when 'manage'
+      unless t = @user.tasks.get(params[:task][:id].to_i)
+        halt 400, "No such task"
+      end
+
+      return redirect "/tasks/#{t.id}/work_sessions"
     else
       flash[:error] = "You must want to do something!"
       redirect '/'
@@ -57,10 +67,23 @@ route_namespace '/work_sessions' do
     return redirect '/'
   end
 
-  post '/:id' do |session_id|
-    cws = @user.current_session
+  post '/:work_session_id/update', requires: [ :work_session ] do
+    if params[:summary]
+      @ws.notes.destroy
+      if !params[:summary].empty?
+        @ws.notes.create({ content: params[:summary] })
+      end
+    end
 
-    puts params.inspect
+    unless @ws.update(pick(params, %w[ duration ]))
+      halt 400, @ws.all_errors
+    end
+
+    redirect back
+  end
+
+  post '/:work_session_id', requires: [ :work_session ] do |session_id|
+    cws = @user.current_session
 
     unless cws && cws.id == session_id.to_i
       halt 400, "That's not the current active session!"
@@ -78,4 +101,41 @@ route_namespace '/work_sessions' do
 
     redirect '/'
   end
+
+  delete '/:work_session_id', requires: [ :work_session ] do
+    ws_id = @ws.id
+
+    if @ws.destroy
+      flash[:notice] = "Work session##{ws_id} has been removed and will no longer" +
+      "count in the history of this task."
+    else
+      flash[:error] = @ws.all_errors
+    end
+
+    redirect back
+  end
+
+  post '/:work_session_id/notes', requires: [ :work_session ] do
+
+    unless params[:content].strip.empty?
+      if n = @ws.notes.create({ content: params[:content] })
+        flash[:notice] = "Note attached!"
+      else
+        flash[:error] = n.all_errors
+      end
+    end
+
+    redirect back
+  end
+
+  delete '/:work_session_id/notes/:note_id', requires: [ :work_session, :note ] do
+    if @note.destroy
+      flash[:notice] = 'Note removed!'
+    else
+      flash[:error] = @note.all_errors
+    end
+
+    redirect back
+  end
+
 end

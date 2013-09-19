@@ -29,25 +29,9 @@ algol_ui = function() {
       removed = {},
       action_hooks = { pages: { on_load: [] } },
       hooks = [
-        // HTML5 compatibility tests
         function() {
-          if (!Modernizr.draganddrop) {
-            ui.modal.as_alert($("#html5_compatibility_notice"))
-          }
-        },
-
-        // initialize dynamism
-        function() {
-          dynamism.configure({ debug: false, logging: false });
-
           // element tooltips
-          $("a[title],span[title]").tooltip({ placement: "bottom", delay: { show: 500, hide: 100 } });
-        },
-
-        function() {
-          $("[data-collapsible]").each(function() {
-            $(this).append($("#collapser").clone().attr({ id: null, hidden: null }));
-          });
+          $("[title],span[title]").tooltip({ placement: "bottom", delay: { show: 500, hide: 100 } });
         },
 
         // disable all links attributed with data-disabled
@@ -55,24 +39,6 @@ algol_ui = function() {
           $("a[data-disabled], a.disabled").click(function(e) { e.preventDefault(); return false; });
         },
 
-        // Togglable sections
-        function() {
-          $("section[data-togglable]").
-            find("> h1:first-child, > h2:first-child, > h3:first-child, > h4:first-child").
-            addClass("togglable");
-
-          $("section > .togglable").click(function() {
-            // $(this).parent().toggle();
-            $(this).siblings(":not([data-untogglable])").toggle(500);
-            $(this).toggleClass("toggled");
-          });
-          $("section[data-togglable][data-collapsed] > .togglable").click();
-        },
-
-        // listlike menu anchors
-        function() {
-          $("a.listlike:not(.selected),a[data-listlike]:not(.selected)").bind('click', show_list);
-        },
         function() {
           $("input[data-linked-to],button[data-linked-to]").each(function() {
             var target_id = $(this).attr("data-linked-to");
@@ -89,126 +55,14 @@ algol_ui = function() {
               }
             }).keyup();
           });
-        },
-
-        function() {
-          if (typeof Highcharts != 'undefined') {
-            Highcharts.setOptions({
-              credits: { enabled: false },
-              title: { text: null },
-              chart: {
-                backgroundColor: 'rgba(255,255,255, 0)',
-                borderWidth: 0,
-                borderRadius: 0,
-              },
-              tooltip: {
-                style: {
-                  'padding': '10px'
-                }
-              },
-            });
-          }
         }
-
       ]; // end of hooks
 
-
-  var month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-  var chart_options = {
-    xAxis: {
-      categories: month_names
-    },
-    // legend: false,
-    // tooltip: {
-    //   formatter: function() {
-    //     return this.x +':<b>' + this.y + '</b>';
-    //   }
-    // },
-    plotOptions: {
-      column: {
-        dataLabels: {
-          enabled: true,
-          style: {
-            fontWeight: 'normal'
-          },
-          formatter: function() {
-            // return algol.format_balance(this.y);
-            return parseInt(this.y);
-          }
-        }
-      }
-    }
-  };
-
-  /* the minimum amount of pixels that must be available for the
-     the listlikes not to be wrapped */
-  var list_offset_threshold = 120;
-  function show_list() {
-    if ($(this).parent("[disabled],:disabled,.disabled").length > 0)
-      return false;
-
-    hide_list($("a.listlike.selected"));
-    var list = $(this).next("ol");
-    $(this).next("ol").show();
-
-    if (list_offset_threshold + list.width() + list.parent().position().left + $(this).position().left >= $(window).width()) {
-      list.css({ right: 0, left: 0 });
-    } else {
-      list.css({ left: $(this).position().left, right: 0 });
-    }
-      // .css("left", $(this).position().left);
-    $(this).addClass("selected");
-    $(this).unbind('click', show_list);
-    $(this).add($(window)).bind('click', hide_list_callback);
-
-    return false;
-  }
-
-  function hide_list_callback(e) {
-    if ($(this).hasClass("listlike"))
-      e.preventDefault();
-
-    hide_list($(".listlike.selected:visible"));
-
-    return true;
-  }
-
-  function hide_list(el) {
-    $(el).removeClass("selected");
-    $(el).next("ol").hide();
-    $(el).add($(window)).unbind('click', hide_list_callback);
-    $(el).bind('click', show_list);
-
-    return true;
-  }
 
   return {
     hooks: hooks,
     theme: theme,
     action_hooks: action_hooks,
-
-    collapse: function() {
-      var source = $(this);
-      // log(!source.attr("data-collapse"))
-      if (source.attr("data-collapse") == null)
-        return source.siblings("[data-collapse]:first").click();
-
-      if (source.attr("data-collapsed")) {
-        source.siblings(":not(span.folder_title)").show();
-        source.attr("data-collapsed", null).html("&minus;");
-        source.parent().removeClass("collapsed");
-
-        pagehub.settings.runtime.cf.pop_value(parseInt(source.attr("data-folder")));
-        pagehub.settings_changed = true;
-      } else {
-        source.siblings(":not(span.folder_title)").hide();
-        source.attr("data-collapsed", true).html("&plus;");
-        source.parent().addClass("collapsed");
-
-        pagehub.settings.runtime.cf.push(parseInt(source.attr("data-folder")));
-        pagehub.settings_changed = true;
-      }
-    },
 
     modal: {
       as_alert: function(resource, callback) {
@@ -273,113 +127,15 @@ algol_ui = function() {
     dialogs: {
     },
 
-    /*
-     * Charts:
-     *
-     * A note on arguments:
-     *
-     *  All arguments to chart plotting functions that are documented
-     *  as "data series" need to be an Array of hashes containing a 'y'
-     *  key that denotes the numerical amount of the thing the chart is visualizing.
-     *
-     *  Example:
-     *
-     *    [ { y: 123 }, { y: -50.5 } ]
-     *
-     *  When rendering a yearly chart, 123 is expected to be Jan's Y, and -50.5 is Feb's
-     *
-     *  The length of the data series would be 12 in case of Yearly charts, and
-     *  27-32 in case of Monthly charts.
-     *
-     * A @container argument is the 'id' of an element in which the chart will be rendered.
-     */
-    charts: {
-      yearly: {
-
-        /**
-         * monthly_balance must be a data series denoting the balance for the given month.
-         **/
-        plot_balance: function(monthly_balance, container) {
-          new Highcharts.Chart($.extend(chart_options,
-          {
-            chart: {
-              renderTo: container,
-              type: 'spline'
-            },
-            legend: false,
-            yAxis: { title: { text: 'Balance' }
-            },
-            series: monthly_balance
-          }));
-        }, // charts.yearly_charts.plot_balance()
-
-        /**
-         * Arguments:
-         *
-         * yearly_savings: must be a data series (see above) containing
-         * the delta of deposit and withdrawal balance of each month.
-         *
-         * yearly_withdrawals: must be a data series containing the *absolute*
-         * withdrawal balance of each month.         *
-         **/
-        plot_savings: function(yearly_savings, yearly_withdrawals, container) {
-          new Highcharts.Chart({
-            chart: {
-              renderTo: container,
-              type: 'column',
-              inverted: false
-            },
-            xAxis: { categories: month_names },
-            yAxis: {
-              title: {
-                text: null
-              }
-            },
-            plotOptions: {
-              column: {
-                stacking: 'normal',
-                dataLabels: {
-                  enabled: false,
-                  color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
-                }
-              }
-            },
-            series: [
-              { name: 'Savings',    data: yearly_savings,     color: '#98bf0d' },
-              { name: 'Spendings',  data: yearly_withdrawals, color: '#D54421' }
-            ]
-          });
-        },
-
-        plot_category_spendings: function(spendings, categories, container) {
-          new Highcharts.Chart({
-            chart: {
-              renderTo: container,
-              type: 'bar',
-              inverted: true
-            },
-            plotOptions: {
-              bar: {
-                colorByPoint: true
-              }
-            },
-            legend: false,
-            xAxis: { categories: categories },
-            yAxis: {
-              title: {
-                text: 'Money spent'
-              }
-            },
-            series: spendings
-          });
-        }
-
-      } // charts.yearly_charts
-    }, // charts
-
     report_error: function(err_msg) {
       ui.status.show("A script error has occured, please try to reproduce the bug and report it.", "bad");
-      console.log("Script error:"); console.log(err_msg);
+      console.log("Script error:");
+      console.log(err_msg);
+      try {
+        throw new Error('');
+      } catch (e) {
+        console.log(e.stack);
+      }
     },
 
     process_hooks: function() {

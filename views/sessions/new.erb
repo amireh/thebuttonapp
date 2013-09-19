@@ -1,15 +1,15 @@
 <% content_for :title do %> Sign in | <%= AppName %> <% end %>
+<% content_for :subtitle do %>Sign in<% end %>
 
-<h2>Sign in</h2>
-<br />
 <form action="/sessions" method="POST">
   <input placeholder="your@email.com" type="text" name="email" />
   <input class="very_fat" type="password" name="password" placeholder="your_password" />
 
-  <!-- <br /> -->
-  <input type="submit" class="inline" value="Login" />
+  <div class="form-controls inline">
+    <input type="submit" value="Login" />
+  </div>
 </form>
 
 <h2 class="title">Or, 3rd party sign-in</h2>
-<br />
+
 <%= partial "static/oauth_signin" %>

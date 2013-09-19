@@ -39,6 +39,9 @@ class User
   def current_session
     work_sessions.first({ active: true })
   end
+
+  alias_method :current_work_session, :current_session
+
   def current_task
     current_session && current_session.task
   end

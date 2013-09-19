@@ -70,16 +70,16 @@
     <p>
       <label>
         <input type="radio" name="date[range]" value="current_month" checked="checked">Current month (<%= Time.now.strftime('%B') %>)</option>
-      </label><br />
+      </label>
       <label>
         <input type="radio" name="date[range]" value="current_year">Current year (<%= Time.now.strftime('%Y') %>)</option>
-      </label><br />
+      </label>
       <label>
         <input type="radio" name="date[range]" value="last_month">Last month (<%= 1.month.ago.strftime('%B') %>)</option>
-      </label><br />
+      </label>
       <label>
         <input type="radio" name="date[range]" value="last_year">Last year (<%= 1.year.ago.strftime('%Y') %>)</option>
-      </label><br />
+      </label>
       <label>
         <input type="radio" name="date[range]" value="custom">Custom</option>
       </label>
@@ -92,7 +92,7 @@
   <section>
     <h3>Tag filters</h3>
     <% @tags.each do |tag| %>
-      <label><input type="checkbox" value="<%= tag.id %>" name="tags[]" /><%= tagify("##{tag.name}") %></label>
+      <label class="inline"><input type="checkbox" value="<%= tag.id %>" name="tags[]" /><%= tagify("##{tag.name}") %></label>
     <% end %>
   </section>
 
@@ -105,15 +105,35 @@
   </section>
 
   <section>
+    <h3>Status filters</h3>
+    <label>
+      <input type="checkbox" name="hide_abandoned_tasks" value="yes" />
+      Don't count abandoned tasks
+    </label>
+
+    <label>
+      <input type="checkbox" name="hide_pending_tasks" value="yes" />
+      Don't count pending tasks
+    </label>
+
+    <label>
+      <input type="checkbox" name="hide_active_tasks" value="yes" />
+      Don't count active tasks
+    </label>
+
+  </section>
+
+  <section>
     <h3>Format</h3>
     <label><input type="radio" name="type" value="HTML" checked="checked" />HTML</label>
     <label><input type="radio" name="type" value="PDF" />PDF</label>
     <label><input type="radio" name="type" value="Excel" disabled="disabled" />Excel <span class="hint">(soon)</span></label>
     <p><strong>Formatting Options</strong></p>
-    <label><input type="checkbox" name="format_options[pdf][wrap]" value="yes" checked="checked" />Page-wrap overflowing tables (PDF only)</label><br />
+    <label><input type="checkbox" name="format_options[pdf][wrap]" value="yes" checked="checked" />Page-wrap overflowing tables (PDF only)</label>
     <label><input type="checkbox" name="format_options[pdf][break]" value="yes" checked="checked" />Force a page break between the two tables (PDF only)</label>
   </section>
 
-  <br />
-  <input type="submit" value="Generate" />
+  <div class="form-controls">
+    <input type="submit" value="Generate" />
+  </div>
 </form>

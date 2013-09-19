@@ -20,6 +20,9 @@ end
 get '/' do
   current_page("dashboard")
 
+  @t = @task = @user.current_task
+  @ws = @user.current_work_session
+
   erb "dashboard"
 end
 

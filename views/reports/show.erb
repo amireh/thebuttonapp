@@ -100,15 +100,6 @@
                 <p><strong>Detailed description:</strong></p>
                 <p><%= md tagify t.details %></p>
               <% end %>
-              <% if t.notes.any? %>
-                <p><strong>Notes:</strong></p>
-                <ol>
-                  <% t.notes.each do |note| %>
-                    <% next if note.content.empty? %>
-                    <li><%= md tagify note.content %></li>
-                  <% end %>
-                </ol>
-              <% end %>
             </td>
             <td><span class="task_status <%= t.status.to_s %>"><%= t.status.to_s.capitalize %></span></td>
             <td><%= t.flagged_at.strftime('%D') %></td>
@@ -130,7 +121,7 @@
 
 <section>
   <h3>Work sessions</h3>
-  <p><%= @sessions.count %> work sessions<% if tag_names.any? %> tagged with<%= tag_names.join(', ') %><% end %>:</p>
+  <p><%= @sessions.count %> work sessions<% if tag_names.any? %> tagged with <%= tag_names.join(', ') %><% end %>:</p>
   <% if @sessions.any? %>
     <table class="split-me">
       <thead>
@@ -147,9 +138,7 @@
             <td><%= pretty_time ws.duration %></td>
             <td><%= md tagify ws.task.name %></td>
             <td>
-              <% if ws.notes.any? %>
-                <%= md ws.notes.collect { |n| tagify n.content }.join("\n") %>
-              <% end %>
+              <%= partial "notes/_show", locals: { notes: ws.notes } %>
             </td>
             <td><%= ws.finished_at.strftime('%D') %></td>
           </tr>

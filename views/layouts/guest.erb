@@ -7,16 +7,19 @@
   </title>
 
   <link href="/css/common.css" rel="stylesheet" type="text/css" />
-  <link href="/css/fonts/architects-daughter/stylesheet.css" rel="stylesheet" type="text/css" />
-
   <script type="text/javascript" src="/js/jquery.1.7.1.min.js"></script>
   <script>
-    $(function() { if (navigator.platform.search(/win/i) > -1) { $("body").addClass("windows"); } });
+    $(function() {
+      if (navigator.platform.search(/win/i) > -1) {
+        $("body").addClass("windows");
+      }
+    });
   </script>
 </head>
 
 <body class="<%= @layout.to_s.split('/').last %> <%= yield_content :layout_classes %>">
 
+  <div class="header-wrap"></div>
   <header>
     <h1><a href="/">the<em>button</em>app</a></h1>
     <span class="subtitle"><%= yield_content :subtitle %></span>

@@ -1,1 +1,0 @@
-algol=function(){},algol=new algol;

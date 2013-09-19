@@ -1,12 +1,15 @@
 body {
   margin: 0;
   padding: 0;
-  font: 14px Verdana, Arial, Helvetica, sans-serif;
-  background: url(/images/bgs/subtle_grunge/subtle_grunge2.png) repeat;
+  font: 14px Helvetica, "Helvetica Neue", Verdana, Arial, sans-serif;
+  /*background: url(/images/bgs/subtle_grunge/subtle_grunge2.png) repeat;*/
+  line-height: 1.4;
 }
+
 body.windows {
   font-family: "Lucida Sans", Calibri, Arial;
 }
+
 body * {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -15,13 +18,26 @@ body * {
 
 nav {
 }
+.header-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 95px;
+  background: #f4f4f4;
+  z-index: -1;
+  border-bottom: 1px solid #ddd;
+}
+
 header {
   position: relative;
 }
 
+h1,h2,h3,h4,h5,h6 {
+  margin: 1em 0;
+}
 header h1 {
   display: inline-block;
-  padding: 10px 0;
 }
 
 .subheader {
@@ -30,7 +46,7 @@ header h1 {
   letter-spacing: 1px;
   position: absolute;
   right: 0;
-  top: 25px;
+  top: 35px;
 }
 
 @-keyframes         blinky_notifications { 50% { background: none; } }
@@ -146,6 +162,15 @@ header h1 {
     position: absolute;
     bottom: 15px;
     left: 15px;
+  }
+
+  .jqmClose {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    display: block;
+    right: 10px;
+    top: 10px;
   }
 
   .modal {
@@ -293,6 +318,7 @@ header h1 {
 
 footer {
   margin-top: 15px;
+  background: #f4f4f4;
 }
 
 textarea {
@@ -302,9 +328,6 @@ textarea {
 .dashboard form ol {
   padding: 0;
   margin: 0;
-}
-.dashboard section h3 {
-  padding: 10px 0;
 }
 section:nth-of-type(1) h3:before { content: '1. '; color: #aaa; margin-left: -21px; }
 section:nth-of-type(2) h3:before { content: '2. '; color: #aaa; margin-left: -21px; }
@@ -349,19 +372,7 @@ div.sticky {
 a:hover {
   color: red;
 }
-/*
-h1 {
-  font-family: 'ScratchmybackRegular';
-  font-weight: normal;
-}*/
 
-h1,h2,h3,h4 {
-  /*font-family: 'IdolwildRegular';*/
-  font-family: 'ArchitectsDaughterRegular';
-  /*font-weight: normal;*/
-  font-size: 2em;
-  margin: 25px 0 0 0;
-}
 .windows h1,
 .windows h2,
 .windows h3,
@@ -378,7 +389,6 @@ h4 {
 }
 
 /*header h1 {  margin-left: -10px; }*/
-header h1 {  margin-top: 5px; }
 header h1 a em { color: orange; font-style: normal;  }
 header h1 a  { text-decoration: none; }
 
@@ -411,11 +421,6 @@ hr + h4 {
   margin-top: 0;
 }
 
-#content h3:first-of-type,
-#content h2:first-of-type {
-  margin-top: 0;
-}
-
 span.bubbly {
   color: #777;
   font-size: small;
@@ -425,7 +430,13 @@ span.bubbly {
 
 }
 
-.inline { display: inline-block; }
+.inline {
+  display: inline-block;
+  vertical-align: middle;
+}
+.inline > * {
+  vertical-align: middle;
+}
 
 a.button {
   text-decoration: none;
@@ -564,7 +575,7 @@ input[type=submit].thebutton.end {
 .title:before {
   content: '>> ';
   color: #aaa;
-  margin-left: -50px;
+  margin-left: -30px;
 }
 
 .page_title:after,
@@ -591,7 +602,8 @@ footer {
   font-size: 11px;
 }
 header, nav, #content, footer .footer_content {
-  width: 720px; margin: 0 auto;
+  width: 720px;
+  margin: 0 auto;
 }
 
 ol.styleless,
@@ -624,7 +636,7 @@ img + .attached {
 #user_signup input { margin-bottom: 5px; }
 
 .flashes.error { color: red; }
-.flashes.notice { color: green; }
+.flashes.notice { color: #98BF0D; }
 .flashes.warning { color: orange; }
 
 .numbered { position: relative; }
@@ -644,9 +656,18 @@ td .task_status {
   width: 100%;
   text-align: center;
 }
-.task_status.complete   { background-color: green;  color: white; }
+.task_status.complete   { background-color: #98BF0D;  color: white; }
 .task_status.active     { background-color: black;  color: white; }
 .task_status.pending    { background-color: orange; color: white; }
 .task_status.abandoned  { background-color: red;    color: white; }
 
-.dashboard #resume_task li p { display: inline-block; margin: 0; }
+.dashboard #resume_task li p,
+.dashboard #manage_task li p { display: inline-block; margin: 0; }
+
+label {
+  display: block;
+}
+
+.form-controls {
+  margin: 1em 0;
+}

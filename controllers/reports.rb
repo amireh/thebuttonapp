@@ -48,6 +48,19 @@ def generate_report()
 
   @sessions = @user.work_sessions(q.merge({ order: [ :started_at.asc ] }))
 
+  if params[:hide_abandoned_tasks] == 'yes'
+    @sessions.reject! { |ws| ws.task.abandoned? }
+  end
+
+  if params[:hide_active_tasks] == 'yes'
+    @sessions.reject! { |ws| ws.task.status == :active }
+  end
+
+  if params[:hide_pending_tasks] == 'yes'
+    @sessions.reject! { |ws| ws.task.status == :pending }
+  end
+
+
   tag_names = tags.collect { |t| t.name }
 
   unless tag_names.empty?
@@ -65,6 +78,7 @@ def generate_report()
   end
 
   @tags = tags
+
   if @tags.empty?
     @tags = @sessions.collect { |ws| ws.task.tags }.flatten.uniq
   end

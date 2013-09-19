@@ -33,4 +33,8 @@ class WorkSession
       saved_duration
     end
   end
+
+  def url
+    "/work_sessions/#{id}"
+  end
 end

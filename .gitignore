@@ -1,6 +1,7 @@
 *.zip
 *.tar
 config/credentials.yml
+config/database.yml
 *.tmp
 *.pdf
 tmp

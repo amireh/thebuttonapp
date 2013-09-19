@@ -1,18 +1,30 @@
 <% content_for :deferred_js do %>
   <script>
+    submit_form = function() {
+      $("body").append($("#end_session").detach());
+      $("#end_session").submit();
+    };
+
     $(function() {
-      submit_form = function() {
-        $("body").append($("#end_session").detach())
-        $("#end_session").submit();
-      }
 
       $('#task_editor').jqm({
         overlay: 88,
         ajax: $("a#edit_task").attr("href"),
         trigger: 'a#edit_task',
-        onLoad: function() { $('.jqmWrap').show(); }
+        modal: false,
+        onLoad: function() {
+          $(this).parent().show();
+        }
       });
 
+      $('#ws_editor').jqm({
+        overlay: 88,
+        ajax: '@href',
+        trigger: 'a.edit-work-session',
+        onLoad: function() {
+          $(this).parent().show();
+        }
+      });
     })
   </script>
 <% end %>
@@ -65,26 +77,25 @@
 </section>
 
 
-<section id="task_notes">
+<section id="ws_notes">
   <h3>Any notes?</h3>
-  <% if t.notes.any? %>
+  <% if @ws.notes.any? %>
     <ol class="styleless">
-    <% t.notes.each do |note| %>
-      <li><span class="hint note_date"><%= note.created_at.strftime("On %D: ") %>
-            <a class="confirm delete_note" data-confirm="Are you sure you want to delete this note?" href="/tasks/<%= t.id %>/notes/<%= note.id %>/destroy">x</a>
-
-      </span>
-        <div class="indented"><%= md tagify note.content %>
-
-        </div>
-
+    <% @ws.notes.each do |note| %>
+      <li>
+        <span class="hint note_date">
+          <%= note.created_at.strftime("On %D: ") %>
+          <a class="confirm delete_note" data-confirm="Are you sure you want to delete this note?" href="<%= note.url %>/destroy">x</a>
+        </span>
+        <div class="indented"><%= md tagify note.content %></div>
       </li>
     <% end %>
     </ol>
   <% else %>
     <p>Doesn't seem like it.</p>
   <% end %>
-  <form method="POST" action="/tasks/<%= t.id %>/notes">
+
+  <form method="POST" action="<%= @ws.url %>/notes">
     <textarea name="content" rows="2" cols="45" placeholder="You can use this to attach notes to your current work session or task"></textarea>
     <input type="submit" value="Save note" />
     <p class="hint"><strong>Tip: </strong> notes can be formatted using Markdown syntax.</p>
@@ -103,10 +114,10 @@
       <p>Would you like to mark the task?</p>
       <label><input type="radio" name="task[status]" value="active" <%= 'checked="checked"' if t.status == :active %> /> Active
         <% if t.status == :active %><span class="hint">(current)</span><% end %>
-      </label><br />
-      <label><input type="radio" name="task[status]" value="pending" <%= 'checked="checked"' if t.status == :pending %> /> Pending</label><br />
-      <label><input type="radio" name="task[status]" value="complete" /> Complete</label><br />
-      <label><input type="radio" name="task[status]" value="abandoned" /> Abandoned</label><br />
+      </label>
+      <label><input type="radio" name="task[status]" value="pending" <%= 'checked="checked"' if t.status == :pending %> /> Pending</label>
+      <label><input type="radio" name="task[status]" value="complete" /> Complete</label>
+      <label><input type="radio" name="task[status]" value="abandoned" /> Abandoned</label>
 
       <p><label for="session_note">Summary</label></p>
       <textarea name="session[note]" cols="40" id="session_note" placeholder="A brief summary of what you've done during this session"></textarea>
@@ -122,8 +133,14 @@
       <% t.work_sessions.each do |ws| %>
         <% next if ws == @user.current_session %>
         <li><%= ws.started_at.strftime("On %D") %> for <em class="highlight"><%= pretty_time(ws.duration) %></em>
+          <a class="edit-work-session" href="/work_sessions/<%= ws.id %>/edit">Edit</a>
+          <a class="confirm" data-confirm="Are you sure you want to delete this work session?" href="/work_sessions/<%= ws.id %>/destroy">Delete</a>
         </li>
       <% end %>
     </ol>
-  <% end %>
-</section>
+    <div class="jqmWrap">
+      <div class="jqmWindow" id="ws_editor">
+      </div>
+    </div>
+  </section>
+<% end %>
