@@ -1,0 +1,19 @@
+<% content_for :title do %> Sign in | <%= AppName %> <% end %>
+<% content_for :subtitle do %>Sign in<% end %>
+
+<form class="form-inline" action="/sessions" method="POST">
+  <label class="form-group">
+    <span class="sr-only">Email</span>
+    <input placeholder="your@email.com" type="text" name="email" class="form-control" />
+  </label>
+  <label class="form-group">
+    <span class="sr-only">Password</span>
+    <input  class="form-control" type="password" name="password" placeholder="your_password" />
+  </label>
+
+  <input type="submit" value="Login" class="btn btn-default" />
+</form>
+
+<h2 class="title">Or, 3rd party sign-in</h2>
+
+<%= partial "static/oauth_signin" %>

@@ -5,3 +5,7 @@ config/database.yml
 *.tmp
 *.pdf
 tmp
+node_modules
+*.swp
+public/app-debug.js
+

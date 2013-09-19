@@ -1,0 +1,35 @@
+<%
+  CtxToAlertMapping = {
+    notice: 'success',
+    error: 'danger',
+    warning: 'warning'
+  }
+%>
+<% if !flash.empty? %>
+  <% content_for :deferred_js do %>
+    <script>
+      $(function() {
+        // $(".flashes button").click(function() { $(this).parent().hide(); });
+        // $(".alert").alert();
+      });
+    </script>
+  <% end %>
+
+  <% flash.each_pair do |ctx, messages| %>
+    <div class="fade in alert alert-<%= CtxToAlertMapping[ctx] %> alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+
+      <% if messages.is_a?(Array) && messages.size > 1 %>
+        <ol>
+          <% messages.each do |m| %>
+            <li class="flash <%= ctx %>"><%= m.is_a?(Array) ? m.first.to_s : m %></li>
+          <% end %>
+        </ol>
+      <% else %>
+        <% messages = messages.first if messages.is_a?(Array) %>
+        <span class="flash <%= ctx %>"><%= messages %></span>
+      <% end %>
+    </div>
+
+  <% end %>
+<% end %>

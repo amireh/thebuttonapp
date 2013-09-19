@@ -1,0 +1,36 @@
+<% with_task = true if with_task.nil? %>
+<% with_actions = false if with_actions.nil? %>
+
+<tr>
+  <td>
+    <%= pretty_time ws.duration %>
+    <% if ws.active? %>
+      <em class="highlight">(active)</em>
+    <% end %>
+  </td>
+
+  <% if with_task %>
+    <td width="30%"><%= md tagify ws.task.name %></td>
+  <% end %>
+
+
+  <td class="40%">
+    <%= md tagify (ws.summary||'').empty? ? 'N/A' : ws.summary %>
+    <%= partial "notes/_show", locals: { notes: ws.notes, with_ruler: true } %>
+  </td>
+
+  <td>
+    <% if ws.active? %>
+      -
+    <% else %>
+      <%= ws.finished_at.strftime('%D') %>
+    <% end %>
+  </td>
+
+  <% if with_actions %>
+    <td>
+      <a class="edit-work-session" href="/work_sessions/<%= ws.id %>/edit">Edit</a>
+      <a class="confirm" data-confirm="Are you sure you want to delete this work session?" href="/work_sessions/<%= ws.id %>/destroy">Delete</a>
+    </td>
+  <% end %>
+</tr>

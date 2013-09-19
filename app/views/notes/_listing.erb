@@ -1,0 +1,25 @@
+<% with_actions ||= false %>
+
+<ol class="notes styleless">
+  <% notes.each do |note| %>
+    <li>
+      <blockquote>
+        <% if with_actions %>
+          <div class="pull-right">
+            <a title="Edit this note" href="<%= note.url %>/edit" data-toggle="modal" data-target="#modal" class="glyphicon glyphicon-edit">
+              <span class="sr-only">Edit note</span>
+            </a>
+
+            <a title="Delete this note" class="confirm glyphicon glyphicon-remove-circle" data-confirm="Are you sure you want to delete this note?" href="<%= note.url %>/destroy">
+              <span class="sr-only">Delete note</span>
+            </a>
+          </div>
+        <% end %>
+        <div><%= md tagify note.content %></div>
+        <small>
+          <%= note.created_at.strftime("On %D") %>
+        </small>
+      </blockquote>
+    </li>
+  <% end %>
+</ol>

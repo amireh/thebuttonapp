@@ -1,0 +1,12 @@
+<% # requires local "notes", the collection of notes to render %>
+<% with_ruler ||= false %>
+<% if notes.any? %>
+  <% if with_ruler %> <hr /> <% end %>
+
+  <p><strong>Notes:</strong></p>
+  <ol>
+    <% notes.reject { |n| n.content.empty? }.each do |note| %>
+      <li><%= md tagify note.content %></li>
+    <% end %>
+  </ol>
+<% end %>

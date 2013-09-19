@@ -34,7 +34,7 @@ configure do
   config_file 'config/database.yml'
 
   mime_type :pdf, 'application/pdf'
-
+  set :views, File.join(settings.root, 'app', 'views')
   set :tmp_folder, File.join(settings.root, 'tmp')
   FileUtils.mkdir_p File.join(settings.tmp_folder, 'reports')
 
@@ -45,7 +45,7 @@ configure do
   DataMapper.setup(:default, "mysql://#{dbc[:un]}:#{dbc[:pw]}@#{dbc[:host]}/#{dbc[:db]}")
 
   # load everything
-  [ 'lib', 'helpers', 'models', 'controllers' ].each { |d|
+  [ 'ext', 'app/helpers', 'app/models', 'app/controllers' ].each { |d|
     Dir.glob("#{d}/**/*.rb").each { |f| require f }
   }
 

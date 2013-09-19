@@ -1,0 +1,184 @@
+<% content_for :deferred_js do %>
+  <script>
+    submit_form = function() {
+      $("body").append($("#end_session").detach());
+      $("#end_session").submit();
+    };
+
+    $(function() {
+      $('#task_editor').jqm({
+        overlay: 88,
+        ajax: $("a#edit_task").attr("href"),
+        trigger: 'a#edit_task',
+        modal: false,
+        onLoad: function() {
+          $(this).parent().show();
+        }
+      });
+
+      $('#ws_editor').jqm({
+        overlay: 88,
+        ajax: '@href',
+        trigger: 'a.edit-work-session',
+        onLoad: function() {
+          $(this).parent().show();
+        }
+      });
+    })
+  </script>
+<% end %>
+
+<div class="container">
+
+  <div class="col-md-6">
+    <% t = @user.current_task %>
+    <div class="row">
+      <h3>Working
+        <em class="highlight">for <%= pretty_time(Time.now.to_i - @user.current_session.started_at.to_time.to_i) %></em>
+        on
+      </h3>
+      <p><%= md tagify t.name %>
+      </p>
+      <% if !t.details.empty? %>
+        <p><%= md tagify t.details.gsub("\n", '<br />') %></p>
+      <% end %>
+
+      <a href="/tasks/<%= t.id %>/edit" id="edit_task">Edit</a>
+      <div class="jqmWrap">
+        <div class="jqmWindow" id="task_editor">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <h3>Got an update?</h3>
+      <div>
+        <span class="small">Mark as:
+          <a class="confirm" href="/tasks/<%= t.id %>/mark?as=complete">complete</a> |
+          <div class="hidden" data-confirm>
+            <p>Marking the task as complete will end the current session and will prevent you from resuming work on it again.
+              <br /><br />Are you sure?
+            </p>
+          </div>
+          <a class="confirm" href="/tasks/<%= t.id %>/mark?as=abandoned">abandoned</a>
+          <div class="hidden" data-confirm>
+            <p>Abandoning this task will end the current session and will prevent you from resuming work on it again.
+              <br /><br />Are you sure?
+            </p>
+          </div>
+          <% if t.status == :active %>
+            | <a class="confirm" href="/tasks/<%= t.id %>/mark?as=pending">pending</a>
+            <div class="hidden" data-confirm>
+              <p>Marking the task as pending will end the current session, but you can still work on it later if you like.
+                <br /><br />Proceed?
+              </p>
+            </div>
+          <% end %>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <h3>Done?</h3>
+      <input
+        data-confirm-cb="submit_form"
+        data-confirm-heading="End session"
+        data-confirm-accept="Ok"
+        data-confirm-target="#end_session"
+        data-linked-to="task_name" type="submit" id="thebutton" value="End session" class="btn-lg confirm btn btn-primary" />
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="col-md-6">
+    <div id="ws_notes" class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Notes</h3>
+      </div>
+      <div class="panel-body">
+
+        <% if @ws.notes.any? %>
+          <%= partial "notes/_listing", locals: {
+            notes: @ws.notes,
+            with_actions: true
+          } %>
+        <% else %>
+          <p>No notes have been entered during this work session.</p>
+        <% end %>
+      </div>
+
+      <div class="panel-footer">
+
+        <form method="POST" action="<%= @ws.url %>/notes" class="form">
+          <label>
+            <span class="sr-only">Note</span>
+
+            <textarea id="new_note_content" name="content" rows="2" cols="45" placeholder="You can use *markdown* syntax to format your notes." class="form-control" style="resize: vertical;"></textarea>
+          </label>
+
+          <input type="submit" data-linked-to="new_note_content" value="Add note" class="btn btn-default" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if t.work_sessions.count > 1 %>
+  <hr />
+  <div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">Previous sessions</h4>
+      </div>
+      <div class="panel-body">
+        <%= partial "work_sessions/_index", locals: {
+          work_sessions: t.work_sessions,
+          with_task: false,
+          with_actions: true
+        } %>
+      </div>
+    </div>
+
+    <div class="jqmWrap">
+      <div class="jqmWindow" id="ws_editor">
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div class="hidden">
+  <form method="POST" id="end_session" action="/work_sessions/<%= @user.current_session.id %>" data-confirm="move">
+    <p>Would you like to mark the task?</p>
+
+    <div class="radio">
+      <label>
+        <input type="radio" name="status" value="active" <%= 'checked="checked"' if t.status == :active %> /> Active
+        <% if t.status == :active %><span class="hint">(current)</span><% end %>
+      </label>
+    </div>
+
+    <div class="radio">
+      <label>
+        <input type="radio" name="status" value="pending" <%= 'checked="checked"' if t.status == :pending %> /> Pending
+      </label>
+    </div>
+
+    <div class="radio">
+      <label>
+        <input type="radio" name="status" value="complete" /> Complete
+      </label>
+    </div>
+
+    <div class="radio">
+      <label>
+        <input type="radio" name="status" value="abandoned" /> Abandoned
+      </label>
+    </div>
+
+    <label>
+      Summary
+      <textarea name="summary" cols="40" placeholder="A brief summary of what you've done during this session" class="form-control"></textarea>
+    </label>
+  </form>
+</div>

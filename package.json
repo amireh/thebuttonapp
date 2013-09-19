@@ -1,0 +1,38 @@
+{
+  "name": "thebuttonapp",
+  "description": "Hour and task tracking.",
+  "version": "2.0.0",
+  "homepage": "https://github.com/amireh/thebuttonapp",
+  "author": {
+    "name": "Ahmad Amireh",
+    "email": "ahmad@algollabs.com",
+    "url": "http://www.algollabs.com"
+  },
+  "licenses": [],
+  "keywords": [
+    "task management",
+    "hour tracking"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/amireh/thebuttonapp"
+  },
+  "bugs": {
+    "url": "https://github.com/amireh/thebuttonapp/issues"
+  },
+  "main": "public/app.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "private": true,
+  "devDependencies": {
+    "less": "1.4.x",
+    "grunt": "~0.4.0",
+    "grunt-contrib-watch": "0.5.x",
+    "grunt-contrib-less": "~0.6.x",
+    "grunt-contrib-uglify": "x",
+    "grunt-contrib-concat": "0.3.x",
+    "grunt-notify": "x"
+  },
+  "dependencies": {}
+}

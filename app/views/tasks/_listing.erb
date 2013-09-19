@@ -1,0 +1,41 @@
+<%
+  # accepted locals:
+  # => title: string
+  # => tasks
+  # => task_status: string (pending,active,complete,or abandoned)
+%>
+
+<section id="<%= task_status %>_task_listing">
+  <h2><%= title %></h2>
+
+  <%# tasks = @user.active_tasks.all({ :conditions => { :status => :active }, order: [ :created_at.desc]  }) %>
+  <% tags = tasks.collect { |t| t.tags }.flatten.uniq %>
+
+  <p>There are <em class="highlight"><%= "#{task_status} task".pluralize(tasks.count) %></em>
+    <% if tags.any? %>
+      that are tagged with
+      <%= tags.collect { |t| "<b>#{tagify '#'+t.name}</b>" }.join(', ') %>
+    <% end %>
+  </p>
+  <hr />
+
+  <% tasks.each_with_index do |t, i| %>
+    <article class="task">
+      <header>
+        <h4 class="numbered"><span><%= i+1 %></span><%= md tagify t.name %></h4>
+      </header>
+
+      <% if t.details.length > 0 %>
+        <p><%= md tagify t.details %></p>
+      <% end %>
+
+      <% if t.notes.any? %>
+        <%= partial "notes/_listing", locals: {
+          notes: t.notes
+        } %>
+      <% end %>
+      <p class="text-muted">This task took a total of <em class="highlight"><%= pretty_time t.time_spent %></em> across <em class="highlight"><%= t.work_sessions.count %> sessions</em>, and was marked complete on <%= t.flagged_at.strftime('%D') %></p>
+      <hr />
+    </article>
+  <% end %>
+</section>

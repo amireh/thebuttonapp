@@ -1,0 +1,63 @@
+<div class="container">
+  <section>
+    <h1 class="title">Track your work for people</h1>
+    <p>
+      <%= AppName %> helps you keep track of the time you spend
+      consulting and working on freelance projects.
+    </p>
+  </section>
+
+  <section class="jumbotron">
+    <h1>One rule: one <em class="highlight">button</em></h1>
+
+    <p>When you start working, you push a button&trade;. And when you're done, you push it again. That's it.</p>
+  </section>
+</div>
+
+<section class="col-md-5">
+  <h2>How it works</h2>
+  <p><strong>Sessions</strong></p>
+  <p>
+    You track the time you spend working on tasks across <em>sessions</em>,
+    and you get to write notes during any session. Each session must be
+    concluded with a brief summary of what you've done, and could possibly
+    mark the task as "complete".
+  </p>
+
+  <p><strong>Task status</strong></p>
+  <p>A task can be marked "complete" (no more work needs to be done),
+    "pending" if something is blocking you from further working on it,
+    "abandoned" if you won't do it, and "active" if you'll get back to it later.
+  </p>
+
+  <p><strong>Reports</strong></p>
+  <p>When you're about to bill a client, you get to generate an extremely detailed
+    report that outlines your work for them, which will back-up (or be) your invoice.
+  </p>
+</section>
+
+<div class="col-md-6 pull-right">
+  <div class="panel panel-default">
+
+  <div class="panel-heading">
+    <h2>Get started <span class="">(or <a href="/sessions/new">sign in</a>)</span></h2>
+  </div>
+  <div class="panel-body">
+    <div class="col-md-6">
+      <p>You can sign up for a free account.</p>
+      <%= partial "/users/_form" %>
+    </div>
+
+    <div class="col-md-6">
+      <p>Or use an existing account to sign in.</p>
+
+      <div class="well">
+        <%= partial "/static/oauth_signin", locals: { vertical: false } %>
+      </div>
+
+      <p class="alert alert-info"><strong>Note!</strong> thebuttonapp doesn't publish anything to your account on those apps, it only uses it to authenticate you with our servers
+      </p>
+    </div>
+  </div>
+  </div>
+</div>

@@ -1,0 +1,135 @@
+<% content_for :layout_classes do %>reports<%= ' pdf' if pdf? %><% end %>
+<% content_for :title do %>Report
+  <%= @date[:b].strftime('%D') %> -
+  <%= @date[:e].strftime('%D') %>,
+  <%= @user.name %>
+<% end %>
+
+<% params[:format_options] ||= { pdf: { :break => false, :wrap => false }} %>
+
+<% if pdf? %>
+  <style>
+    .something { position: absolute; top: 1000px;}
+    pre { position: absolute; background: white; display: none; }
+  </style>
+  <script src="<%= settings.public_folder %>/js/jquery.1.7.1.min.js" type="text/javascript"></script>
+
+  <% content_for :deferred_js do %>
+    <script>
+      $(function() {
+        var ph = 1039; // magic: this is the height in pixels of an A4 letter @ 300 DPI
+
+        <% if params[:format_options][:pdf][:break] %>
+          var t = $("table:first");
+          var h = t.height() + t.position().top;
+          var remainder = ph - h % ph;
+          $("table:first").after('<div style="height: ' + remainder + 'px;">&nbsp;</div>')
+        <% end %>
+
+        <% if params[:format_options][:pdf][:wrap] %>
+
+          $("tr").each(function() {
+            var h = $(this).height();
+            var t = $(this).position().top;
+
+            if (t % ph + h > ph) {
+              var offset = $(this).index();
+              var current_table = $(this).parents("table:first");
+
+              // we clone the table, cut out 0..self.index rows, and break page
+              var clone = current_table.clone();
+
+              var overflowing_rows = current_table.find("tbody tr").length - offset;
+              for (var i = 0; i < overflowing_rows; ++i) {
+                current_table.find("tbody tr:last").detach();
+              }
+
+              clone.css("page-break-before", "always");
+
+              for (var i = 0; i < offset; ++i) {
+                clone.find("tbody tr:first").detach();
+              }
+              clone.insertAfter(current_table);
+              current_table.after(clone);
+            }
+          });
+        <% end %>
+      });
+    </script>
+  <% end %>
+<% end %>
+
+<h2>Activity from
+  <em class="highlight"><%= @date[:b].strftime('%D') %></em>
+  to
+  <em class="highlight"><%= @date[:e].strftime('%D') %></em>
+</h2>
+
+<% if pdf? %>
+  <p><strong>Client: </strong><%= @user.name %></p>
+<% end %>
+
+<% tag_names = @tags.collect { |t| "<b>##{t.name}</b>" } %>
+
+<section>
+  <h3>Tasks </h3>
+
+  <% @tasks = @sessions.collect { |ws| ws.task }.flatten.uniq.sort { |a,b| a.flagged_at <=> b.flagged_at } %>
+  <% if @tasks.any? %>
+    <table class="split-me table table-striped">
+      <thead>
+        <tr>
+          <th width="15%">Duration</th>
+          <th width="60%">Task</th>
+          <th>Status</th>
+          <th>Marked on</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% totals = { time_spent: 0 } %>
+        <% @tasks.each do |t| %>
+          <tr>
+            <td>
+              <%= pretty_time t.time_spent %><% totals[:time_spent] += t.time_spent %>
+            </td>
+            <td><%= md tagify t.name %>
+              <% if !t.details.empty? %>
+                <!-- <p><strong>Detailed description:</strong></p> -->
+                <hr />
+                <p><%= md tagify t.details %></p>
+              <% end %>
+            </td>
+            <td><span class="task_status <%= t.status.to_s %>"><%= t.status.to_s.capitalize %></span></td>
+            <td><%= t.flagged_at.strftime('%D') %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td colspan="4"><strong>Total</strong></td>
+        </tr>
+        <tr>
+          <td><em class="highlight"><%= pretty_time totals[:time_spent] %></em></td>
+          <td colspan="3"><em class="highlight"><%= 'task'.pluralize @tasks.count %></em></td>
+        </tr>
+
+      </tbody>
+    </table>
+  <% end %>
+</section>
+
+
+<section>
+  <h3>Work sessions</h3>
+  <%= partial "work_sessions/_index", locals: {
+    work_sessions: @sessions,
+    with_task: true,
+    with_actions: false,
+    with_total: true,
+    with_count: true
+  } %>
+</section>
+
+<% unless pdf? %>
+  <p>
+    <small>This report was generated on <%= Time.now.strftime('%D') %> by <%= AppName %>. <a href="/reports/new">Generate another.</a></small>
+  </p>
+<% end %>

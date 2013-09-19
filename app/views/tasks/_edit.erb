@@ -1,0 +1,17 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4>Edit task</h4>
+  </div>
+
+  <form method="POST" action="/tasks/<%= @task.id %>" class="panel-body form">
+    <label>Name*
+      <input type="text" name="name" value="<%= @task.name %>" class="form-control" />
+    </label>
+
+    <label>Details
+      <textarea rows="8" type="text" name="details" class="form-control"><%= @task.details %></textarea>
+    </label>
+
+    <input type="submit" value="<%= @task.saved? ? 'Update' : 'Create' %> task" class="btn btn-success" />
+  </form>
+</div>

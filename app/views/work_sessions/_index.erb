@@ -1,0 +1,57 @@
+<% with_task = true if with_task.nil? %>
+<% with_actions = false if with_actions.nil? %>
+<% with_total = true if with_total.nil? %>
+<% with_count = true if with_count.nil? %>
+
+<% if work_sessions.any? %>
+  <% if with_count %>
+    <p><%= work_sessions.count %> work sessions.
+    </p>
+  <% end %>
+
+  <table class="table table-striped split-me">
+    <thead>
+      <tr>
+        <th>Duration</th>
+
+        <% if with_task %>
+          <th>Task</th>
+        <% end %>
+
+
+        <th width="40%">Summary</th>
+
+        <th>On</th>
+
+        <% if with_actions %>
+          <th>Actions</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% work_sessions.each do |ws| %>
+        <%= partial "work_sessions/_show", locals: {
+          ws: ws,
+          with_actions: with_actions,
+          with_task: with_task
+        } %>
+      <% end %>
+
+    </tbody>
+    <% if with_total %>
+      <% total = 0 %>
+      <%
+        (@tasks || work_sessions.map { |ws| ws.task }.uniq ).each { |t|
+          total += t.time_spent
+        }
+      %>
+      <tfoot>
+        <tr>
+          <td colspan="4"><strong>Total</strong>: <%= pretty_time total %></td>
+        </tr>
+      </tfoot>
+    <% end %>
+  </table>
+<% else %>
+  <p>There are no work sessions.</p>
+<% end %>

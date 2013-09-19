@@ -1,0 +1,18 @@
+<div class="modal-dialog">
+  <form class="form modal-content" method="POST" action="<%= @note.url %>">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">Edit note</h4>
+    </div>
+    <div class="modal-body">
+      <label>
+        Content:
+        <textarea rows="8" type="text" name="content" class="form-control"><%= @note.content %></textarea>
+      </label>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      <input type="submit" class="btn btn-primary" value="Update note" />
+    </div>
+  </form>
+</div>
