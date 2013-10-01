@@ -15,16 +15,38 @@
   <button class="btn btn-default" data-alt="Show task notes">Hide task notes</button>
 <% end %>
 
-<%= partial "/tasks/_listing", locals: {
-    title: "Finished work",
-    tasks: @user.inactive_tasks.all({ conditions: { status: :complete }, order: [ :created_at.desc]  }),
-    task_status: 'complete'
-  }
+<%
+  complete_tasks = @user.inactive_tasks.all({ conditions: { status: :complete }, order: [ :created_at.desc]  })
+  abandoned_tasks = @user.inactive_tasks.all({ conditions: { status: :abandoned }, order: [ :created_at.desc]  })
 %>
 
-<%= partial "/tasks/_listing", locals: {
-    title: "Abandoned work",
-    tasks: @user.inactive_tasks.all({ conditions: { status: :abandoned }, order: [ :created_at.desc]  }),
-    task_status: 'abandoned'
-  }
-%>
+<div class="row">
+
+  <div class="col-md-3">
+    <%= partial "/tasks/_navigation", locals: {
+      sections: [{
+        tasks: complete_tasks,
+        title: 'Complete tasks'
+      }, {
+        tasks: abandoned_tasks,
+        title: 'Abandoned tasks'
+      }]
+    } %>
+  </div>
+
+  <div class="col-md-9">
+    <%= partial "/tasks/_listing", locals: {
+        title: "Finished work",
+        tasks: complete_tasks,
+        task_status: 'complete'
+      }
+    %>
+
+    <%= partial "/tasks/_listing", locals: {
+        title: "Abandoned work",
+        tasks: abandoned_tasks,
+        task_status: 'abandoned'
+      }
+    %>
+  </div>
+</div>

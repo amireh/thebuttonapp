@@ -1301,7 +1301,7 @@ img+.attached{margin-left:-4px;margin-top:1px;border-top-left-radius:0;border-bo
 .flashes.notice{color:#98BF0D}
 .flashes.warning{color:orange}
 .numbered{position:relative}
-.numbered>span:first-child{position:absolute;left:-2em;opacity:0.5}
+.numbered>span:first-child{position:absolute;left:-1.5em;opacity:0.5}
 .numbered>span:first-child:before{content:'#'}
 td .task_status{padding:2px 5px;font-size:11px;display:inline-block;width:100%;text-align:center}
 .task_status.complete{background-color:#98BF0D;color:white}
@@ -1311,3 +1311,13 @@ td .task_status{padding:2px 5px;font-size:11px;display:inline-block;width:100%;t
 .dashboard #resume_task li p,.dashboard #manage_task li p{display:inline-block;margin:0}
 label{display:block}
 .form-controls{margin:1em 0}
+.notes blockquote:before{content:attr(data-index);position:absolute;margin-left:-23px;background:#eee;padding:5px;font-size:10px;line-height:100%}
+.notes .item-missing{color:#ff8080}
+.bs-sidebar.affix{position:static}
+.bs-sidenav{margin-top:20px;margin-right:20px;margin-bottom:30px;padding-top:10px;padding-bottom:10px;text-shadow:0 1px 0 #fff;background-color:#f4f4f4;border-radius:5px}
+.bs-sidebar .nav>li>a{display:block;color:#716b7a;padding:5px 20px}
+.bs-sidebar .nav>li>a:hover,.bs-sidebar .nav>li>a:focus{text-decoration:none;background-color:#e5e3e9}
+.bs-sidebar .nav>.active>a,.bs-sidebar .nav>.active:hover>a,.bs-sidebar .nav>.active:focus>a{font-weight:bold;color:#563d7c;background-color:transparent}
+.bs-sidebar .nav .nav{margin-bottom:8px}
+.bs-sidebar .nav .nav>li>a{padding-top:3px;padding-bottom:3px;padding-left:30px;font-size:90%}
+@media screen and (min-width:992px){.bs-sidebar .nav>.active>ul{display:block} .bs-sidebar.affix,.bs-sidebar.affix-bottom{width:213px} .bs-sidebar.affix{position:fixed;top:10px} .bs-sidebar.affix-bottom{position:absolute;} .bs-sidebar.affix-bottom .bs-sidenav,.bs-sidebar.affix .bs-sidenav{margin-top:0;margin-bottom:0}}@media screen and (min-width:1200px){.bs-sidebar.affix-bottom,.bs-sidebar.affix{width:263px}}

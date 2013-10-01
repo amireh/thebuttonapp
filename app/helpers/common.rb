@@ -166,8 +166,26 @@ helpers do
     }
   end
 
+  def unlink(str)
+    str.gsub(/<a.*>.*<\/a>/, '')
+  end
+
+  def ws_summary(ws)
+    value = ws.summary
+
+    if !value || value.empty?
+      value = '<em class="item-missing">Summary not available.</em>'
+    end
+
+    value
+  end
+
   def pretty_time(a)
     (a/60).to_i.to_s+' minutes'
+  end
+
+  def time_in_hours(a)
+    ((a+99)/3600).to_i.to_s+ ' hours'
   end
 
   def really_pretty_time(a)

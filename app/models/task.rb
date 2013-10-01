@@ -13,7 +13,8 @@ class Task
   belongs_to  :user,     required: true
 
   has n, :work_sessions,  :constraint => :destroy
-  has n, :notes, :through => :work_sessions, :constraint => :destroy
+  # has n, :notes, :through => :work_sessions, :constraint => :destroy
+  # has n, :notes, :through => :work_sessions, :constraint => :destroy
   has n, :tags, :through => Resource, :constraint => :skip
 
   before :destroy do

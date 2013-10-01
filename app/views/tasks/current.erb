@@ -1,3 +1,8 @@
+<%
+  active_tasks = @user.tasks.all({ :conditions => { :status => :active }, order: [ :created_at.desc]  })
+  pending_tasks = @user.tasks.all({ :conditions => { :status => :pending }, order: [ :created_at.desc]  })
+%>
+
 <% content_for :deferred_js do %>
   <script>
     $(function() {
@@ -6,23 +11,40 @@
         var alt = $(this).attr("data-alt");
         $(this).attr("data-alt", $(this).html());
         $(this).html(alt);
-      })
+
+      });
     })
   </script>
 <% end %>
 
+<div class="row">
 
-<%= partial "/tasks/_listing", locals: {
-    title: "Work put on hold (pending)",
-    tasks: @user.active_tasks.all({ :conditions => { :status => :pending }, order: [ :created_at.desc]  }),
-    task_status: 'active'
-  }
-%>
+  <div class="col-md-3">
+    <%= partial "/tasks/_navigation", locals: {
+      sections: [{
+        tasks: active_tasks,
+        title: 'Active tasks'
+      }, {
+        tasks: pending_tasks,
+        title: 'Pending tasks'
+      }]
+    } %>
+  </div>
 
+  <div class="col-md-9">
+    <%= partial "/tasks/_listing", locals: {
+        title: 'Work you\'re busy with (`active`)',
+        tasks: active_tasks,
+        task_status: 'active'
+      }
+    %>
 
-<%= partial "/tasks/_listing", locals: {
-    title: "Work you're busy with (active)",
-    tasks: @user.active_tasks.all({ :conditions => { :status => :active }, order: [ :created_at.desc]  }),
-    task_status: 'active'
-  }
-%>
+    <%= partial "/tasks/_listing", locals: {
+        title: 'Work put on hold (`pending`)',
+        tasks: pending_tasks,
+        task_status: 'pending'
+      }
+    %>
+  </div>
+
+</div>

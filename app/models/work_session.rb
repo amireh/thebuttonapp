@@ -1,6 +1,8 @@
 class WorkSession
   include DataMapper::Resource
 
+  default_scope(:default).update(:order => [ :started_at.asc ])
+
   property    :id,          Serial
   property    :started_at,  DateTime, default: lambda { |*_| DateTime.now }
   property    :finished_at, DateTime, default: lambda { |*_| DateTime.now }
@@ -11,6 +13,7 @@ class WorkSession
   belongs_to  :user,     required: true
   belongs_to  :task, required: true
   has n, :notes, :constraint => :destroy
+  has n, :tags, :through => :task, :constraint => :skip
 
   def finish
     self.update({

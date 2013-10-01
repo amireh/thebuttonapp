@@ -1,0 +1,44 @@
+<% content_for :deferred_js do %>
+  <script>
+    $(function() {
+      var $window = $(window)
+      var $body   = $(document.body)
+
+      var navHeight = $('.navbar').outerHeight(true) + 10
+
+      $body.scrollspy({
+        target: '.bs-sidebar',
+        offset: navHeight
+      });
+
+      $window.on('load', function () {
+        $body.scrollspy('refresh')
+      });
+
+      var $sideBar = $('.bs-sidebar')
+
+      $sideBar.affix({
+        offset: {
+          top: 60
+        , bottom: function () {
+            return (this.bottom = $('.bs-footer').outerHeight(true))
+          }
+        }
+      })
+
+    })
+  </script>
+<% end %>
+
+<div class="bs-sidebar hidden-print">
+  <ul class="nav bs-sidenav">
+    <% sections.each do |section| %>
+      <li><a href="#<%= section[:title].sanitize %>"><strong><%= section[:title] %></strong></a></li>
+      <ul class="nav">
+        <% section[:tasks].each do |task| %>
+          <li><a href="#<%= task.name.sanitize %>"><%= unlink md(task.name) %></a></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </ul>
+</div>

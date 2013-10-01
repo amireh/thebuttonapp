@@ -68,16 +68,17 @@ route_namespace '/work_sessions' do
   end
 
   post '/:work_session_id/update', requires: [ :work_session ] do
-    if params[:summary]
-      @ws.notes.destroy
-      if !params[:summary].empty?
-        @ws.notes.create({ content: params[:summary] })
-      end
-    end
-
     api_required!({
       duration: nil
     })
+
+    api_optional!({
+      summary: nil
+    })
+
+    if summary = api_param(:summary)
+      @ws.update({ summary: summary })
+    end
 
     unless @ws.update(api_params)
       halt 400, @ws.all_errors

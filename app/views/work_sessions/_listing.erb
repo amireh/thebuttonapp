@@ -1,0 +1,22 @@
+<ol class="notes styleless">
+  <% work_sessions.each_with_index do |ws, i| %>
+    <li>
+      <blockquote data-index="<%= i+1 %>">
+        <div><%= md ws_summary ws %></div>
+
+        <% if ws.notes.any? %>
+          <hr />
+          <p><strong>Notes:</strong></p>
+
+          <%= partial "notes/_listing", locals: {
+            notes: ws.notes
+          } %>
+        <% end %>
+
+        <small>
+          For <%= pretty_time ws.duration %> on <%= ws.started_at.strftime('%D %H:%M') %>
+        </small>
+      </blockquote>
+    </li>
+  <% end %>
+</ol>

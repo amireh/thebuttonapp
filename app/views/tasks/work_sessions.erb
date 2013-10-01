@@ -14,13 +14,12 @@
 <% end %>
 
 <% @sessions = @task.work_sessions %>
-<% tag_names = @user.tags.collect { |t| "<b>##{t.name}</b>" } %>
+<% tag_names = @sessions.map { |s| s.tags }.flatten.uniq.collect { |t| "<b>#{tagify "##{t.name}"}</b>" } %>
 
 <section class="reports">
-  <h3>Work sessions</h3>
+  <h3>Work sessions for <%= tagify @task.name %></h3>
   <p><%= @sessions.count %> work session(s)
-    <% if tag_names.any? %> tagged with <%= tag_names.join(', ') %><% end %>
-    for the task <%= @task.name %>:
+    <% if tag_names.any? %> tagged with <%= tag_names.join(', ') %><% end %>:
   </p>
   <%= partial "work_sessions/_index", locals: {
     work_sessions: @sessions,
@@ -28,37 +27,6 @@
     with_task: false,
     with_count: false
   } %>
-  <% if false && @sessions.any? %>
-    <table class="table table-striped split-me">
-      <thead>
-        <tr>
-          <th width="20%">Duration</th>
-          <th width="20%">On</th>
-          <th>Summary</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @sessions.each do |ws| %>
-          <tr>
-            <td><%= pretty_time ws.duration %></td>
-            <td><%= ws.finished_at.strftime('%D') %></td>
-            <td>
-              <% if ws.notes.any? %>
-                <%= md ws.notes.collect { |n| tagify n.content }.join("\n") %>
-              <% else %>
-                <span>N/A</span>
-              <% end %>
-            </td>
-            <td>
-              <a class="edit-work-session" href="/work_sessions/<%= ws.id %>/edit">Edit</a>
-              <a class="confirm" data-confirm="Are you sure you want to delete this work session?" href="/work_sessions/<%= ws.id %>/destroy">Delete</a>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% end %>
 </section>
 
 <div class="jqmWrap">

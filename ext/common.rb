@@ -34,7 +34,7 @@ end
 
 class String
   def sanitize
-    Addressable::URI.parse(self.downcase.gsub(/[[:^word:]]/u,'-').squeeze('-').chomp('-')).normalized_path
+    Addressable::URI.parse(self.downcase.gsub(/[[:^word:]]/u,'-').squeeze('-').chomp('-').gsub(/^\-/, '').gsub(/\-$/, '')).normalized_path
   end
 
   def is_email?
