@@ -107,10 +107,9 @@
           <td colspan="4"><strong>Total</strong></td>
         </tr>
         <tr>
-          <td><em class="highlight"><%= pretty_time totals[:time_spent] %></em></td>
+          <td><em class="highlight"><%= pretty_time totals[:time_spent] %> (<%= time_in_hours totals[:time_spent] %>)</em></td>
           <td colspan="3"><em class="highlight"><%= 'task'.pluralize @tasks.count %></em></td>
         </tr>
-
       </tbody>
     </table>
   <% end %>

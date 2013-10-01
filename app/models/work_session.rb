@@ -33,17 +33,14 @@ class WorkSession
 
   def duration
     saved_duration = attribute_get(:duration)
+
     if saved_duration == 0 # this is an active session
-      offset = nil
-      if active?
-        offset = DateTime.now.to_time.to_i
-      else
-        offset = finished_at.to_time.to_i
-      end
-      offset - started_at.to_time.to_i
+      offset = active? ? DateTime.now : finished_at
+      offset.to_time.to_i - started_at.to_time.to_i
     else
       saved_duration
     end
+
   end
 
   def url

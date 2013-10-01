@@ -4,11 +4,26 @@
 <% else %>
   <%= partial "dashboard/idle" %>
 <% end %>
-<hr />
-<p>Alternatively, you can also browse
-  the work you're <a href="/tasks/current">currently busy with</a>,
-  work you <a href="/tasks/history">finished earlier</a>,
-  or you can <a href="/reports/new">generate a report</a>.
-</p>
 
-<%# partial "dashboard/tags" %>
+<hr />
+
+<div class="container">
+  <div class="row">
+
+    <h4>Alternative actions</h4>
+
+    <div class="btn-group">
+      <a class="btn btn-default" href="/tasks/current">
+        <i class="glyphicon glyphicon-play"></i> Review active work
+      </a>
+      <a class="btn btn-default" href="/tasks/history">
+        <i class="glyphicon glyphicon-ok"></i> Review finished work
+      </a>
+      <a class="btn btn-default" href="/reports/new">
+        <i class="glyphicon glyphicon-book"></i> Generate a report
+      </a>
+    </div>
+
+  </div>
+</div>
+

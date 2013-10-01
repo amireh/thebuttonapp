@@ -4,11 +4,21 @@
 # => @date: { b: DateTime, e: DateTime }
 def generate_report()
   tags = []
+
+  api_optional!({
+    exclude: nil
+  })
+
   if params[:tags] && params[:tags].is_a?(Array)
     params[:tags].each do |tag_id|
       tags << @user.tags.get(tag_id)
     end
   end # tag filters
+
+  if api_param(:exclude) then
+    tags = @user.tags - tags
+  end
+
 
   date = { b: Time.now, e: Time.now }
 
@@ -21,7 +31,7 @@ def generate_report()
     date[:e] = Timetastic.next.year
   when 'last_month'
     date[:b] = Timetastic.last.month
-    date[:e] = Timetastic.last.month
+    date[:e] = Timetastic.this.month
   when 'last_year'
     date[:b] = Timetastic.last.year
     date[:e] = Timetastic.last.year

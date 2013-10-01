@@ -110,9 +110,14 @@
   </section>
   <section id="tag_filters">
     <h3>Tag filters</h3>
+    <label>
+      <input type="checkbox" name="exclude" value="true" /> Exclude tasks with the selected tags
+    </label>
+    <hr />
     <% @tags.each do |tag| %>
       <label class="inline"><input type="checkbox" value="<%= tag.id %>" name="tags[]" /><%= tagify("##{tag.name}") %></label>
     <% end %>
+
   </section>
 
   <section>

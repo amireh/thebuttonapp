@@ -26,8 +26,10 @@
     <%= partial :"layouts/header" %>
 
     <div id="content" class="container">
-      <%= partial "layouts/_flashes" %>
-      <%= yield %>
+      <div class="row">
+        <%= partial "layouts/_flashes" %>
+        <%= yield %>
+      </div>
     </div>
 
     <%= partial :"layouts/footer" %>

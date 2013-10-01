@@ -18,22 +18,8 @@ namespace :tba do
     puts "\t#{tasks_with_notes.length} tasks with a note"
   end
 
-  desc 'moves work session notes to summary'
-  task :ws_summaries => :environment do
-    work_sessions = WorkSession.all.select { |ws|
-      (!ws.summary || ws.summary.empty?) && !ws.notes.empty?
-    }
-
-    work_sessions.each do |ws|
-      ws.update({ summary: ws.notes.first.content })
-      ws.notes.first.destroy
-    end
-
-    puts "#{work_sessions.length} work sessions fixed."
-  end
-
   desc 'moves task notes to work sessions'
-  task :move_task_notes_to_work_sessions => :environment do
+  task :move_task_notes_to_work_sessions => :ws_without_summary do
     class Task
       has n, :notes, :constraint => :destroy
     end
@@ -73,6 +59,20 @@ namespace :tba do
     end
 
     puts "#{fixmap.length} notes have been moved."
+  end
+
+  desc 'moves work session notes to summary'
+  task :ws_summaries => :move_task_notes_to_work_sessions do
+    work_sessions = WorkSession.all.select { |ws|
+      (!ws.summary || ws.summary.empty?) && !ws.notes.empty?
+    }
+
+    work_sessions.each do |ws|
+      ws.update({ summary: ws.notes.first.content })
+      ws.notes.first.destroy
+    end
+
+    puts "#{work_sessions.length} work sessions fixed."
   end
 
 end
