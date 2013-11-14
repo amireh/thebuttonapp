@@ -12,8 +12,6 @@ def js_env(opts = {})
     env[k.upcase] = JSON.parse v
   end
 
-  puts "Injected env: #{env.to_json}"
-
   content_for :js_injections do
     """
     <script id=\"#{script_id}\">

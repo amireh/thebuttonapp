@@ -1,4 +1,4 @@
-module ApplicationHelper
+module ApplicationHelpers
   def js_bundle(id)
     "<script src=\"/js/bundles/#{id}.js\"></script>"
   end
@@ -209,4 +209,4 @@ module ApplicationHelper
   end
 end
 
-helpers ApplicationHelper
+helpers ApplicationHelpers

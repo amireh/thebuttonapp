@@ -31,12 +31,18 @@ def generate_report()
   date = { b: Time.now, e: Time.now }
 
   case params[:date][:range]
+  when 'current_week'
+    date[:b] = Time.now.beginning_of_week
+    date[:e] = Time.now.end_of_week
   when 'current_month'
     date[:b] = Time.now.beginning_of_month
     date[:e] = Time.now.end_of_month
   when 'current_year'
     date[:b] = Time.now.beginning_of_year
     date[:e] = Time.now.end_of_year
+  when 'last_week'
+    date[:b] = 1.week.ago.beginning_of_week
+    date[:e] = 1.week.ago.end_of_week
   when 'last_month'
     date[:b] = 1.month.ago.beginning_of_month
     date[:e] = 1.month.ago.end_of_month
@@ -115,19 +121,19 @@ post '/reports.pdf' do
   generate_report
 
   footer_html = erb :'/reports/_pdf_footer', layout: false
-  footer_path = File.join settings.tmp_folder, 'reports', "#{Time.now.to_i.to_s}_footer_#{Algol.tiny_salt}.html"
+  footer_path = File.join settings.tmp_folder, 'reports', "#{Time.now.to_i.to_s}_footer_#{ApplicationHelpers::Algol.tiny_salt}.html"
   footer_file = File.open(footer_path, 'w')
   footer_file.write(footer_html)
   footer_file.close
 
   # cover_html = erb :'/reports/_pdf_cover', layout: false
-  # cover_path = File.join settings.tmp_folder, 'reports', "#{Time.now.to_i.to_s}_cover_#{Algol.tiny_salt}.html"
+  # cover_path = File.join settings.tmp_folder, 'reports', "#{Time.now.to_i.to_s}_cover_#{ApplicationHelpers::Algol.tiny_salt}.html"
   # cover_file = File.open(cover_path, 'w')
   # cover_file.write(cover_html)
   # cover_file.close
 
   report_title = "Report #{@date[:b].strftime('%m-%d-%y')} - #{@date[:e].strftime('%m-%d-%y')}, #{@user.name}"
-  report_path = File.join settings.tmp_folder, 'reports', "report_#{Algol.tiny_salt}.pdf"
+  report_path = File.join settings.tmp_folder, 'reports', "report_#{ApplicationHelpers::Algol.tiny_salt}.pdf"
 
   html = erb :"/reports/show"
   kit = PDFKit.new(html, {

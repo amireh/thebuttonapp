@@ -1,90 +1,11 @@
-<%
-  # params[:date] ||= {
-  #   b: to_jQueryUI_date(Time.now),
-  #   e: to_jQueryUI_date(Time.now),
-  #   range: 'current_month'
-  # }
-  # params[:hide_short_sessions] ||= false
-%>
-<% content_for :deferred_js do %>
-  <script>
-    $(function() {
-
-      $('label input[type="radio"]').each(function() {
-        var $radio = $(this);
-        var $bootstrap_container = $('<div class="radio" />')
-        var $label = $radio.parents('label:first');
-        $label.after($bootstrap_container);
-        $label.appendTo($bootstrap_container);
-      });
-
-      $('label input[type="checkbox"]').each(function() {
-        var $radio = $(this);
-        var $label = $radio.parents('label:first');
-        // Tag filter checkboxes should be inlined
-        var klass = $label.parents('#tag_filters').length ? 'checkbox-inline' : 'checkbox';
-        var $bootstrap_container = $('<div class="' + klass + '" />')
-
-        $label.after($bootstrap_container);
-        $label.appendTo($bootstrap_container);
-      });
-
-      $( "#from" ).datepicker({
-        defaultDate: "+1w",
-        inline: false,
-        changeMonth: true,
-        numberOfMonths: 1,
-        onClose: function( selectedDate ) {
-          $( "#to" ).datepicker( "option", "minDate", selectedDate );
-        }
-      });
-      $( "#to" ).datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        numberOfMonths: 1,
-        onClose: function( selectedDate ) {
-          $( "#from" ).datepicker( "option", "maxDate", selectedDate );
-        }
-      });
-
-      $('#date_filters input[name*="range"]').on('change', function() {
-        $('#report_date_selector').toggle($('#date_filters :checked').val() === 'custom');
-      });
-
-      var form_url = $("form").attr("action");
-
-      $('input[name="type"]').on('change', function() {
-        var form = $(this).parents("form:first")
-        if ($(this).attr("value") == 'PDF') {
-          form.attr("action", form_url + '.pdf')
-        } else {
-          form.attr("action", form_url)
-        }
-      });
-
-      <% if false %>
-        $("input[type=radio][value=<%= params[:date][:range] %>]").attr("checked", "checked").change();
-        <% @tags && @tags.each do |t| %>
-          $("input[type=checkbox][name^=tags][value=<%=t.id%>]").attr("checked", "checked");
-        <% end %>
-        <% if params[:hide_short_sessions] %>
-          $("input[type=checkbox][name=hide_short_sessions]").attr("checked", "checked");
-        <% end %>
-      <% end %>
-
-      $('input[type="radio"]:checked, input[type="checkbox"]:checked').change();
-    });
-
-  </script>
-<% end %>
-
+<%= js_bundle 'reports' %>
 <% content_for :title do %>Generate a report<% end %>
 
 <header class="page-header">
   <h1>Generate a report</h1>
 </header>
 
-<form method="POST" id="generate_report" action="/reports">
+<form method="POST" id="generate_report" action="/reports" class="container-fluid">
   <fieldset>
     <legend>Project</legend>
     <select name="project_id">
@@ -100,10 +21,16 @@
     <fieldset>
       <legend>Period</legend>
       <label>
-        <input type="radio" name="date[range]" value="current_month" checked="checked">Current month (<%= Time.now.strftime('%B') %>)</option>
+        <input type="radio" name="date[range]" value="current_week" checked="checked">Current week (<%= Time.now.strftime('%W') %>)</option>
+      </label>
+      <label>
+        <input type="radio" name="date[range]" value="current_month">Current month (<%= Time.now.strftime('%B') %>)</option>
       </label>
       <label>
         <input type="radio" name="date[range]" value="current_year">Current year (<%= Time.now.strftime('%Y') %>)</option>
+      </label>
+      <label>
+        <input type="radio" name="date[range]" value="last_week">Last week (<%= 1.week.ago.strftime('%W') %>)</option>
       </label>
       <label>
         <input type="radio" name="date[range]" value="last_month">Last month (<%= 1.month.ago.strftime('%B') %>)</option>
@@ -130,10 +57,11 @@
       <input type="checkbox" name="exclude" value="true" /> Exclude tasks with the selected tags
     </label>
     <hr />
-    <% @tags.each do |tag| %>
-      <label class="inline"><input type="checkbox" value="<%= tag.id %>" name="tags[]" /><%= tagify("##{tag.name}") %></label>
-    <% end %>
-
+    <div class="tag-box">
+      <% @tags.each do |tag| %>
+        <label class="inline"><input type="checkbox" value="<%= tag.id %>" name="tags[]" /><%= "##{tag.name}" %></label>
+      <% end %>
+    </div>
   </section>
 
   <section>

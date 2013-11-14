@@ -1,91 +1,20 @@
 @charset "UTF-8";
 
+@import "../../vendor/css/bootstrap-3.0.0";
+@import "../../vendor/css/variables";
+@import "../../vendor/css/bootswatch";
+@import "reports";
+
+body.pdf {
+  font-size: 12px;
+
+  > .navbar {
+    display: none;
+  }
+}
+
 .hidden {
   display: none;
-}
-
-.hint {
-  color: #555;
-  font-style: italic;
-  font-size: small;
-  margin: 5px 0;
-}
-
-footer {
-  margin-top: 15px;
-  background: #f4f4f4;
-}
-
-textarea {
-  max-width: 720px;
-}
-
-.small {
-  font-size: small;
-  font-weight: normal;
-}
-.smaller {
-  font-size: smaller;
-  font-weight: normal;
-}
-
-/*body.sticky {
-  padding-bottom: 80px;
-}
-*//*
-div.sticky {
-  width: 720px;
-  padding: 10px 0;
-  position: fixed;
-  bottom: 0;
-  border-top: 1px solid #ddd;
-  background: white;
-}*/
-
-.highlight {
-  background: yellow;
-}
-
-.windows h1,
-.windows h2,
-.windows h3,
-.windows h4 {
-  font-family: "Segoe Print";
-}
-
-h3 {
-  font-size: 1.75em;
-}
-h4 {
-  color: #777;
-  font-size: 1.5em;
-}
-
-/*header h1 {  margin-left: -10px; }*/
-header h1 a em { color: orange; font-style: normal;  }
-header h1 a  { text-decoration: none; }
-
-.snowman {
-  display: block;
-  font-size: 0;
-  margin-top: 40px;
-  margin-bottom: -30px;
-}
-.snowman:after { content: '\2603'; font-size: 256px; }
-
-hr + h2,
-hr + h3,
-hr + h4 {
-  margin-top: 0;
-}
-
-span.bubbly {
-  color: #777;
-  font-size: small;
-}
-
-.thebutton.end {
-
 }
 
 .inline {
@@ -96,56 +25,10 @@ span.bubbly {
   vertical-align: middle;
 }
 
-a.button {
-  text-decoration: none;
-  color: inherit;
-}
-
-.bad {
-  color: red;
-}
-
 em.highlight {
   font-style: normal;
 }
 
-h2.status em {
-  font-size: smaller;
-  font-weight: normal;
-}
-
-section h3 + p {
-  margin-top: 0;
-}
-
-.ui-datepicker {
-  background: white;
-  border: 1px solid #DDD;
-}
-
-.reports table {
-  width: 100%;
-}
-.reports table th {
-  text-align: left;
-}
-
-.reports th,
-.reports td {
-  padding: 5px 5px 5px 0;
-  vertical-align: top;
-}
-.reports td > p:first-child {
-  margin-top: 0;
-}
-.reports tr:nth-of-type(even) {
-  background: rgba(0, 0, 0, 0.025);
-}
-
-.jqmConfirm textarea {
-  width:      390px;
-  max-width:  390px;
-}
 
 // .page_title:before,
 // .title:before {
@@ -168,52 +51,17 @@ body {
   margin-bottom: 50px; /* bottom = footer height */
 }
 footer {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 40px;
-  width: 100%;
-  padding: 10px 0;
-  border-top: 1px solid #ddd;
-  font-size: 11px;
-}
-// header, nav, #content, footer .footer_content {
-//   width: 720px;
-//   margin: 0 auto;
-// }
+  // position: absolute;
+  // left: 0;
+  // bottom: 0;
+  // height: 40px;
+  // width: 100%;
+  // padding: 10px 0;
+  // border-top: 1px solid #ddd;
+  // font-size: 11px;
+  // margin-top: 15px;
+  display: none;
 
-ol.styleless,
-ul.styleless {
-  list-style-type: none;
-  padding: 0;
-}
-
-div.indented {
-  margin-left: 20px;
-}
-
-ul.hint li { margin: 10px 0; }
-
-
-img + .attached {
-  margin-left: -4px;
-  margin-top: 1px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.flashes.error { color: red; }
-.flashes.notice { color: #98BF0D; }
-.flashes.warning { color: orange; }
-
-.numbered { position: relative; }
-.numbered > span:first-child {
-  position: absolute;
-  left: -2em;
-  opacity: 0.5;
-}
-.numbered > span:first-child:before {
-  content: '#';
 }
 
 td .task_status {
@@ -238,36 +86,32 @@ label {
 .form-controls {
   margin: 1em 0;
 }
-header { display: none; }
-.page_title:before,
-.title:before {
-
-}
+// header { display: none; }
 
 body {
   margin: 0 !important;
 }
 
-footer {
-  display: none;
-}
 .pdf table {
-  /*page-break-after: always;*/
+  // page-break-after: always;
 }
 
-/*.pdf section:nth-of-type(2) h3 {
-  page-break-before: always;
-}*/
+// .pdf section:nth-of-type(2) h3 {
+//   page-break-before: always;
+// }
+
 .pdf td,
 .pdf th {
   padding: 5px;
 }
+body.pdf.reports table {
+  tr:nth-of-type(even) {
+    background: rgba(0, 0, 0, 0.075);
+  }
+}
+
 .pdf section h3:before { content: ''; margin: 0; }
 
-.pdf.reports tr:nth-of-type(even) {
-  /*background: rgba(150, 180, 130, 0.25);*/
-  background: rgba(0, 0, 0, 0.075);
-}
 
 .pdf h2:first-of-type {
   border-bottom: 1px solid #ccc;
@@ -275,3 +119,4 @@ footer {
 }
 
 .pdf .jqmConfirm { display: none; }
+

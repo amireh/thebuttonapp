@@ -1418,6 +1418,9 @@ div.jqmConfirm input#confirm_rejected{position:absolute;bottom:15px;left:15px}
 .modal{display:none}
 .modal.alert{background:white;position:fixed;top:45%;left:45%}
 @keyframes blinky_notifications{50%{background:none}}@-webkit-keyframes blinky_notifications{50%{background:none}}@-moz-keyframes blinky_notifications{50%{background:none}}@-o-keyframes blinky_notifications{50%{background:none}}.blinky.notifications{animation:blinky_notifications infinite linear 1s alternate;-webkit-animation:blinky_notifications infinite linear 1s alternate;-moz-animation:blinky_notifications infinite linear 1s alternate;-o-animation:blinky_notifications infinite linear 1s alternate}
+.reports table{table-layout:fixed}.reports table td,.reports table th{word-wrap:break-word}.reports table td:nth-of-type(1),.reports table th:nth-of-type(1){width:120px}
+.reports table td:nth-of-type(2),.reports table th:nth-of-type(2){width:120px}
+.reports table td:nth-of-type(3),.reports table th:nth-of-type(3){width:240px}
 html{position:relative;min-height:100%}
 body{margin-bottom:50px;}
 #appFooter{margin-top:15px;background:#f4f4f4;position:absolute;left:0;bottom:0;height:40px;width:100%;padding:10px 0;border-top:1px solid #ddd;font-size:11px}
@@ -1485,3 +1488,4 @@ label{display:block}
 .dashboard #content .panel{position:relative}
 .dashboard .work-session-count{position:absolute;right:10px;top:8px}
 #wsTimer{font-weight:normal;color:inherit}
+.tag-box{margin-left:-10px}.tag-box .checkbox-inline{margin-left:10px}

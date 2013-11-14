@@ -18,11 +18,11 @@
   </td>
 
   <% if with_task %>
-    <td width="30%"><%= work_session.task.name %></td>
+    <td><%= work_session.task.name %></td>
   <% end %>
 
 
-  <td class="40%">
+  <td>
     <%= md tagify (work_session.summary||'').empty? ? 'N/A' : work_session.summary %>
     <%= partial "notes/_show", locals: {
         notes: work_session.notes,
