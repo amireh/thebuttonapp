@@ -16,9 +16,7 @@ def js_env(opts = {})
     """
     <script id=\"#{script_id}\">
       window.ENV = window.ENV || {};
-
-      _.extend(window.ENV, #{env.to_json});
-
+      window.ENV = #{env.to_json};
       document.getElementById('#{script_id}').remove();
     </script>
     """
@@ -28,6 +26,12 @@ end
 # anonymous vs authenticated view layouts
 before do
   set_layout
+
+  if logged_in?
+    js_env({
+      :user => rabl(:"users/show", object: @user)
+    })
+  end
 end
 
 # anonymous landing page
@@ -50,10 +54,6 @@ end
 get '/' do
   respond_to do |f|
     f.html do
-      js_env({
-        :user => rabl(:"users/show", object: @user)
-      })
-
       erb :"dashboard/idle"
     end
   end

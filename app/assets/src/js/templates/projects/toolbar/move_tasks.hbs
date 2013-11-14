@@ -1,0 +1,20 @@
+<div data-modal="moveTasks">
+  <div class="modal-title">
+    Move Tasks
+  </div>
+
+  <form class="form">
+    <label class="control-label">
+      Destination Project
+      <select name="project_id" class="form-control">
+        {{#each projects}}
+          <option value="{{id}}">{{name}}</option>
+        {{/each}}
+      </select>
+    </label>
+  </form>
+
+  <div class="modal-actions">
+    <button class="btn btn-success">Apply</button>
+  </div>
+</div>

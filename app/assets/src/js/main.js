@@ -1,33 +1,65 @@
 requirejs.config({
-  baseUrl: 'app/assets/src/js',
+  baseUrl: '/app/assets/src/js',
   paths: {
-    'text':       '../../vendor/js/require/text',
-    'jquery':     '../../vendor/js/jquery-2.0.3',
-    'jquery-ui':     '../../vendor/js/jquery-ui-1.10.3.custom',
+    /**
+     * require.js
+     */
     'requireLib': '../../vendor/js/require',
+    'text':       '../../vendor/js/require/text',
+
+    /**
+     * jQuery and friends
+     */
+    'jquery': '../../vendor/js/jquery-2.0.3',
+    'jquery-ui': '../../vendor/js/jquery-ui-1.10.3.custom',
+    'jqModal': '../../vendor/js/jqModal',
+    'bootstrap': '../../vendor/js/bootstrap-3.0.0',
+
+    /**
+     * Backbone and friends
+     */
     'backbone':   '../../vendor/js/backbone',
     'lodash':     '../../vendor/js/lodash.custom',
-    'Handlebars':             '../../vendor/js/handlebars-1.0.0',
-    'hbs':                    '../../vendor/js/hbs/hbs',
-    'hbs/i18nprecompile':     '../../vendor/js/hbs/i18nprecompile',
-    'jqModal':     '../../vendor/js/jqModal',
-    'inflection':     '../../vendor/js/inflection',
-    'moment':     '../../vendor/js/moment-2.4.0',
-    'bootstrap':     '../../vendor/js/bootstrap-3.0.0'
+
+    /**
+     * Handlebars
+     */
+    'Handlebars': '../../vendor/js/handlebars-1.0.0',
+    'hbs': '../../vendor/js/hbs/hbs',
+    'hbs/i18nprecompile': '../../vendor/js/hbs/i18nprecompile',
+
+    /**
+     * Utility
+     */
+    'inflection': '../../vendor/js/inflection',
+    'moment': '../../vendor/js/moment-2.4.0'
   },
 
   shim: {
+    /**
+     * jQuery and friends
+     */
     'jquery': { exports: '$' },
-    'jquery-ui': { deps: [ 'jquery' ] },
+    'jquery-ui': [ 'jquery' ],
+    'bootstrap': [ 'jquery' ],
+    'jqModal': [ 'jquery' ],
+
+    /**
+     * Backbone and friends
+     */
+    'lodash': { exports: '_' },
     'backbone': {
       deps: [ 'lodash' ],
       exports: 'Backbone'
     },
-    'lodash': { exports: '_' },
+
+    'Handlebars': { exports: 'Handlebars' },
+
+    /**
+     * Utility
+     */
     'inflection': {},
-    'bootstrap': [ 'jquery' ],
     'moment': { exports: 'moment' },
-    'jqModal': [ 'jquery' ]
   },
 
   hbs: {
@@ -41,11 +73,16 @@ require([
   'text',
   'jquery',
   'jquery-ui',
-  'bootstrap',
   'jqModal',
+  'bootstrap',
   'algol',
   'algol_ui',
   'ext/jquery',
   'lodash',
-  'backbone'
-], function() {});
+  'backbone',
+  'Handlebars',
+  'inflection',
+  'bundles/navigation'
+], function() {
+  console.debug('thebuttonapp dependencies loaded.')
+});

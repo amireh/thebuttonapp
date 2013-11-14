@@ -1,26 +1,28 @@
-algol = function() {
+define([], function() {
+  var algol = function() {
 
-  return {
-    natural_join: function(ary, delim, last_delim, affixes) {
-      var c = ''
-      for (var i = 0; i < ary.length; ++i) {
-        var s = ary[i];
-        var affixed_s = affixes.length == 0 ? s : affixes[0] + s + affixes[1];
-        var d = '';
+    return {
+      natural_join: function(ary, delim, last_delim, affixes) {
+        var c = ''
+        for (var i = 0; i < ary.length; ++i) {
+          var s = ary[i];
+          var affixed_s = affixes.length == 0 ? s : affixes[0] + s + affixes[1];
+          var d = '';
 
-        if (i == 0)
-          d = '';
-        else if (i == ary.length - 1)
-          d = last_delim;
-        else
-          d = delim;
+          if (i == 0)
+            d = '';
+          else if (i == ary.length - 1)
+            d = last_delim;
+          else
+            d = delim;
 
-        c += d + affixed_s
+          c += d + affixed_s
+        }
+        return c;
       }
-      return c;
     }
   }
-}
 
-// globally accessible instance
-algol = new algol();
+  // globally accessible instance
+  window.algol = new algol();
+});

@@ -1,6 +1,25 @@
 module ApplicationHelpers
   def js_bundle(id)
-    "<script src=\"/js/bundles/#{id}.js\"></script>"
+    """
+      <script>
+        require([ 'bundles/#{id}' ], function() {});
+      </script>
+    """
+  end
+
+  def js_view(id)
+    @js_views ||= []
+    @js_views << """
+      <script>
+        var root = this;
+        root.App = root.App || {};
+
+        require([ 'views/#{id}' ], function(View) {
+          root.View = new View();
+          root.View.render();
+        });
+      </script>
+    """
   end
 
   def tag_collection(*taggables)

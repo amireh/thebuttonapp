@@ -1,17 +1,22 @@
+<% js_view 'projects/show' %>
+
 <% content_for :page_title do %>
   <%= @project.name %>
 
   <div class="pull-right">
     <a class="btn btn-primary" href="<%= @project.url %>/edit"><i class="glyphicon glyphicon-edit"></i></a>
     <a class="btn btn-danger" href="<%= @project.url %>/edit"><i class="glyphicon glyphicon-trash"></i></a>
-
   </div>
 <% end %>
 
+<div class="col-md-12 toolbar">
+  <button data-action="moveTasks" class="btn btn-default">Move</button>
+</div>
 
 <table class="table">
   <thead>
     <tr>
+      <th><input type="checkbox" id="checkAll" /></th>
       <th>Task</th>
       <th>Sessions</th>
       <th>Time Spent</th>
@@ -22,6 +27,7 @@
   <tbody>
     <% @project.tasks.each do |task| %>
       <tr>
+        <td><input type="checkbox" name="tasks[]" value="<%= task.id %>" /></td>
         <td><a href="<%= task.url %>"><%= md task.name %></a></td>
         <td><%= task.work_sessions.length %></td>
         <td><%= pretty_time task.time_spent %></td>

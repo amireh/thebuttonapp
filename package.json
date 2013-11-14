@@ -34,6 +34,7 @@
     "grunt-contrib-less": "~0.6.x",
     "grunt-contrib-uglify": "x",
     "grunt-contrib-concat": "x",
+    "grunt-contrib-requirejs": "x",
     "grunt-notify": "x"
   },
   "dependencies": {}

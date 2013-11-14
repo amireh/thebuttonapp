@@ -10,7 +10,8 @@
 
   <%= yield_content :css %>
 
-  <script src="/app<%= '-debug' if settings.development? %>.js"></script>
+  <script src="/js/highcharts-all.js"></script>
+  <script src="/js/chartkick.js"></script>
 
   <%= yield_content :js %>
   <%= yield_content :scripts %>
@@ -99,15 +100,20 @@
     <%= partial "layouts/footer" %>
   <% end %>
 
-  <%= partial "/shared/_confirmation_dlg" %>
-
   <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 
-  <%= js_bundle 'navigation' %>
+  <% if settings.development? %>
+    <script data-main="/app/assets/src/js/main" src="/app/assets/vendor/js/require.js"></script>
+  <% else %>
+    <script src="/app.js"></script>
+  <% end %>
 
   <%= yield_content :js_injections %>
-  <%= yield_content :deferred_js %>
   <%= yield_content :js_bundles %>
+  <%= yield_content :deferred_js %>
+  <% (@js_views || []).each do |view| %>
+    <%= view %>
+  <% end %>
 </body>
 
 </html>

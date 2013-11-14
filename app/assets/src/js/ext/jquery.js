@@ -1,4 +1,8 @@
-(function($) {
+define([
+  'jquery',
+  'bootstrap',
+  'util/confirmation_dialog'
+], function($) {
   $.consume = function(e) {
     e.preventDefault();
 
@@ -242,4 +246,5 @@
     }
   });
 
-})(this.$);
+  return $;
+});

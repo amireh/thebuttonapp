@@ -8,5 +8,6 @@ tmp
 node_modules
 *.swp
 public/app-debug.js
-
+public/app
+app/assets/vendor/js/highcharts-3.0.7/
 *.mysql

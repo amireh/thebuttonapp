@@ -1,4 +1,4 @@
-(function($, _) {
+define([ 'ext/jquery' ], function($) {
   var $nav = $('.nav ');
   var url = location.pathname;
 
@@ -18,4 +18,4 @@
     $nav.find('#navbar_dashboard').parent().addClass('active');
   }
 
-})(this.$, _);
+});

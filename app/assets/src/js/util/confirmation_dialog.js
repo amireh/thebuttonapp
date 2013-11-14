@@ -1,6 +1,6 @@
-<% content_for :deferred_js do %>
+define([ 'jquery', 'hbs!templates/confirmation_dialog' ], function($, Template) {
+  var $dialog = $(Template({})).appendTo($('body'));
 
-<script>
   /**
    * Attempts to locate a method by its fully-qualified name, ie
    * `dynamism.foo.bar`.
@@ -29,7 +29,7 @@
     algol.confirm = function(msg, heading, callback) {
       var accept_dialogue = function() {
         if (will_be_moving) {
-          old_root.append( $("#confirm p.jqmConfirmMsg").children().detach() );
+          old_root.append( $dialog.find('p.jqmConfirmMsg').children().detach() );
           // $("#confirm p.jqmConfirmMsg").html('');
           if (was_hidden) {
             old_root.children(":last").hide();
@@ -52,38 +52,35 @@
         old_root        = null;
         was_hidden      = false;
 
-        $('#confirm').jqmHide();
+        $dialog.jqmHide();
 
         return false;
       }
 
-      $('#confirm')
+      $dialog
         .jqmShow()
         .find('h4')
-        .html(heading || "Confirmation")
+          .html(heading || "Confirmation")
         .end()
         .find('p.jqmConfirmMsg')
-        .html(msg)
+          .html(msg)
         .end()
-        .find('#confirm_accepted,#confirm_rejected')
-        .unbind('click')
-        .click(accept_dialogue);
+        .find('#confirm_accepted, #confirm_rejected')
+          .off('click')
+          .click(accept_dialogue);
 
-      // $("#confirm form").submit(function(e) {
-      //   e.preventDefault();
-      //   $("#confirm_accepted").click();
-      //   return false;
-      // });
-
-      // $("#confirm").find(':submit#confirm_accepted').focus();
-      $("#confirm").find('input[type=text]:first').focus();
+      $dialog.find('input[type=text]:first').focus();
     }
 
-    $('#confirm').jqm({overlay: 88, modal: true, trigger: false});
+    $dialog.jqm({
+      overlay: 88,
+      modal: true,
+      trigger: false
+    });
 
-    $('.confirm, a.bad, a[data-confirm]').click(function(e) {
+    $(document.body).on('click', '.confirm, a.bad, a[data-confirm]', function(e) {
       var a = $(e.currentTarget);
-      console.log(a)
+
       try {
         var msg = a.attr("data-confirm");
 
@@ -112,50 +109,51 @@
           }
         }
 
-        var heading = a.attr("data-confirm-heading") || "Confirmation";
-        var accept_label = a.attr("data-confirm-accept") || "Yes";
+        var heading = a.attr('data-confirm-heading') || 'Confirmation';
+        var accept_label = a.attr('data-confirm-accept') || 'Yes';
 
         if (!msg || msg.length == "") {
-          var confirmable_parent = a.parents("[data-confirmable]:first");
+          var confirmable_parent = a.parents('[data-confirmable]:first');
           obj = confirmable_parent;
+
           if (confirmable_parent.length > 0) {
-            var id = confirmable_parent.attr("data-confirmable");
-            var infix =
-              confirmable_parent.attr("data-confirmable-infix") ||
+            var id = confirmable_parent.attr('data-confirmable');
+            var infix = confirmable_parent.attr('data-confirmable-infix') ||
               a.html().toLowerCase();
+
             id += '_' + infix + '_';
             id += 'confirmation';
 
             confirmable = $('#' + id);
 
-            heading = confirmable.find("> h1:first").html();
-            msg     = confirmable.find("> p:first").html();
-            if (confirmable.find("span[data-label]").length > 0) {
-              accept_label = confirmable.find("span[data-label]:first").html()
+            heading = confirmable.find('> h1:first').html();
+            msg = confirmable.find('> p:first').html();
+
+            if (confirmable.find('span[data-label]').length > 0) {
+              accept_label = confirmable.find('span[data-label]:first').html()
             }
           }
         }
 
-        $("div#confirm #confirm_accepted").attr("value", accept_label);
+        $dialog.find('#confirm_accepted').attr('value', accept_label);
 
-        if (!a.attr("data-confirm-cb")) {
-          algol.confirm(msg, heading, a.attr("href"));
+        if (!a.attr('data-confirm-cb')) {
+          algol.confirm(msg, heading, a.attr('href'));
         } else {
-
           algol.confirm(msg, heading, function() {
-            var method = method_from_fqn(a.attr("data-confirm-cb"));
+            var method = method_from_fqn(a.attr('data-confirm-cb'));
             if (method) {
               return method(a);
             } else {
-              console.log("ERROR: invalid confirmation callback: " + a.attr("data-confirm-cb"));
+              console.log('ERROR: invalid confirmation callback: ' + a.attr('data-confirm-cb'));
             }
           });
         }
       } catch (e) {
-        console.log("ERROR: something bad happened while showing the cnfm dialog: ")
+        console.log('ERROR: something bad happened while showing the cnfm dialog: ')
         console.log(e);
 
-        $("#confirm").jqmHide();
+        $dialog.jqmHide();
         ui.report_error(e)
       }
 
@@ -163,24 +161,4 @@
     });
 
   });
-</script>
-<% end %>
-
-<!-- Confirm Dialog -->
-<div class="jqmConfirm" id="confirm">
-  <div id="ex3b" class="jqmConfirmWindow panel panel-default">
-    <div class="panel-heading">
-      <h4>Confirm your action</h4>
-    </div>
-
-    <div class="jqmConfirmContent panel-body">
-      <p class="jqmConfirmMsg"></p>
-    </div>
-
-    <div class="panel">
-      <input type="submit" id="confirm_rejected" class="btn btn-default" value="Cancel" />
-      <input type="submit" id="confirm_accepted" class="btn btn-primary" value="Yes" />
-    </div>
-
-  </div>
-</div>
+});
