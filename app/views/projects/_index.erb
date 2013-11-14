@@ -1,0 +1,21 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <% unless @client %>
+      <th>Client</th>
+      <% end %>
+      <th>Tasks</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% projects.each do |project| %>
+      <%= partial "projects/_show", locals: {
+          project: project,
+          with_client: @client.nil?
+        }
+      %>
+    <% end %>
+  </tbody>
+</table>

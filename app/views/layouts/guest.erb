@@ -1,33 +1,33 @@
-<% content_for :nav do %>
-  <a href="/sessions/new" class="btn btn-default">Login</a>
-<% end %>
-
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>
       <%= yield_with_default(:title) { "#{AppName} - #{AppSlogan}" } %>
     </title>
 
-    <link href="/app.css" rel="stylesheet" type="text/css" />
+    <link href="/app.css" rel="stylesheet" />
     <script type="text/javascript" src="/app.js"></script>
-
-    <script>
-      $(function() {
-        if (navigator.platform.search(/win/i) > -1) {
-          $("body").addClass("windows");
-        }
-      });
-    </script>
   </head>
 
   <body class="<%= @layout.to_s.split('/').last %> <%= yield_content :layout_classes %>">
+    <% content_for :nav do %>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="/sessions/new"><span class="btn btn-default btn-sm">Login</span></a></li>
+    </ul>
+    <% end %>
     <%= partial :"layouts/header" %>
 
     <div id="content" class="container">
       <div class="row">
         <%= partial "layouts/_flashes" %>
+
+        <% if content_for?(:page_title) %>
+          <header class="page-header">
+            <h2><%= yield_content :page_title %></h2>
+          </header>
+        <% end %>
+
         <%= yield %>
       </div>
     </div>

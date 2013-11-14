@@ -1,0 +1,5 @@
+<% content_for :page_title do %><%= @client.name %> - Client Settings<% end %>
+
+<%= partial "clients/_form", locals: {
+  endpoint: "/clients/#{@client.id}"
+} %>

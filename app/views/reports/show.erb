@@ -59,71 +59,81 @@
   <% end %>
 <% end %>
 
-<h2>Activity from
-  <em class="highlight"><%= @date[:b].strftime('%D') %></em>
-  to
-  <em class="highlight"><%= @date[:e].strftime('%D') %></em>
-</h2>
+<header class="page-header">
+  <h2>Work logged from
+    <em class="highlight"><%= @date[:b].strftime('%D') %></em>
+    to
+    <em class="highlight"><%= @date[:e].strftime('%D') %></em>
+  </h2>
+</header>
 
-<% if pdf? %>
-  <p><strong>Client: </strong><%= @user.name %></p>
-<% end %>
+<section>
+  <p><strong>Project: </strong><%= @project.name %></p>
+  <p><strong>Client: </strong><%= @project.client.name %></p>
+  <p><strong>Contractor: </strong><%= @user.name %></p>
+
+  <hr />
+</section>
 
 <% tag_names = @tags.collect { |t| "<b>##{t.name}</b>" } %>
 
-<section>
-  <h3>Tasks </h3>
+<% if params[:with_tasks] %>
+  <section>
+    <h3>Tasks </h3>
 
-  <% @tasks = @sessions.collect { |ws| ws.task }.flatten.uniq.sort { |a,b| a.flagged_at <=> b.flagged_at } %>
-  <% if @tasks.any? %>
-    <table class="split-me table table-striped">
-      <thead>
-        <tr>
-          <th width="15%">Duration</th>
-          <th width="60%">Task</th>
-          <th>Status</th>
-          <th>Marked on</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% totals = { time_spent: 0 } %>
-        <% @tasks.each do |t| %>
+    <% @tasks = @sessions.collect { |ws| ws.task }.flatten.uniq.sort { |a,b| a.flagged_at <=> b.flagged_at } %>
+    <% if @tasks.any? %>
+      <table class="split-me table table-striped">
+        <thead>
           <tr>
-            <td>
-              <%= pretty_time t.time_spent %><% totals[:time_spent] += t.time_spent %>
-            </td>
-            <td><%= md tagify t.name %>
-              <% if !t.details.empty? %>
-                <!-- <p><strong>Detailed description:</strong></p> -->
-                <hr />
-                <p><%= md tagify t.details %></p>
-              <% end %>
-            </td>
-            <td><span class="task_status <%= t.status.to_s %>"><%= t.status.to_s.capitalize %></span></td>
-            <td><%= t.flagged_at.strftime('%D') %></td>
+            <th width="15%">Duration</th>
+            <th width="60%">Task</th>
+            <th>Status</th>
+            <th>Marked on</th>
           </tr>
-        <% end %>
-        <tr>
-          <td colspan="4"><strong>Total</strong></td>
-        </tr>
-        <tr>
-          <td><em class="highlight"><%= pretty_time totals[:time_spent] %> (<%= time_in_hours totals[:time_spent] %>)</em></td>
-          <td colspan="3"><em class="highlight"><%= 'task'.pluralize @tasks.count %></em></td>
-        </tr>
-      </tbody>
-    </table>
-  <% end %>
-</section>
-
+        </thead>
+        <tbody>
+          <% totals = { time_spent: 0 } %>
+          <% @tasks.each do |t| %>
+            <tr>
+              <td>
+                <%= pretty_time t.time_spent %><% totals[:time_spent] += t.time_spent %>
+              </td>
+              <td><%= md tagify t.name %>
+                <% if !t.details.empty? %>
+                  <!-- <p><strong>Detailed description:</strong></p> -->
+                  <hr />
+                  <p><%= md tagify t.details %></p>
+                <% end %>
+              </td>
+              <td><span class="task_status <%= t.status.to_s %>"><%= t.status.to_s.capitalize %></span></td>
+              <td><%= t.flagged_at.strftime('%D') %></td>
+            </tr>
+          <% end %>
+          <tr>
+            <td colspan="4"><strong>Total</strong></td>
+          </tr>
+          <tr>
+            <td><em class="highlight"><%= pretty_time totals[:time_spent] %> (<%= time_in_hours totals[:time_spent] %>)</em></td>
+            <td colspan="3"><em class="highlight"><%= 'task'.pluralize @tasks.count %></em></td>
+          </tr>
+        </tbody>
+      </table>
+    <% end %>
+  </section>
+<% end %>
 
 <section>
-  <h3>Work sessions</h3>
+  <% if params[:with_tasks] %>
+    <h3>Work sessions</h3>
+  <% end %>
+
   <%= partial "work_sessions/_index", locals: {
     work_sessions: @sessions,
     with_task: true,
     with_actions: false,
     with_total: true,
-    with_count: true
+    with_count: false
   } %>
 </section>
 

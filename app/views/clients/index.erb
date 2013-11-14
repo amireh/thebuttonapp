@@ -1,0 +1,35 @@
+<% content_for :page_title do %>
+  Clients
+  <div class="pull-right">
+    <a class="btn btn-success" href="/clients/new"><i class="glyphicon glyphicon-plus"></i> New Client</a>
+  </div>
+
+<% end %>
+
+<% content_for :breadcrumbs do %>
+ <% [ 'Clients', '/clients' ] %>
+<% end %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Client</th>
+      <th>Projects</th>
+      <th>Time Logged</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @user.clients.each do |client| %>
+      <% time_logged = client.projects.tasks.map(&:time_spent).reduce(&:+) || 0 %>
+      <tr>
+        <td><a href="/clients/<%= client.id %>"><%= client.name %></a></td>
+        <td><%= client.projects.length %></td>
+        <td>
+          <%= really_pretty_time time_logged %>
+          <em class="text-muted">(<%= pretty_time time_logged %>)</em>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

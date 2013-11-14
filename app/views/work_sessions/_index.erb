@@ -5,7 +5,7 @@
 
 <% if work_sessions.any? %>
   <% if with_count %>
-    <p><%= work_sessions.count %> work sessions.
+    <p class="work-session-count"><%= work_sessions.count %> work sessions.
     </p>
   <% end %>
 
@@ -13,25 +13,23 @@
     <thead>
       <tr>
         <th>Duration</th>
+        <th>On</th>
 
         <% if with_task %>
           <th>Task</th>
         <% end %>
 
-
         <th width="40%">Summary</th>
 
-        <th>On</th>
-
         <% if with_actions %>
-          <th>Actions</th>
+          <th class="text-right">Actions</th>
         <% end %>
       </tr>
     </thead>
     <tbody>
-      <% work_sessions.each do |ws| %>
+      <% work_sessions.each do |work_session| %>
         <%= partial "work_sessions/_show", locals: {
-          ws: ws,
+          work_session: work_session,
           with_actions: with_actions,
           with_task: with_task
         } %>
@@ -41,8 +39,8 @@
     <% if with_total %>
       <% total = 0 %>
       <%
-        (@tasks || work_sessions.map { |ws| ws.task }.uniq ).each { |t|
-          total += t.time_spent
+        work_sessions.each { |work_session|
+          total += work_session.duration
         }
       %>
       <tfoot>

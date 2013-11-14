@@ -1,0 +1,30 @@
+<form action="<%= endpoint rescue "#{@client.url}/projects" %>" method="POST" class="form">
+  <label class="control-label">
+    Name
+    <input type="text" name="name" class="form-control" placeholder="Banana Shaker X-42" value="<%= @project.name %>" />
+  </label>
+
+  <label class="control-label">
+    Billing rate
+    <input type="number" name="billing_rate" class="form-control" value="<%= @project.billing_rate %>" placeholder="1" />
+  </label>
+
+  <label class="control-label">
+    Billing currency
+
+    <input type="text" name="billing_currency" class="form-control" value="<%= @project.billing_currency %>" placeholder="USD" />
+  </label>
+
+  <label class="control-label">
+    Billing basis
+
+    <select class="form-control">
+      <option value="per_hour">Per Hour</option>
+      <option value="per_task">Per Task</option>
+    </select>
+  </label>
+
+  <div class="form-actions actions">
+    <input type="submit" value="Submit" class="btn btn-primary" />
+  </div>
+</form>

@@ -1,99 +1,41 @@
 module.exports = function(grunt) {
   'use strict';
 
-  var src  = 'www/src';
-  var dist = 'www/dist';
-  var assets = 'www/assets';
+  var config;
+  var shell = require('shelljs');
 
-  var jsSources = [
-    'app/assets/js/**/*.js'
-  ];
-
-  var readPkg = function() {
+  function readPkg() {
     return grunt.file.readJSON('package.json');
   };
 
-  grunt.initConfig({
+  function loadFrom(path, config) {
+    var glob = require('glob'),
+    object = {};
+
+    glob.sync('*', {cwd: path}).forEach(function(option) {
+      var key = option.replace(/\.js$/,'').replace(/^grunt\-/, '');
+      config[key] = require(path + option);
+    });
+  };
+
+  config = {
     pkg: readPkg(),
+    env: process.env
+  };
 
-    concat: {
-      options: {
-        separator: ';',
-      },
-      dist: {
-        // src: jsSources,
-        src: [
-          // 'app/assets/vendor/js/jquery-2.0.3.js',
-          'app/assets/vendor/js/jquery-1.9.1.js',
-          'app/assets/vendor/js/jquery-ui-1.10.3.custom.js',
-          'app/assets/vendor/js/bootstrap-3.0.0.js',
-          'app/assets/vendor/js/jqModal.js',
-          'app/assets/src/js/algol.js',
-          'app/assets/src/js/algol_ui.js'
-        ],
-        dest: 'public/app-debug.js',
-      },
-    },
+  loadFrom('./lib/tasks/grunt/', config);
 
-
-    /**
-     * CSS compilation.
-     */
-    less: {
-      options: {
-        strictImports: true
-      },
-      production: {
-        options: {
-          paths: [ 'app/assets/src/css' ],
-          compress: true
-        },
-        files: {
-          'public/app.css': 'app/assets/src/css/app.less',
-          'public/app-pdf.css': 'app/assets/src/css/pdf.less'
-        }
-      }
-    },
-
-    /**
-     * Watchers.
-     */
-    watch: {
-      options: {
-        nospawn: true
-      },
-      css: {
-        files: 'app/assets/{src,vendor}/css/**/*.{less,css}',
-        tasks: [ 'less', 'notify:less', 'notify' ]
-      },
-      js: {
-        files: 'app/assets/{src,vendor}/js/**/*.js',
-        tasks: [ 'concat' ]
-      }
-    },
-
-    uglify: {
-      options: {
-        mangle: true
-      },
-      compile: {
-        files: {
-          'public/app.js': [ 'public/app-debug.js' ]
-        }
-      }
-    }
-  });
+  grunt.initConfig(config);
 
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-notify');
 
   // grunt.registerTask('test', [ 'jsvalidate', /* 'jshint', */ ]);
   grunt.registerTask('build', [
-    'concat',
-    'uglify',
+    'requirejs',
     'less'
   ]);
   grunt.registerTask('default', [ 'build' ]);

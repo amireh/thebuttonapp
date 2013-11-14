@@ -1,114 +1,62 @@
-<% content_for :deferred_js do %>
-  <script>
-    $(function() {
-      $('#task_selection input[name="whatimgoingtodo"]').on('change', function() {
-        var checked = $(this);
-
-        $("fieldset").hide();
-        $("#thebutton").prop("disabled", true);
-
-        var $fieldset = $("fieldset#" + checked.val() + "_task");
-        if ($fieldset.length > 0) {
-          console.log($fieldset)
-          $fieldset.show();
-        }
-      });
-
-      $('#task_selection :checked').change();
-
-      $("input[type=radio][name=task\\\[id\\\]]").change(function() {
-        $("#thebutton").attr("disabled", null);
-      });
-
-    });
-  </script>
+<% content_for :layout_classes do %>dashboard<% end %>
+<% content_for :js_bundles do %>
+  <%= js_bundle 'dashboard' %>
 <% end %>
 
-<form id="task_selection" method="POST" action="/work_sessions">
-  <section>
-    <h3>I'm going to...</h3>
-    <div class="radio">
-      <label>
-        <input name="whatimgoingtodo" value="nothing"  type="radio" checked="checked"> Do nothing
-      </label>
-    </div>
-
-    <div class="radio">
-      <label>
-        <input name="whatimgoingtodo" value="new" type="radio">Work on something new
-      </label>
-    </div>
-
-    <% unless @user.active_tasks.empty? %>
-      <div class="radio">
-        <label>
-          <input name="whatimgoingtodo" value="resume" type="radio">
-          Pick up a job I've started earlier
-        </label>
-      </div>
-
-      <div class="radio">
-        <label>
-          <input name="whatimgoingtodo" value="manage" type="radio">
-          Manage a job
-        </label>
-      </div>
-    <% end %>
-  </section>
-
-  <section>
-    <fieldset id="new_task">
-      <h3>What is it?</h3>
-
-      <div class="col-md-6">
-        <textarea name="task[name]" id="task_name" class="form-control" placeholder="Writing test specs for thebuttonapp by #algol-labs" style="resize: none;" rows="9"></textarea>
-      </div>
-
-      <div class="col-md-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">How to properly write up a task:</h4>
-          </div>
-          <div class="panel-body">
-            <ul>
-              <li>Write a brief "name" or <u>title</u> for the task on the <u>first line</u></li>
-
-              <li>Attach a <u>detailed description</u> by leaving 2 new lines after the task name</li>
-
-              <li>Use #tags to <u>classify</u> the task by the person or company you're working for, or the project name.
-              <br />Tags can contain letters, numbers, -dashes- and _underscores_.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-
-    </fieldset>
-
-    <fieldset id="resume_task">
-      <h3>Which job?</h3>
-      <ol>
-        <% current_user.active_tasks.each do |t| %>
-          <li class="radio">
-            <label><input type="radio" name="task[id]" value="<%= t.id %>" /><%= md tagify t.name %></label>
-          </li>
+<form id="resumeTaskForm" method="POST" class="col-lg-6 form form-horizontal">
+  <div class="form-group">
+    <label class="control-label">Project</label>
+    <select class="form-control" name="project_id">
+      <% @user.projects.each do |project| %>
+        <option value="<%= project.id %>"><%= project.name %></option>
+      <% end %>
+    </select>
+  </div>
+  <% @user.projects.each do |project| %>
+    <div class="form-group project-tasks" id="project_<%= project.id %>_tasks" style="display: none;">
+      <label class="control-label">Task</label>
+      <select class="form-control" name="task_id" <%= "disabled" if project.tasks.empty? %>>
+        <% project.active_tasks.each do |task| %>
+          <option value="<%= task.id %>"><%= task.name %></option>
         <% end %>
-      </ol>
-    </fieldset>
+      </select>
+    </div>
+  <% end %>
 
-    <fieldset id="manage_task">
-      <h3>Which job?</h3>
-      <ol>
-        <% current_user.active_tasks.each do |t| %>
-          <li class="radio">
-            <label><input type="radio" name="task[id]" value="<%= t.id %>" /><%= md tagify t.name %></label>
-          </li>
-        <% end %>
-      </ol>
-    </fieldset>
-
-  </section>
-
-  <input data-linked-to="task_name" type="submit" id="thebutton" value="Start session" class="btn btn-primary" />
+  <div class="form-group">
+    <div class="col-sm-offset-2">
+      <button class="btn btn-primary" id="resumeTask" disabled>
+        <i class="glyphicon glyphicon-play"></i>
+        Resume Task
+      </button>
+      <button data-action="newTask" class="btn btn-success">
+        <i class="glyphicon glyphicon-plus"></i>
+        New Task
+      </button>
+    </div>
+  </div>
 </form>
+
+<form action="/projects/:project_id/tasks" method="POST" id="newTaskForm" hidden>
+  <h4 class="modal-title">New Task</h4>
+
+  <div class="modal-content">
+    <div class="row">
+      <div class="col-md-12">
+        <label class="control-label">
+          Summary
+          <input type="text" name="name" class="form-control" />
+        </label>
+
+        <label class="control-label">
+          Details <small class="text-muted">(Optional)</small>
+          <textarea name="details" class="form-control" placeholder="Writing test specs for thebuttonapp by #algol-labs" style="resize: none;" rows="9"></textarea>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-actions">
+    <input type="submit" class="btn btn-primary" value="Start" />
+  </div>
+</div>

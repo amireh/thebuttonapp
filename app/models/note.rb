@@ -15,6 +15,6 @@ class Note
     #     task.url :
     #     ''
 
-    "#{work_session.url}/notes/#{id}"
+    "#{work_session.url(true)}/notes/#{id}"
   end
 end

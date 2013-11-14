@@ -26,12 +26,14 @@
   },
   "private": true,
   "devDependencies": {
+    "glob": "~3.2.6",
     "less": "1.4.x",
+    "shelljs": "x",
     "grunt": "~0.4.0",
     "grunt-contrib-watch": "0.5.x",
     "grunt-contrib-less": "~0.6.x",
     "grunt-contrib-uglify": "x",
-    "grunt-contrib-concat": "0.3.x",
+    "grunt-contrib-concat": "x",
     "grunt-notify": "x"
   },
   "dependencies": {}

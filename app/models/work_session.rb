@@ -10,10 +10,22 @@ class WorkSession
   property    :active,      Boolean,  default: false
   property    :summary,     Text, default: ''
 
-  belongs_to  :user,     required: true
-  belongs_to  :task, required: true
+  belongs_to :task, required: true
   has n, :notes, :constraint => :destroy
   has n, :tags, :through => :task, :constraint => :skip
+
+  after :save do
+    if active?
+      active_sessions = self.task.project.work_sessions.all({ active: true })
+      active_sessions -= self
+
+      active_sessions.each do |work_session|
+        work_session.finish
+      end
+
+      self.task.update!({ status: :active })
+    end
+  end
 
   def finish
     self.update({
@@ -28,7 +40,7 @@ class WorkSession
   end
 
   def active?
-    !finished?
+    !finished? || self.active
   end
 
   def duration
@@ -40,10 +52,10 @@ class WorkSession
     else
       saved_duration
     end
-
   end
 
-  def url
-    "/work_sessions/#{id}"
+  def url(root = false)
+    prefix = root ? "" : task.url(true)
+    "#{prefix}/work_sessions/#{id}"
   end
 end

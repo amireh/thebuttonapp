@@ -1,0 +1,15 @@
+<%
+  with_client ||= false
+%>
+
+<tr>
+  <td><a href="/clients/<%= project.client.id %>/projects/<%= project.id %>"><%= project.name %></a>
+  </td>
+
+  <% if with_client %>
+    <td><%= project.client.name %></td>
+  <% end %>
+
+  <td><%= project.tasks.length %></td>
+
+</tr>

@@ -2,67 +2,72 @@
 
 <%= partial "/users/settings/_nav" %>
 
-<!-- <h1>Account</h1> -->
 <form action="/settings/account" method="POST" class="form col-md-10">
   <fieldset>
-    <legend>Account</legend>
-      <label>
-        Name
-        <input class="form-control" type="text" name="name" class="fat" value="<%= current_user.name %>" />
-      </label>
+    <legend>Account Settings</legend>
+    <label>
+      Name
+      <input class="form-control" type="text" name="name" class="fat" value="<%= current_user.name %>" />
+    </label>
 
-      <label>
-        Email address
-        <input class="form-control" type="text" name="email" class="very_fat" value="<%= current_user.email %>" />
-      </label>
+    <label>
+      Email address
+      <input class="form-control" type="text" name="email" class="very_fat" value="<%= current_user.email %>" />
+    </label>
 
-      <% if current_user.email_verified? %>
-        <p class="alert alert-succes">Verified</p>
+    <% if current_user.email_verified? %>
+      <p class="label label-success">Verified</p>
+    <% else %>
+      <% if current_user.awaiting_email_verification? %>
+        <p class="alert alert-warning">Pending verification... <a href="/notices/email/new?redispatch=true">send again</a>.</p>
       <% else %>
-        <% if current_user.awaiting_email_verification? %>
-          <p class="alert alert-warning">Pending verification... <a href="/notices/email/new?redispatch=true">send again</a>.</p>
-        <% else %>
-          <p class="alert alert-warning">Your email has not been verified,
-            <a href="/notices/email/new" class="inline button thin bad">send me a verification email</a>.
-          </p>
-        <% end %>
+        <p class="alert alert-warning">Your email has not been verified,
+          <a href="/notices/email/new" class="inline button thin bad">send me a verification email</a>.
+        </p>
       <% end %>
+    <% end %>
+    <% if false %>
+    <h3>Gravatar</h3>
+    <p>Change your avatar at <a href="http://www.gravatar.com">gravatar.com</a></p>
+    <label>
+      Gravatar email
+      <input class="form-control" type="text" name="gravatar_email" class="fat" value="<%= current_user.gravatar_email || current_user.email %>" />
+    </label>
 
-      <h3>Gravatar</h3>
-      <p>Change your avatar at <a href="http://www.gravatar.com">gravatar.com</a></p>
-      <label>
-        Gravatar email
-        <input class="form-control" type="text" name="gravatar_email" class="fat" value="<%= current_user.gravatar_email || current_user.email %>" />
-      </label>
-
-      <%= gravatar_tag @user.gravatar_email, :default, html: { style: "vertical-align: middle;" } %>
-
-      <h3>Link accounts</h3>
-        <p>Linking accounts will allow you to log in using any of them.</p>
-
-      <div data-confirmable="oauth_linking">
-        <% [ 'facebook', 'google_oauth2', 'github' ].each do |p| %>
-        <div>
-          <img src="/images/icons/32x32/<%= p %>.png" />
-
-          <% if current_user.linked_to?(p) %>
-            <a href="/users/links/<%= p %>/destroy"
-              data-confirm-heading="Unlinking <%= provider_name(p) %> account"
-              data-confirm="Unlinking your current account from your <%= provider_name(p) %> one
-              will prevent you from logging in to <%= AppName %> using your <%= provider_name(p) %> account.
-              Are you sure you want to do this?"
-              class="btn btn-dfault smaller attached inline bad">Unlink</a>
-            <span class="hint">Linked with <%= current_user.linked_to?(p).email %>.</span>
-          <% else %>
-              <a href="/auth/<%= p %>" class="btn btn-sm btn-default attached">Link</a>
-          <% end %>
-          </div>
-        <% end %>
-      </div>
-
-    <!-- </ol> -->
+    <%= gravatar_tag @user.gravatar_email, :default, html: { style: "vertical-align: middle;" } %>
+    <% end %>
   </fieldset>
-  <hr />
-  <input type="submit" value="Update Account" class="btn btn-primary" />
+  <p></p>
+  <fieldset>
+    <legend>Link accounts</legend>
+      <p>Linking accounts will allow you to log in using any of them.</p>
+
+    <div data-confirmable="oauth_linking">
+      <% [ 'facebook', 'google_oauth2', 'github' ].each do |p| %>
+      <div>
+        <br />
+        <img src="/images/icons/32x32/<%= p %>.png" />
+
+        <% if current_user.linked_to?(p) %>
+          <a href="/users/links/<%= p %>/destroy"
+            data-confirm-heading="Unlinking <%= provider_name(p) %> account"
+            data-confirm="Unlinking your current account from your <%= provider_name(p) %> one
+            will prevent you from logging in to <%= AppName %> using your <%= provider_name(p) %> account.
+            Are you sure you want to do this?"
+            class="btn btn-xs btn-danger">Unlink</a>
+          <em class="">Linked with <%= current_user.linked_to?(p).email %>.</em>
+        <% else %>
+            <a href="/auth/<%= p %>" class="btn btn-xs btn-default">Link</a>
+        <% end %>
+        <br />
+        </div>
+      <% end %>
+    </div>
+
+  </fieldset>
+
+  <div class="form-actions">
+    <hr />
+    <input type="submit" value="Update Account" class="btn btn-primary" />
+  </div>
 </form>
-<!-- <hr /> -->

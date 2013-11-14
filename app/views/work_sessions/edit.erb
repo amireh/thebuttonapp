@@ -16,17 +16,17 @@
   <h2>Edit work session</h2>
 </div>
 
-<form method="POST" action="/work_sessions/<%= @ws.id %>/update" class="form">
+<form method="POST" action="<%= @work_session.url %>" class="form">
 
   <fieldset>
     <label>
       Duration (minutes):
-      <input type="text" autocomplete="off" name="duration" value="<%= @ws.duration / 60 %>" class="form-control" />
+      <input type="text" autocomplete="off" name="duration" value="<%= @work_session.duration / 60 %>" class="form-control" />
     </label>
 
     <label>
       Summary:
-      <textarea rows="8" type="text" name="summary" class="form-control"><%= @ws.notes.collect { |n| n.content.strip }.join("\n").strip %></textarea>
+      <textarea rows="8" type="text" name="summary" class="form-control"><%= @work_session.summary %></textarea>
     </label>
 
   </fieldset>

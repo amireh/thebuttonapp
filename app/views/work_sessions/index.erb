@@ -1,0 +1,38 @@
+<% content_for :deferred_js do %>
+  <script>
+    $(function() {
+      $('#editor').jqm({
+        overlay: 88,
+        ajax: '@href',
+        trigger: 'a.edit-work-session',
+        onLoad: function() {
+          $('.jqmWrap').show();
+        }
+      });
+    });
+  </script>
+<% end %>
+
+<% content_for :title do %>
+  <%= @task.name %> - Work Sessions
+<% end %>
+<section class="reports">
+  <p><%= @work_sessions.count %> work session(s)
+    <% if @tag_names.any? %> tagged with <%= @tag_names.join(', ') %><% end %>:
+  </p>
+  <%= partial "work_sessions/_index", locals: {
+    work_sessions: @work_sessions,
+    with_actions: true,
+    with_task: false,
+    with_count: false
+  } %>
+</section>
+
+<div class="jqmWrap">
+  <div class="jqmWindow" id="editor">
+  </div>
+</div>
+
+<div class="actions">
+  <a href="<%= @task.project.url %>">Back to <%= @task.project.name %></a>
+</div>

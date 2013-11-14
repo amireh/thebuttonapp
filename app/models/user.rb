@@ -31,27 +31,12 @@ class User
   belongs_to :link, self, :child_key => [ :link_id ], :required => false
   has n, :links, self, :child_key => [ :link_id ], :constraint => :set_nil
 
-  has n, :notices,        :constraint => :destroy
-  has n, :tasks,          :constraint => :destroy
-  has n, :tags,           :constraint => :destroy
-  has n, :work_sessions,  :constraint => :destroy
-
-  def current_session
-    work_sessions.first({ active: true })
-  end
-
-  alias_method :current_work_session, :current_session
-
-  def current_task
-    current_session && current_session.task
-  end
-
-  def active_tasks
-    tasks.all({ :status.not => [ :complete, :abandoned ] })
-  end
-  def inactive_tasks
-    tasks.all({ :status => [ :complete, :abandoned ] })
-  end
+  has n, :notices, :constraint => :destroy
+  has n, :tags, :constraint => :destroy
+  has n, :clients, :constraint => :destroy
+  has n, :projects, :through => :clients, :constraint => :skip
+  has n, :tasks, :through => :projects, :constraint => :skip
+  has n, :work_sessions, :through => :tasks, :constraint => :skip
 
   attr_accessor :password_confirmation
 
@@ -62,6 +47,28 @@ class User
 
   validates_uniqueness_of :email, :scope => :provider,
     message: "There's already an account registered to this email address."
+
+  def url(*args)
+    "/users/#{user.id}"
+  end
+
+  def current_session
+    clients.projects.work_sessions.all({ active: true }).first
+  end
+  alias_method :current_work_session, :current_session
+
+  def current_task
+    cws = current_session
+    cws ? cws.task : nil
+  end
+
+  def active_tasks
+    tasks.all({ :status.not => [ :complete, :abandoned ] })
+  end
+
+  def inactive_tasks
+    tasks.all({ :status => [ :complete, :abandoned ] })
+  end
 
   # is :locatable
 

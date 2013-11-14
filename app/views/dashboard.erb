@@ -1,29 +1,11 @@
+<% @work_session ||= @user.current_session %>
 <% content_for :layout_classes do %>dashboard<% end %>
-<% if @user.current_session %>
+<% if @work_session %>
   <%= partial "dashboard/active" %>
 <% else %>
   <%= partial "dashboard/idle" %>
 <% end %>
 
-<hr />
-
-<div class="container">
-  <div class="row">
-
-    <h4>Alternative actions</h4>
-
-    <div class="btn-group">
-      <a class="btn btn-default" href="/tasks/current">
-        <i class="glyphicon glyphicon-play"></i> Review active work
-      </a>
-      <a class="btn btn-default" href="/tasks/history">
-        <i class="glyphicon glyphicon-ok"></i> Review finished work
-      </a>
-      <a class="btn btn-default" href="/reports/new">
-        <i class="glyphicon glyphicon-book"></i> Generate a report
-      </a>
-    </div>
-
-  </div>
-</div>
-
+<% content_for :js_bundles do %>
+  <%= js_bundle 'dashboard' %>
+<% end %>

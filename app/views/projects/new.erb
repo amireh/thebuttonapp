@@ -1,0 +1,7 @@
+<% content_for :page_title do %>New Project<% end %>
+
+<%= partial "projects/_form" %>
+
+<div class="actions">
+  <a href="<%= @client.url  %>">Back to <%= @client.name %></a>
+</div>

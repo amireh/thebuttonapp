@@ -1,0 +1,10 @@
+<form action="<%= endpoint rescue '/clients' %>" method="POST" class="form">
+  <label class="control-label">
+    Name
+    <input type="text" name="name" class="form-control" value="<%= @client.name %>" />
+  </label>
+
+  <div class="form-actions actions">
+    <input type="submit" value="Submit" class="btn btn-primary" />
+  </div>
+</form>

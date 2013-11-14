@@ -29,7 +29,6 @@
         $label.appendTo($bootstrap_container);
       });
 
-
       $( "#from" ).datepicker({
         defaultDate: "+1w",
         inline: false,
@@ -79,33 +78,50 @@
   </script>
 <% end %>
 
-<% content_for :subtitle do %>Generate a report<% end %>
+<% content_for :title do %>Generate a report<% end %>
+
+<header class="page-header">
+  <h1>Generate a report</h1>
+</header>
 
 <form method="POST" id="generate_report" action="/reports">
+  <fieldset>
+    <legend>Project</legend>
+    <select name="project_id">
+      <% @user.projects.each do |project| %>
+        <option value="<%= project.id %>">
+          <%= project.name %>
+        </option>
+      <% end %>
+    </select>
+  </fieldset>
   <section id="date_filters" class="clearfix">
-    <h3>Period</h3>
-    <label>
-      <input type="radio" name="date[range]" value="current_month" checked="checked">Current month (<%= Time.now.strftime('%B') %>)</option>
-    </label>
-    <label>
-      <input type="radio" name="date[range]" value="current_year">Current year (<%= Time.now.strftime('%Y') %>)</option>
-    </label>
-    <label>
-      <input type="radio" name="date[range]" value="last_month">Last month (<%= 1.month.ago.strftime('%B') %>)</option>
-    </label>
-    <label>
-      <input type="radio" name="date[range]" value="last_year">Last year (<%= 1.year.ago.strftime('%Y') %>)</option>
-    </label>
-    <label>
-      <input type="radio" name="date[range]" value="custom">Custom</option>
-    </label>
 
-    <div hidden id="report_date_selector" class="col-md-3">
-      <label>From:
-        <input type="text" name="date[from]" id="from" class="form-control" />
+    <fieldset>
+      <legend>Period</legend>
+      <label>
+        <input type="radio" name="date[range]" value="current_month" checked="checked">Current month (<%= Time.now.strftime('%B') %>)</option>
       </label>
-      <label>To: <input type="text" name="date[to]" id="to" class="form-control" /></label>
-    </div>
+      <label>
+        <input type="radio" name="date[range]" value="current_year">Current year (<%= Time.now.strftime('%Y') %>)</option>
+      </label>
+      <label>
+        <input type="radio" name="date[range]" value="last_month">Last month (<%= 1.month.ago.strftime('%B') %>)</option>
+      </label>
+      <label>
+        <input type="radio" name="date[range]" value="last_year">Last year (<%= 1.year.ago.strftime('%Y') %>)</option>
+      </label>
+      <label>
+        <input type="radio" name="date[range]" value="custom">Custom</option>
+      </label>
+
+      <div hidden id="report_date_selector" class="col-md-3">
+        <label>From:
+          <input type="text" name="date[from]" id="from" class="form-control" />
+        </label>
+        <label>To: <input type="text" name="date[to]" id="to" class="form-control" /></label>
+      </div>
+    </fieldset>
 
   </section>
   <section id="tag_filters">

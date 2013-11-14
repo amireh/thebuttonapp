@@ -74,12 +74,11 @@ def mockup_user(q = {})
   @mockup_user_params = {
     name: 'Mysterious Mocker',
     email: 'very@mysterious.com',
-    provider: 'pibi',
+    provider: 'algol',
     password:               User.encrypt(@some_salt),
     password_confirmation:  User.encrypt(@some_salt)
   }.merge(q)
   @user = @u = User.create(@mockup_user_params)
-  @account = @a = @user.accounts.first
 end
 
 FlashTypes = [ 'notice', 'error', 'warning' ]

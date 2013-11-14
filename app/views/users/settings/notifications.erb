@@ -2,7 +2,7 @@
 
 <%= partial "/users/settings/_nav" %>
 
-<section>
+<section class="col-md-10">
   <!-- <h2 class="blocky_heading">Notifications</h2> -->
   <% pending_notices = current_user.pending_notices %>
   <% accepted_notices = current_user.notices({ :status.not => :pending }) %>

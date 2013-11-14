@@ -1,0 +1,10 @@
+<% content_for :title do %><%= @project.name %> - Project Settings<% end %>
+
+<%= partial "projects/_form", locals: {
+  endpoint: @project.url
+} %>
+
+
+<div class="actions">
+  <a href="<%= @project.url  %>">Back to <%= @project.name %></a>
+</div>

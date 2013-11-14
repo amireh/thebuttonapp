@@ -3,34 +3,37 @@
 
 <tr>
   <td>
-    <%= pretty_time ws.duration %>
-    <% if ws.active? %>
+    <%= pretty_time work_session.duration %>
+    <% if work_session.active? %>
       <em class="highlight">(active)</em>
     <% end %>
   </td>
 
+  <td>
+    <% if work_session.active? %>
+      -
+    <% else %>
+      <%= to_jQueryUI_date work_session.finished_at %>
+    <% end %>
+  </td>
+
   <% if with_task %>
-    <td width="30%"><%= md tagify ws.task.name %></td>
+    <td width="30%"><%= work_session.task.name %></td>
   <% end %>
 
 
   <td class="40%">
-    <%= md tagify (ws.summary||'').empty? ? 'N/A' : ws.summary %>
-    <%= partial "notes/_show", locals: { notes: ws.notes, with_ruler: true } %>
-  </td>
-
-  <td>
-    <% if ws.active? %>
-      -
-    <% else %>
-      <%= ws.finished_at.strftime('%D') %>
-    <% end %>
+    <%= md tagify (work_session.summary||'').empty? ? 'N/A' : work_session.summary %>
+    <%= partial "notes/_show", locals: {
+        notes: work_session.notes,
+        with_ruler: true
+      } %>
   </td>
 
   <% if with_actions %>
-    <td>
-      <a class="edit-work-session" href="/work_sessions/<%= ws.id %>/edit">Edit</a>
-      <a class="confirm" data-confirm="Are you sure you want to delete this work session?" href="/work_sessions/<%= ws.id %>/destroy">Delete</a>
+    <td  class="text-right">
+      <a class="edit-work-session" href="<%= work_session.url %>/edit">Edit</a>
+      <a class="confirm" data-confirm="Are you sure you want to delete this work session?" href="<%= work_session.url %>/destroy">Delete</a>
     </td>
   <% end %>
 </tr>

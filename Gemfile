@@ -1,12 +1,21 @@
 source 'https://rubygems.org'
 
-gem 'sinatra', '=1.3.3'
-gem 'sinatra-contrib', :require => [
-  'sinatra/content_for',
-  'sinatra/namespace',
-  'sinatra/config_file'
-]
+gem 'rack-protection', :git => 'https://github.com/rkh/rack-protection'
+gem 'sinatra', '=1.4.0'
+gem 'sinatra-contrib',
+  :git => 'https://github.com/sinatra/sinatra-contrib',
+  :require => [
+    'sinatra/content_for',
+    'sinatra/namespace',
+    'sinatra/config_file',
+    'sinatra/respond_with'
+  ]
 gem 'sinatra-flash', :require => 'sinatra/flash'
+gem 'activesupport', '>= 4.0.0', :require => [
+  'active_support',
+  'active_support/time',
+  'active_support/core_ext/hash'
+]
 gem 'mysql'
 gem 'json'
 gem "dm-core", ">=1.2.0"
@@ -22,13 +31,13 @@ gem "dm-mysql-adapter", ">=1.2.0"
 gem 'multi_json'
 gem 'addressable'
 gem 'uuid'
+gem 'rabl'
+gem 'yajl-ruby'
 gem 'gravatarify', ">= 3.1.0"
-gem 'timetastic', '>= 0.1.4', :git => 'https://github.com/amireh/timetastic'
 gem "pony"
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
-# gem 'omniauth-twitter', '0.0.9'
 gem 'omniauth-google-oauth2'
 gem 'pagehub-markdown', '>=0.1.3', :require => 'pagehub-markdown'
 gem 'pdfkit'

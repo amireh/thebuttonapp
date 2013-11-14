@@ -1,0 +1,21 @@
+<% content_for :page_title do %>
+  <%= @client.name %>
+
+  <div class="toolbar small pull-right">
+    <a href="/clients/<%= @client.id %>/edit" title="Client settings" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i> </a>
+
+    <a href="/clients/<%= @client.id %>/destroy" class="btn btn-danger"><i class="glyphicon glyphicon-trash" title="Remove client"></i> </a>
+  </div>
+<% end %>
+
+<h3>Projects
+  <small class="pull-right">
+    <a href="/clients/<%= @client.id %>/projects/new" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> New Project</a>
+  </small>
+</h3>
+
+<%= partial "projects/_index", locals: { projects: @client.projects } %>
+
+<div class="actions">
+  <a href="/clients">Back to clients</a>
+</div>

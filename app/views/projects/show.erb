@@ -1,0 +1,43 @@
+<% content_for :page_title do %>
+  <%= @project.name %>
+
+  <div class="pull-right">
+    <a class="btn btn-primary" href="<%= @project.url %>/edit"><i class="glyphicon glyphicon-edit"></i></a>
+    <a class="btn btn-danger" href="<%= @project.url %>/edit"><i class="glyphicon glyphicon-trash"></i></a>
+
+  </div>
+<% end %>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Sessions</th>
+      <th>Time Spent</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @project.tasks.each do |task| %>
+      <tr>
+        <td><a href="<%= task.url %>"><%= md task.name %></a></td>
+        <td><%= task.work_sessions.length %></td>
+        <td><%= pretty_time task.time_spent %></td>
+        <td><a href="<%= task.url(true) %>/work_sessions">Manage</a></td>
+      </tr>
+    <% end %>
+  </tbody>
+
+  <tfoot>
+    <tr>
+      <td><strong>Total</strong></td>
+      <td colspan="3" class="text-right"><%= pretty_time @project.tasks.map(&:time_spent).reduce(&:+) || 0 %></td>
+    </tr>
+  </tfoot>
+</table>
+
+<div class="actions">
+  <a href="<%= @client.url %>">Back to <%= @client.name %></a>
+</div>
