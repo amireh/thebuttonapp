@@ -2,40 +2,108 @@
 <% content_for :js_bundles do %>
   <%= js_bundle 'dashboard' %>
 <% end %>
+<%
+  @work_sessions ||= WorkSession.all({
+    :started_at.gte   => 0.month.ago.beginning_of_month,
+    :finished_at.lte  => 0.month.ago.end_of_month
+  })
+%>
 
-<form id="resumeTaskForm" method="POST" class="col-lg-6 form form-horizontal">
-  <div class="form-group">
-    <label class="control-label">Project</label>
-    <select class="form-control" name="project_id">
+<% content_for :page_title do %>
+  <div class="row">
+    <div class="col-md-8">
+      Dashboard
+    </div>
+
+    <div class="col-md-4 text-right">
+      <span class="small">
+        Billing Estimate:
+        <%
+          estimate = 0.0
+          @work_sessions.each do |work_session|
+            hours = ((work_session.duration || 0) / 3600.0).ceil
+            rate = hours * work_session.task.project.billing_rate
+            estimate += rate
+          end
+        %>
+
+        <%= estimate %>
+      </span>
+    </div>
+  </div>
+<% end %>
+
+<div class="container">
+  <div class="row">
+    <form id="resumeTaskForm" method="POST" class="col-md-6 form form-horizontal">
+      <h3 class="page-header">Work</h3>
+      <div class="form-group">
+        <label class="control-label">Project</label>
+        <select class="form-control" name="project_id">
+          <% @user.projects.each do |project| %>
+            <option value="<%= project.id %>"><%= project.name %></option>
+          <% end %>
+        </select>
+      </div>
       <% @user.projects.each do |project| %>
-        <option value="<%= project.id %>"><%= project.name %></option>
+        <div class="form-group project-tasks" id="project_<%= project.id %>_tasks" style="display: none;">
+          <label class="control-label">Task</label>
+          <select class="form-control" name="task_id" <%= "disabled" if project.tasks.empty? %>>
+            <% project.active_tasks.each do |task| %>
+              <option value="<%= task.id %>"><%= task.name %></option>
+            <% end %>
+          </select>
+        </div>
       <% end %>
-    </select>
-  </div>
-  <% @user.projects.each do |project| %>
-    <div class="form-group project-tasks" id="project_<%= project.id %>_tasks" style="display: none;">
-      <label class="control-label">Task</label>
-      <select class="form-control" name="task_id" <%= "disabled" if project.tasks.empty? %>>
-        <% project.active_tasks.each do |task| %>
-          <option value="<%= task.id %>"><%= task.name %></option>
-        <% end %>
-      </select>
-    </div>
-  <% end %>
 
-  <div class="form-group">
-    <div class="col-sm-offset-2">
-      <button class="btn btn-primary" id="resumeTask" disabled>
-        <i class="glyphicon glyphicon-play"></i>
-        Resume Task
-      </button>
-      <button data-action="newTask" class="btn btn-success">
-        <i class="glyphicon glyphicon-plus"></i>
-        New Task
-      </button>
+      <div class="form-group text-right">
+        <button class="btn btn-primary" id="resumeTask" disabled>
+          <i class="glyphicon glyphicon-play"></i>
+          Resume Task
+        </button>
+        <button data-action="newTask" class="btn btn-success">
+          <i class="glyphicon glyphicon-plus"></i>
+          New Task
+        </button>
+      </div>
+    </form>
+    <div class="col-lg-6">
+      <h3 class="page-header">Recent Activity</h3>
+      <%= partial "dashboard/_feed", locals: {
+        work_sessions: @work_sessions.select do |work_session|
+          work_session.duration > (60*5)
+        end.take(10)
+      } %>
     </div>
   </div>
-</form>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3 class="page-header">Activity Overview</h3>
+    </div>
+
+    <div class="col-lg-6">
+      <h4 class="page-header"><%= Time.now.strftime('%B') %></h4>
+
+      <%= partial "charts/_work_session_durations", locals: {
+        work_sessions: @work_sessions,
+        domain: 'day'
+      } %>
+    </div>
+
+    <div class="col-lg-6">
+      <h4 class="page-header"><%= 1.month.ago.strftime('%B') %></h4>
+      <%= partial "charts/_work_session_durations", locals: {
+        work_sessions: WorkSession.all({
+          :started_at.gte   => 1.month.ago.beginning_of_month,
+          :finished_at.lte  => 1.month.ago.end_of_month
+        })
+      } %>
+    </div>
+  </div>
+</div>
 
 <form action="/projects/:project_id/tasks" method="POST" id="newTaskForm" hidden>
   <h4 class="modal-title">New Task</h4>

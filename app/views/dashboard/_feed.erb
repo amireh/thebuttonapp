@@ -1,0 +1,12 @@
+<%
+  work_sessions ||= {}
+%>
+
+<ul id="dashboardFeed">
+  <% work_sessions.each do |work_session| %>
+    <li>
+      <%= work_session.task.name %>
+      <span class="text-muted">(for <%= pretty_time work_session.duration %>)</span>
+    </li>
+  <% end %>
+</ul>

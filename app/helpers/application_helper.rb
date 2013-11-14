@@ -174,7 +174,8 @@ module ApplicationHelpers
   end
 
   def pretty_time(a)
-    (a/60).to_i.to_s+' minutes'
+    minutes = (a/60).to_i
+    minutes.to_s + ' ' + (minutes == 1 ? 'minute' : 'minutes')
   end
 
   def time_in_hours(a)

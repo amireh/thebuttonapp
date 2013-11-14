@@ -1,0 +1,25 @@
+<%
+  work_sessions ||= WorkSession.all({
+    :started_at.gte   => 3.month.ago.beginning_of_month,
+    :finished_at.lte  => 3.month.ago.end_of_month
+  })
+  domain ||= 'day'
+  chart_data = {}
+
+  group = work_sessions.dup
+  group = group.group_by do |ws|
+    ws.started_at.send :"beginning_of_#{domain}"
+  end
+
+  group = group.map do |k, entries|
+    hash = {}
+    hash[k] = entries.map(&:duration).reduce(&:+) / 60
+    hash
+  end
+
+  group.each do |entry|
+    chart_data[entry.keys.first] = entry.values.first
+  end
+%>
+
+<%= line_chart(chart_data) %>

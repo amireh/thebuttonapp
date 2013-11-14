@@ -41,6 +41,7 @@ GEM
     capybara-webkit (1.0.0)
       capybara (~> 2.0, >= 2.0.2)
       json
+    chartkick (1.2.0)
     daemons (1.1.9)
     data_objects (0.10.13)
       addressable (~> 2.1)
@@ -187,6 +188,7 @@ DEPENDENCIES
   addressable
   capybara (>= 2.0.2)
   capybara-webkit
+  chartkick
   dm-constraints (>= 1.2.0)
   dm-core (>= 1.2.0)
   dm-migrations (>= 1.2.0)
