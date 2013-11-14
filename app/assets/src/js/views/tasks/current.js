@@ -1,0 +1,2 @@
+define([ 'ext/jquery' ], function($) {
+});

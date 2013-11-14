@@ -1,20 +1,3 @@
-<% content_for :deferred_js do %>
-  <script>
-    $(function() {
-      $("button").click(function() {
-        $(".notes").toggle();
-        var alt = $(this).attr("data-alt");
-        $(this).attr("data-alt", $(this).html());
-        $(this).html(alt);
-      })
-    })
-  </script>
-<% end %>
-
-<% content_for :sticky do %>
-  <button class="btn btn-default" data-alt="Show task notes">Hide task notes</button>
-<% end %>
-
 <%
   complete_tasks = @user.inactive_tasks.all({ conditions: { status: :complete }, order: [ :created_at.desc]  })
   abandoned_tasks = @user.inactive_tasks.all({ conditions: { status: :abandoned }, order: [ :created_at.desc]  })

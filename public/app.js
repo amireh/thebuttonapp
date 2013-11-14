@@ -13612,7 +13612,78 @@ $.datepicker.version = "1.10.3";
 
 })(jQuery);
 
-define("jquery-ui", ["jquery"], function(){});
+define("jquery-ui", function(){});
+
+/*
+ * jqModal - Minimalist Modaling with jQuery
+ *   (http://dev.iceburg.net/jquery/jqModal/)
+ *
+ * Copyright (c) 2007,2008 Brice Burgess <bhb@iceburg.net>
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ * $Version: 03/01/2009 +r14
+ */
+(function($) {
+$.fn.jqm=function(o){
+var p={
+overlay: 50,
+overlayClass: 'jqmOverlay',
+closeClass: 'jqmClose',
+trigger: '.jqModal',
+ajax: F,
+ajaxText: '',
+target: F,
+modal: F,
+toTop: F,
+onShow: F,
+onHide: F,
+onLoad: F
+};
+return this.each(function(){if(this._jqm)return H[this._jqm].c=$.extend({},H[this._jqm].c,o);s++;this._jqm=s;
+H[s]={c:$.extend(p,$.jqm.params,o),a:F,w:$(this).addClass('jqmID'+s),s:s};
+if(p.trigger)$(this).jqmAddTrigger(p.trigger);
+});};
+
+$.fn.jqmAddClose=function(e){return hs(this,e,'jqmHide');};
+$.fn.jqmAddTrigger=function(e){return hs(this,e,'jqmShow');};
+$.fn.jqmShow=function(t){return this.each(function(){t=t||window.event;$.jqm.open(this._jqm,t);});};
+$.fn.jqmHide=function(t){return this.each(function(){t=t||window.event;$.jqm.close(this._jqm,t)});};
+
+$.jqm = {
+hash:{},
+open:function(s,t){var h=H[s],c=h.c,cc='.'+c.closeClass,z=(parseInt(h.w.css('z-index'))),z=(z>0)?z:3000,o=$('<div></div>').css({height:'100%',width:'100%',position:'fixed',left:0,top:0,'z-index':z-1,opacity:c.overlay/100});if(h.a)return F;h.t=t;h.a=true;h.w.css('z-index',z);
+ if(c.modal) {if(!A[0])L('bind');A.push(s);}
+ else if(c.overlay > 0)h.w.jqmAddClose(o);
+ else o=F;
+
+ h.o=(o)?o.addClass(c.overlayClass).prependTo('body'):F;
+ if(ie6){$('html,body').css({height:'100%',width:'100%'});if(o){o=o.css({position:'absolute'})[0];for(var y in {Top:1,Left:1})o.style.setExpression(y.toLowerCase(),"(_=(document.documentElement.scroll"+y+" || document.body.scroll"+y+"))+'px'");}}
+
+ if(c.ajax) {var r=c.target||h.w,u=c.ajax,r=(typeof r == 'string')?$(r,h.w):$(r),u=(u.substr(0,1) == '@')?$(t).attr(u.substring(1)):u;
+  r.html(c.ajaxText).load(u,function(){if(c.onLoad)c.onLoad.call(this,h);if(cc)h.w.jqmAddClose($(cc,h.w));e(h);});}
+ else if(cc)h.w.jqmAddClose($(cc,h.w));
+
+ if(c.toTop&&h.o)h.w.before('<span id="jqmP'+h.w[0]._jqm+'"></span>').insertAfter(h.o);
+ (c.onShow)?c.onShow(h):h.w.show();e(h);return F;
+},
+close:function(s){var h=H[s];if(!h.a)return F;h.a=F;
+ if(A[0]){A.pop();if(!A[0])L('unbind');}
+ if(h.c.toTop&&h.o)$('#jqmP'+h.w[0]._jqm).after(h.w).remove();
+ if(h.c.onHide)h.c.onHide(h);else{h.w.hide();if(h.o)h.o.remove();} return F;
+},
+params:{}};
+var s=0,H=$.jqm.hash,A=[],ie6=false,F=false,
+i=$('<iframe src="javascript:false;document.write(\'\');" class="jqm"></iframe>').css({opacity:0}),
+e=function(h){if(ie6)if(h.o)h.o.html('<p style="width:100%;height:100%"/>').prepend(i);else if(!$('iframe.jqm',h.w)[0])h.w.prepend(i); f(h);},
+f=function(h){try{$(':input:visible',h.w)[0].focus();}catch(_){}},
+L=function(t){$()[t]("keypress",m)[t]("keydown",m)[t]("mousedown",m);},
+m=function(e){var h=H[A[A.length-1]],r=(!$(e.target).parents('.jqmID'+h.s)[0]);if(r)f(h);return !r;},
+hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function() {
+ if(!this[c]){this[c]=[];$(this).click(function(){for(var i in {jqmShow:1,jqmHide:1})for(var s in this[i])if(H[this[i][s]])H[this[i][s]].w[i](this);return F;});}this[c].push(s);});});};
+})(jQuery);
+define("jqModal", function(){});
 
 /**
 * bootstrap.js v3.0.0 by @fat and @mdo
@@ -15616,511 +15687,2478 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
 
 define("bootstrap", function(){});
 
-/*
- * jqModal - Minimalist Modaling with jQuery
- *   (http://dev.iceburg.net/jquery/jqModal/)
- *
- * Copyright (c) 2007,2008 Brice Burgess <bhb@iceburg.net>
- * Dual licensed under the MIT and GPL licenses:
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
- *
- * $Version: 03/01/2009 +r14
- */
-(function($) {
-$.fn.jqm=function(o){
-var p={
-overlay: 50,
-overlayClass: 'jqmOverlay',
-closeClass: 'jqmClose',
-trigger: '.jqModal',
-ajax: F,
-ajaxText: '',
-target: F,
-modal: F,
-toTop: F,
-onShow: F,
-onHide: F,
-onLoad: F
-};
-return this.each(function(){if(this._jqm)return H[this._jqm].c=$.extend({},H[this._jqm].c,o);s++;this._jqm=s;
-H[s]={c:$.extend(p,$.jqm.params,o),a:F,w:$(this).addClass('jqmID'+s),s:s};
-if(p.trigger)$(this).jqmAddTrigger(p.trigger);
-});};
+define('algol',[], function() {
+  var algol = function() {
 
-$.fn.jqmAddClose=function(e){return hs(this,e,'jqmHide');};
-$.fn.jqmAddTrigger=function(e){return hs(this,e,'jqmShow');};
-$.fn.jqmShow=function(t){return this.each(function(){t=t||window.event;$.jqm.open(this._jqm,t);});};
-$.fn.jqmHide=function(t){return this.each(function(){t=t||window.event;$.jqm.close(this._jqm,t)});};
+    return {
+      natural_join: function(ary, delim, last_delim, affixes) {
+        var c = ''
+        for (var i = 0; i < ary.length; ++i) {
+          var s = ary[i];
+          var affixed_s = affixes.length == 0 ? s : affixes[0] + s + affixes[1];
+          var d = '';
 
-$.jqm = {
-hash:{},
-open:function(s,t){var h=H[s],c=h.c,cc='.'+c.closeClass,z=(parseInt(h.w.css('z-index'))),z=(z>0)?z:3000,o=$('<div></div>').css({height:'100%',width:'100%',position:'fixed',left:0,top:0,'z-index':z-1,opacity:c.overlay/100});if(h.a)return F;h.t=t;h.a=true;h.w.css('z-index',z);
- if(c.modal) {if(!A[0])L('bind');A.push(s);}
- else if(c.overlay > 0)h.w.jqmAddClose(o);
- else o=F;
+          if (i == 0)
+            d = '';
+          else if (i == ary.length - 1)
+            d = last_delim;
+          else
+            d = delim;
 
- h.o=(o)?o.addClass(c.overlayClass).prependTo('body'):F;
- if(ie6){$('html,body').css({height:'100%',width:'100%'});if(o){o=o.css({position:'absolute'})[0];for(var y in {Top:1,Left:1})o.style.setExpression(y.toLowerCase(),"(_=(document.documentElement.scroll"+y+" || document.body.scroll"+y+"))+'px'");}}
-
- if(c.ajax) {var r=c.target||h.w,u=c.ajax,r=(typeof r == 'string')?$(r,h.w):$(r),u=(u.substr(0,1) == '@')?$(t).attr(u.substring(1)):u;
-  r.html(c.ajaxText).load(u,function(){if(c.onLoad)c.onLoad.call(this,h);if(cc)h.w.jqmAddClose($(cc,h.w));e(h);});}
- else if(cc)h.w.jqmAddClose($(cc,h.w));
-
- if(c.toTop&&h.o)h.w.before('<span id="jqmP'+h.w[0]._jqm+'"></span>').insertAfter(h.o);
- (c.onShow)?c.onShow(h):h.w.show();e(h);return F;
-},
-close:function(s){var h=H[s];if(!h.a)return F;h.a=F;
- if(A[0]){A.pop();if(!A[0])L('unbind');}
- if(h.c.toTop&&h.o)$('#jqmP'+h.w[0]._jqm).after(h.w).remove();
- if(h.c.onHide)h.c.onHide(h);else{h.w.hide();if(h.o)h.o.remove();} return F;
-},
-params:{}};
-var s=0,H=$.jqm.hash,A=[],ie6=false,F=false,
-i=$('<iframe src="javascript:false;document.write(\'\');" class="jqm"></iframe>').css({opacity:0}),
-e=function(h){if(ie6)if(h.o)h.o.html('<p style="width:100%;height:100%"/>').prepend(i);else if(!$('iframe.jqm',h.w)[0])h.w.prepend(i); f(h);},
-f=function(h){try{$(':input:visible',h.w)[0].focus();}catch(_){}},
-L=function(t){$()[t]("keypress",m)[t]("keydown",m)[t]("mousedown",m);},
-m=function(e){var h=H[A[A.length-1]],r=(!$(e.target).parents('.jqmID'+h.s)[0]);if(r)f(h);return !r;},
-hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function() {
- if(!this[c]){this[c]=[];$(this).click(function(){for(var i in {jqmShow:1,jqmHide:1})for(var s in this[i])if(H[this[i][s]])H[this[i][s]].w[i](this);return F;});}this[c].push(s);});});};
-})(jQuery);
-define("jqModal", function(){});
-
-algol = function() {
-
-  return {
-    natural_join: function(ary, delim, last_delim, affixes) {
-      var c = ''
-      for (var i = 0; i < ary.length; ++i) {
-        var s = ary[i];
-        var affixed_s = affixes.length == 0 ? s : affixes[0] + s + affixes[1];
-        var d = '';
-
-        if (i == 0)
-          d = '';
-        else if (i == ary.length - 1)
-          d = last_delim;
-        else
-          d = delim;
-
-        c += d + affixed_s
-      }
-      return c;
-    }
-  }
-}
-
-// globally accessible instance
-algol = new algol();
-
-define("algol", function(){});
-
-// status = ui.status;
-algol_ui = function() {
-
-  var colors = [];
-  var handlers = {
-        on_entry: []
-      },
-      status_timer = null,
-      timers = {
-        autosave: null,
-        sync: null,
-        flash: null
-      },
-      theme = "",
-      anime_dur = 250,
-      status_shown = false,
-      current_status = null,
-      status_queue = [],
-      animation_dur = 2500,
-      pulses = {
-        autosave: 30, /* autosave every half minute */
-        sync: 5,
-        flash: 2.5
-      },
-      defaults = {
-        status: 1
-      },
-      actions = {},
-      removed = {},
-      action_hooks = { pages: { on_load: [] } },
-      hooks = [
-        function() {
-          // element tooltips
-          $("[title],span[title]").tooltip({ placement: "bottom", delay: { show: 500, hide: 100 } });
-        },
-
-        // disable all links attributed with data-disabled
-        function() {
-          $("a[data-disabled], a.disabled").click(function(e) { e.preventDefault(); return false; });
-        },
-
-        function() {
-          $("input[data-linked-to],button[data-linked-to]").each(function() {
-            var target_id = $(this).attr("data-linked-to");
-            var target = $(this).siblings("input[name^=" + target_id + "]:first");
-            if (target.length == 0) {
-              target = $("#" + target_id);
-            }
-            var button = $(this);
-            target.keyup(function() {
-              if ($(this).val().length > 0) {
-                button.attr("disabled", null);
-              } else {
-                button.attr("disabled", "disabled");
-              }
-            }).keyup();
-          });
+          c += d + affixed_s
         }
-      ]; // end of hooks
-
-
-  return {
-    hooks: hooks,
-    theme: theme,
-    action_hooks: action_hooks,
-
-    modal: {
-      as_alert: function(resource, callback) {
-        if (typeof resource == "string") {
-
-        }
-        else if (typeof resource == "object") {
-          var resource = $(resource);
-          resource.show();
-        }
-      }
-    },
-
-    status: {
-      clear: function(cb) {
-        if (!$("#status").is(":visible"))
-          return (cb || function() {})();
-
-        $("#status").addClass("hidden").removeClass("visible");
-        status_shown = false;
-
-        if (cb)
-          cb();
-
-        if (status_queue.length > 0) {
-          var status = status_queue.pop();
-          return ui.status.show(status[0], status[1], status[2]);
-        }
-      },
-
-      show: function(text, status, seconds_to_show) {
-        if (!status)
-          status = "notice";
-        if (!seconds_to_show)
-          seconds_to_show = defaults.status;
-
-        // queue the status if there's one already being displayed
-        if (status_shown && current_status != "pending") {
-          return status_queue.push([ text, status, seconds_to_show ]);
-        }
-
-        // clear the status resetter timer
-        if (status_timer)
-          clearTimeout(status_timer)
-
-        status_timer = setTimeout("ui.status.clear()", status == "bad" ? animation_dur * 2 : animation_dur);
-        $("#status").removeClass("pending good bad").addClass(status + " visible").html(text);
-        status_shown = true;
-        current_status = status;
-      },
-
-      mark_pending: function() {
-        // $(".loader").show(250);
-        $(".loader").show();
-      },
-      mark_ready: function() {
-        // $(".loader").hide(250);
-        $(".loader").hide();
-      }
-    },
-
-    dialogs: {
-    },
-
-    report_error: function(err_msg) {
-      ui.status.show("A script error has occured, please try to reproduce the bug and report it.", "bad");
-      console.log("Script error:");
-      console.log(err_msg);
-      try {
-        throw new Error('');
-      } catch (e) {
-        console.log(e.stack);
-      }
-    },
-
-    process_hooks: function() {
-      for (var i = 0; i < ui.hooks.length; ++i) {
-        ui.hooks[i]();
+        return c;
       }
     }
   }
-}
 
-// globally accessible instance
-ui = new algol_ui();
-
-$(function() {
-  // foreach(ui.hooks, function(hook) { hook(); });
-  for (var i = 0; i < ui.hooks.length; ++i) {
-    ui.hooks[i]();
-  }
+  // globally accessible instance
+  window.algol = new algol();
 });
-define("algol_ui", function(){});
 
-(function($) {
-  $.consume = function(e) {
-    e.preventDefault();
+define('algol_ui',[ 'jquery', 'bootstrap' ], function($) {
+  // status = ui.status;
+  var algol_ui = window.algol_ui = function() {
 
-    if (e.stopPropagation) { e.stopPropagation(); }
-    if (e.stopImmediatePropagation) { e.stopImmediatePropagation(); }
+    var colors = [];
+    var handlers = {
+          on_entry: []
+        },
+        status_timer = null,
+        timers = {
+          autosave: null,
+          sync: null,
+          flash: null
+        },
+        theme = "",
+        anime_dur = 250,
+        status_shown = false,
+        current_status = null,
+        status_queue = [],
+        animation_dur = 2500,
+        pulses = {
+          autosave: 30, /* autosave every half minute */
+          sync: 5,
+          flash: 2.5
+        },
+        defaults = {
+          status: 1
+        },
+        actions = {},
+        removed = {},
+        action_hooks = { pages: { on_load: [] } },
+        hooks = [
+          function() {
+            // element tooltips
+            $("[title],span[title]").tooltip({ placement: "bottom", delay: { show: 500, hide: 100 } });
+          },
 
-    return false;
-  };
+          // disable all links attributed with data-disabled
+          function() {
+            $("a[data-disabled], a.disabled").click(function(e) { e.preventDefault(); return false; });
+          },
 
-  $.ajaxJSON = function(options) {
-    return $.ajax(_.extend(options, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    }));
-  };
-
-  var $modalWrapper = $([
-    '<div class="modal fade">',
-      '<div class="modal-dialog">',
-        '<div class="modal-content">',
-          '<div class="modal-header">',
-            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>',
-          '</div>',
-          '<div class="modal-body"></div>',
-          '<div class="modal-footer">',
-            '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-          '</div>',
-        '</div>',
-      '</div>',
-    '</div>'
-  ].join(''));
-
-  $.fn.asModal = function() {
-    var $el = $modalWrapper.clone();
-    var $this = $(this).clone();
-    var $header, $footer;
-
-    $header = $this.find('.modal-title').detach();
-    $footer = $this.find('.modal-actions').detach();
-
-    $this.find('.modal-content').removeClass('modal-content');
-
-    $el.find('.modal-header').append($header);
-    $el.find('.modal-body').append($this.show());
-    $el.find('.modal-footer').append($footer.children());
-
-    $footer.remove();
-
-    return $el;
-  };
-
-  /**
-   * @method serializeObject
-   *
-   * Serialize an HTML form element into a JSON construct, with proper type
-   * conversions (ie, "true" to true.)
-   */
-  $.fn.serializeObject = function() {
-    var self = this,
-        json = {},
-        push_counters = {},
-        patterns = {
-          'validate': /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
-          'key':      /[a-zA-Z0-9_]+|(?=\[\])/g,
-          'push':     /^$/,
-          'fixed':    /^\d+$/,
-          'named':    /^[a-zA-Z0-9_]+$/
-        };
-
-    this.build = function(base, key, value){
-        base[key] = value;
-        return base;
-    };
-
-    this.push_counter = function(key){
-        if(push_counters[key] === undefined){
-            push_counters[key] = 0;
-        }
-        return push_counters[key]++;
-    };
-
-    $.each($(this).serializeArray(), function() {
-      // skip invalid keys
-      if (!patterns.validate.test(this.name)) {
-        return;
-      }
-
-      var k,
-          keys = this.name.match(patterns.key),
-          merge = this.value,
-          reverse_key = this.name;
-
-      while ((k = keys.pop()) !== void 0) {
-        // adjust reverse_key
-        reverse_key = reverse_key.replace(new RegExp('\\[' + k + '\\]$'), '');
-
-        // push
-        if ( k.match(patterns.push) ) {
-          merge = self.build([], self.push_counter(reverse_key), merge);
-        }
-        // fixed
-        else if ( k.match(patterns.fixed) ){
-          merge = self.build([], k, merge);
-        }
-        // named
-        else if ( k.match(patterns.named) ){
-          merge = self.build({}, k, merge);
-        }
-      }
-
-      json = $.extend(true, json, merge);
-    });
-
-    return json;
-  };
-
-
-  $.fn.extend({
-    formParams: function (params) {
-
-      var convert;
-
-      // Quick way to determine if something is a boolean
-      if ( !! params === params) {
-        convert = params;
-        params = null;
-      }
-
-      if (params) {
-        return this.setParams(params);
-      } else {
-        return this.getParams(convert);
-      }
-    },
-    setParams: function (params, options) {
-      options = options || {};
-
-      // Find all the inputs
-      this.find("[name]").each(function () {
-        var $this = $(this);
-        var name = $this.attr('name');
-        var myval;
-
-        if (options.deindexize) {
-          name = name.replace(/\[\]/, '');
-        }
-
-        var value = params[name];
-
-        // Don't do all this work if there's no value
-        if (value !== undefined) {
-
-          // Nested these if statements for performance
-          if ($this.is(":radio")) {
-            if ($this.val() == value) {
-              $this.prop("checked", true);
-            }
-          } else if ($this.is(":checkbox")) {
-            myval = $this.val();
-
-            // Convert single value to an array to reduce complexity
-            value = $.isArray(value) ? value : [value];
-
-            if (options.stringify) {
-              myval = String(myval);
-
-              for (var i = 0; i < value.length; ++i) {
-                value[i] = String(value[i]);
+          function() {
+            $("input[data-linked-to],button[data-linked-to]").each(function() {
+              var target_id = $(this).attr("data-linked-to");
+              var target = $(this).siblings("input[name^=" + target_id + "]:first");
+              if (target.length == 0) {
+                target = $("#" + target_id);
               }
-            }
-            else if (options.convert) {
-              if (!!Number(myval)) {
-                myval = Number(myval);
-              }
-              else if (String(myval) === 'true') {
-                myval = true;
-              }
-              else if (String(myval) === 'false') {
-                myval = false;
-              }
-            }
+              var button = $(this);
+              target.keyup(function() {
+                if ($(this).val().length > 0) {
+                  button.attr("disabled", null);
+                } else {
+                  button.attr("disabled", "disabled");
+                }
+              }).keyup();
+            });
+          }
+        ]; // end of hooks
 
-            if (value.indexOf(myval) > -1) {
-              $this.prop("checked", true);
-            }
 
-            if (value.length == 1 && String(value[0]) === 'true') {
-              $this.prop("checked", true);
-            }
+    return {
+      hooks: hooks,
+      theme: theme,
+      action_hooks: action_hooks,
 
-          } else {
-            $this.val(value);
+      modal: {
+        as_alert: function(resource, callback) {
+          if (typeof resource == "string") {
+
+          }
+          else if (typeof resource == "object") {
+            var resource = $(resource);
+            resource.show();
           }
         }
-      });
+      },
 
-      return $(this);
-    },
-    getParams: function (convert) {
-      var data = {},
-        // This is used to keep track of the checkbox names that we've
-        // already seen, so we know that we should return an array if
-        // we see it multiple times. Fixes last checkbox checked bug.
-        seen = {},
-        current;
+      status: {
+        clear: function(cb) {
+          if (!$("#status").is(":visible"))
+            return (cb || function() {})();
 
-      this.find("[name]:not(:disabled)").each(function () {
-        var $this = $(this),
-          type = $this.attr("type"),
-          name = $this.attr("name"),
-          value = $this.val(),
-          parts;
+          $("#status").addClass("hidden").removeClass("visible");
+          status_shown = false;
 
-        // Don't accumulate submit buttons and nameless elements
-        if (type == "submit" || !name) {
-          return;
+          if (cb)
+            cb();
+
+          if (status_queue.length > 0) {
+            var status = status_queue.pop();
+            return ui.status.show(status[0], status[1], status[2]);
+          }
+        },
+
+        show: function(text, status, seconds_to_show) {
+          if (!status)
+            status = "notice";
+          if (!seconds_to_show)
+            seconds_to_show = defaults.status;
+
+          // queue the status if there's one already being displayed
+          if (status_shown && current_status != "pending") {
+            return status_queue.push([ text, status, seconds_to_show ]);
+          }
+
+          // clear the status resetter timer
+          if (status_timer)
+            clearTimeout(status_timer)
+
+          status_timer = setTimeout("ui.status.clear()", status == "bad" ? animation_dur * 2 : animation_dur);
+          $("#status").removeClass("pending good bad").addClass(status + " visible").html(text);
+          status_shown = true;
+          current_status = status;
+        },
+
+        mark_pending: function() {
+          // $(".loader").show(250);
+          $(".loader").show();
+        },
+        mark_ready: function() {
+          // $(".loader").hide(250);
+          $(".loader").hide();
         }
+      },
 
-        // Figure out name parts
-        parts = name.match(keyBreaker);
-        if (!parts.length) {
-          parts = [name];
+      dialogs: {
+      },
+
+      report_error: function(err_msg) {
+        ui.status.show("A script error has occured, please try to reproduce the bug and report it.", "bad");
+        console.log("Script error:");
+        console.log(err_msg);
+        try {
+          throw new Error('');
+        } catch (e) {
+          console.log(e.stack);
         }
+      },
 
-        // Convert the value
-        if (convert) {
-          value = convertValue(value, $this);
-
-          if (value === undefined)
-            return;
+      process_hooks: function() {
+        for (var i = 0; i < ui.hooks.length; ++i) {
+          ui.hooks[i]();
         }
+      }
+    }
+  }
 
-        // Assign data recursively
-        nestData($this, type, data, parts, value, seen);
+  // globally accessible instance
+  ui = new algol_ui();
 
-      });
-
-      return data;
+  $(function() {
+    // foreach(ui.hooks, function(hook) { hook(); });
+    for (var i = 0; i < ui.hooks.length; ++i) {
+      ui.hooks[i]();
     }
   });
+});
+/*
 
-})(this.$);
-define("ext/jquery", function(){});
+Copyright (C) 2011 by Yehuda Katz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+*/
+
+// lib/handlebars/browser-prefix.js
+var Handlebars = {};
+
+(function(Handlebars, undefined) {
+;
+// lib/handlebars/base.js
+
+Handlebars.VERSION = "1.0.0";
+Handlebars.COMPILER_REVISION = 4;
+
+Handlebars.REVISION_CHANGES = {
+  1: '<= 1.0.rc.2', // 1.0.rc.2 is actually rev2 but doesn't report it
+  2: '== 1.0.0-rc.3',
+  3: '== 1.0.0-rc.4',
+  4: '>= 1.0.0'
+};
+
+Handlebars.helpers  = {};
+Handlebars.partials = {};
+
+var toString = Object.prototype.toString,
+    functionType = '[object Function]',
+    objectType = '[object Object]';
+
+Handlebars.registerHelper = function(name, fn, inverse) {
+  if (toString.call(name) === objectType) {
+    if (inverse || fn) { throw new Handlebars.Exception('Arg not supported with multiple helpers'); }
+    Handlebars.Utils.extend(this.helpers, name);
+  } else {
+    if (inverse) { fn.not = inverse; }
+    this.helpers[name] = fn;
+  }
+};
+
+Handlebars.registerPartial = function(name, str) {
+  if (toString.call(name) === objectType) {
+    Handlebars.Utils.extend(this.partials,  name);
+  } else {
+    this.partials[name] = str;
+  }
+};
+
+Handlebars.registerHelper('helperMissing', function(arg) {
+  if(arguments.length === 2) {
+    return undefined;
+  } else {
+    throw new Error("Missing helper: '" + arg + "'");
+  }
+});
+
+Handlebars.registerHelper('blockHelperMissing', function(context, options) {
+  var inverse = options.inverse || function() {}, fn = options.fn;
+
+  var type = toString.call(context);
+
+  if(type === functionType) { context = context.call(this); }
+
+  if(context === true) {
+    return fn(this);
+  } else if(context === false || context == null) {
+    return inverse(this);
+  } else if(type === "[object Array]") {
+    if(context.length > 0) {
+      return Handlebars.helpers.each(context, options);
+    } else {
+      return inverse(this);
+    }
+  } else {
+    return fn(context);
+  }
+});
+
+Handlebars.K = function() {};
+
+Handlebars.createFrame = Object.create || function(object) {
+  Handlebars.K.prototype = object;
+  var obj = new Handlebars.K();
+  Handlebars.K.prototype = null;
+  return obj;
+};
+
+Handlebars.logger = {
+  DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3, level: 3,
+
+  methodMap: {0: 'debug', 1: 'info', 2: 'warn', 3: 'error'},
+
+  // can be overridden in the host environment
+  log: function(level, obj) {
+    if (Handlebars.logger.level <= level) {
+      var method = Handlebars.logger.methodMap[level];
+      if (typeof console !== 'undefined' && console[method]) {
+        console[method].call(console, obj);
+      }
+    }
+  }
+};
+
+Handlebars.log = function(level, obj) { Handlebars.logger.log(level, obj); };
+
+Handlebars.registerHelper('each', function(context, options) {
+  var fn = options.fn, inverse = options.inverse;
+  var i = 0, ret = "", data;
+
+  var type = toString.call(context);
+  if(type === functionType) { context = context.call(this); }
+
+  if (options.data) {
+    data = Handlebars.createFrame(options.data);
+  }
+
+  if(context && typeof context === 'object') {
+    if(context instanceof Array){
+      for(var j = context.length; i<j; i++) {
+        if (data) { data.index = i; }
+        ret = ret + fn(context[i], { data: data });
+      }
+    } else {
+      for(var key in context) {
+        if(context.hasOwnProperty(key)) {
+          if(data) { data.key = key; }
+          ret = ret + fn(context[key], {data: data});
+          i++;
+        }
+      }
+    }
+  }
+
+  if(i === 0){
+    ret = inverse(this);
+  }
+
+  return ret;
+});
+
+Handlebars.registerHelper('if', function(conditional, options) {
+  var type = toString.call(conditional);
+  if(type === functionType) { conditional = conditional.call(this); }
+
+  if(!conditional || Handlebars.Utils.isEmpty(conditional)) {
+    return options.inverse(this);
+  } else {
+    return options.fn(this);
+  }
+});
+
+Handlebars.registerHelper('unless', function(conditional, options) {
+  return Handlebars.helpers['if'].call(this, conditional, {fn: options.inverse, inverse: options.fn});
+});
+
+Handlebars.registerHelper('with', function(context, options) {
+  var type = toString.call(context);
+  if(type === functionType) { context = context.call(this); }
+
+  if (!Handlebars.Utils.isEmpty(context)) return options.fn(context);
+});
+
+Handlebars.registerHelper('log', function(context, options) {
+  var level = options.data && options.data.level != null ? parseInt(options.data.level, 10) : 1;
+  Handlebars.log(level, context);
+});
+;
+// lib/handlebars/compiler/parser.js
+/* Jison generated parser */
+var handlebars = (function(){
+var parser = {trace: function trace() { },
+yy: {},
+symbols_: {"error":2,"root":3,"program":4,"EOF":5,"simpleInverse":6,"statements":7,"statement":8,"openInverse":9,"closeBlock":10,"openBlock":11,"mustache":12,"partial":13,"CONTENT":14,"COMMENT":15,"OPEN_BLOCK":16,"inMustache":17,"CLOSE":18,"OPEN_INVERSE":19,"OPEN_ENDBLOCK":20,"path":21,"OPEN":22,"OPEN_UNESCAPED":23,"CLOSE_UNESCAPED":24,"OPEN_PARTIAL":25,"partialName":26,"params":27,"hash":28,"dataName":29,"param":30,"STRING":31,"INTEGER":32,"BOOLEAN":33,"hashSegments":34,"hashSegment":35,"ID":36,"EQUALS":37,"DATA":38,"pathSegments":39,"SEP":40,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",14:"CONTENT",15:"COMMENT",16:"OPEN_BLOCK",18:"CLOSE",19:"OPEN_INVERSE",20:"OPEN_ENDBLOCK",22:"OPEN",23:"OPEN_UNESCAPED",24:"CLOSE_UNESCAPED",25:"OPEN_PARTIAL",31:"STRING",32:"INTEGER",33:"BOOLEAN",36:"ID",37:"EQUALS",38:"DATA",40:"SEP"},
+productions_: [0,[3,2],[4,2],[4,3],[4,2],[4,1],[4,1],[4,0],[7,1],[7,2],[8,3],[8,3],[8,1],[8,1],[8,1],[8,1],[11,3],[9,3],[10,3],[12,3],[12,3],[13,3],[13,4],[6,2],[17,3],[17,2],[17,2],[17,1],[17,1],[27,2],[27,1],[30,1],[30,1],[30,1],[30,1],[30,1],[28,1],[34,2],[34,1],[35,3],[35,3],[35,3],[35,3],[35,3],[26,1],[26,1],[26,1],[29,2],[21,1],[39,3],[39,1]],
+performAction: function anonymous(yytext,yyleng,yylineno,yy,yystate,$$,_$) {
+
+var $0 = $$.length - 1;
+switch (yystate) {
+case 1: return $$[$0-1];
+break;
+case 2: this.$ = new yy.ProgramNode([], $$[$0]);
+break;
+case 3: this.$ = new yy.ProgramNode($$[$0-2], $$[$0]);
+break;
+case 4: this.$ = new yy.ProgramNode($$[$0-1], []);
+break;
+case 5: this.$ = new yy.ProgramNode($$[$0]);
+break;
+case 6: this.$ = new yy.ProgramNode([], []);
+break;
+case 7: this.$ = new yy.ProgramNode([]);
+break;
+case 8: this.$ = [$$[$0]];
+break;
+case 9: $$[$0-1].push($$[$0]); this.$ = $$[$0-1];
+break;
+case 10: this.$ = new yy.BlockNode($$[$0-2], $$[$0-1].inverse, $$[$0-1], $$[$0]);
+break;
+case 11: this.$ = new yy.BlockNode($$[$0-2], $$[$0-1], $$[$0-1].inverse, $$[$0]);
+break;
+case 12: this.$ = $$[$0];
+break;
+case 13: this.$ = $$[$0];
+break;
+case 14: this.$ = new yy.ContentNode($$[$0]);
+break;
+case 15: this.$ = new yy.CommentNode($$[$0]);
+break;
+case 16: this.$ = new yy.MustacheNode($$[$0-1][0], $$[$0-1][1]);
+break;
+case 17: this.$ = new yy.MustacheNode($$[$0-1][0], $$[$0-1][1]);
+break;
+case 18: this.$ = $$[$0-1];
+break;
+case 19:
+    // Parsing out the '&' escape token at this level saves ~500 bytes after min due to the removal of one parser node.
+    this.$ = new yy.MustacheNode($$[$0-1][0], $$[$0-1][1], $$[$0-2][2] === '&');
+
+break;
+case 20: this.$ = new yy.MustacheNode($$[$0-1][0], $$[$0-1][1], true);
+break;
+case 21: this.$ = new yy.PartialNode($$[$0-1]);
+break;
+case 22: this.$ = new yy.PartialNode($$[$0-2], $$[$0-1]);
+break;
+case 23:
+break;
+case 24: this.$ = [[$$[$0-2]].concat($$[$0-1]), $$[$0]];
+break;
+case 25: this.$ = [[$$[$0-1]].concat($$[$0]), null];
+break;
+case 26: this.$ = [[$$[$0-1]], $$[$0]];
+break;
+case 27: this.$ = [[$$[$0]], null];
+break;
+case 28: this.$ = [[$$[$0]], null];
+break;
+case 29: $$[$0-1].push($$[$0]); this.$ = $$[$0-1];
+break;
+case 30: this.$ = [$$[$0]];
+break;
+case 31: this.$ = $$[$0];
+break;
+case 32: this.$ = new yy.StringNode($$[$0]);
+break;
+case 33: this.$ = new yy.IntegerNode($$[$0]);
+break;
+case 34: this.$ = new yy.BooleanNode($$[$0]);
+break;
+case 35: this.$ = $$[$0];
+break;
+case 36: this.$ = new yy.HashNode($$[$0]);
+break;
+case 37: $$[$0-1].push($$[$0]); this.$ = $$[$0-1];
+break;
+case 38: this.$ = [$$[$0]];
+break;
+case 39: this.$ = [$$[$0-2], $$[$0]];
+break;
+case 40: this.$ = [$$[$0-2], new yy.StringNode($$[$0])];
+break;
+case 41: this.$ = [$$[$0-2], new yy.IntegerNode($$[$0])];
+break;
+case 42: this.$ = [$$[$0-2], new yy.BooleanNode($$[$0])];
+break;
+case 43: this.$ = [$$[$0-2], $$[$0]];
+break;
+case 44: this.$ = new yy.PartialNameNode($$[$0]);
+break;
+case 45: this.$ = new yy.PartialNameNode(new yy.StringNode($$[$0]));
+break;
+case 46: this.$ = new yy.PartialNameNode(new yy.IntegerNode($$[$0]));
+break;
+case 47: this.$ = new yy.DataNode($$[$0]);
+break;
+case 48: this.$ = new yy.IdNode($$[$0]);
+break;
+case 49: $$[$0-2].push({part: $$[$0], separator: $$[$0-1]}); this.$ = $$[$0-2];
+break;
+case 50: this.$ = [{part: $$[$0]}];
+break;
+}
+},
+table: [{3:1,4:2,5:[2,7],6:3,7:4,8:6,9:7,11:8,12:9,13:10,14:[1,11],15:[1,12],16:[1,13],19:[1,5],22:[1,14],23:[1,15],25:[1,16]},{1:[3]},{5:[1,17]},{5:[2,6],7:18,8:6,9:7,11:8,12:9,13:10,14:[1,11],15:[1,12],16:[1,13],19:[1,19],20:[2,6],22:[1,14],23:[1,15],25:[1,16]},{5:[2,5],6:20,8:21,9:7,11:8,12:9,13:10,14:[1,11],15:[1,12],16:[1,13],19:[1,5],20:[2,5],22:[1,14],23:[1,15],25:[1,16]},{17:23,18:[1,22],21:24,29:25,36:[1,28],38:[1,27],39:26},{5:[2,8],14:[2,8],15:[2,8],16:[2,8],19:[2,8],20:[2,8],22:[2,8],23:[2,8],25:[2,8]},{4:29,6:3,7:4,8:6,9:7,11:8,12:9,13:10,14:[1,11],15:[1,12],16:[1,13],19:[1,5],20:[2,7],22:[1,14],23:[1,15],25:[1,16]},{4:30,6:3,7:4,8:6,9:7,11:8,12:9,13:10,14:[1,11],15:[1,12],16:[1,13],19:[1,5],20:[2,7],22:[1,14],23:[1,15],25:[1,16]},{5:[2,12],14:[2,12],15:[2,12],16:[2,12],19:[2,12],20:[2,12],22:[2,12],23:[2,12],25:[2,12]},{5:[2,13],14:[2,13],15:[2,13],16:[2,13],19:[2,13],20:[2,13],22:[2,13],23:[2,13],25:[2,13]},{5:[2,14],14:[2,14],15:[2,14],16:[2,14],19:[2,14],20:[2,14],22:[2,14],23:[2,14],25:[2,14]},{5:[2,15],14:[2,15],15:[2,15],16:[2,15],19:[2,15],20:[2,15],22:[2,15],23:[2,15],25:[2,15]},{17:31,21:24,29:25,36:[1,28],38:[1,27],39:26},{17:32,21:24,29:25,36:[1,28],38:[1,27],39:26},{17:33,21:24,29:25,36:[1,28],38:[1,27],39:26},{21:35,26:34,31:[1,36],32:[1,37],36:[1,28],39:26},{1:[2,1]},{5:[2,2],8:21,9:7,11:8,12:9,13:10,14:[1,11],15:[1,12],16:[1,13],19:[1,19],20:[2,2],22:[1,14],23:[1,15],25:[1,16]},{17:23,21:24,29:25,36:[1,28],38:[1,27],39:26},{5:[2,4],7:38,8:6,9:7,11:8,12:9,13:10,14:[1,11],15:[1,12],16:[1,13],19:[1,19],20:[2,4],22:[1,14],23:[1,15],25:[1,16]},{5:[2,9],14:[2,9],15:[2,9],16:[2,9],19:[2,9],20:[2,9],22:[2,9],23:[2,9],25:[2,9]},{5:[2,23],14:[2,23],15:[2,23],16:[2,23],19:[2,23],20:[2,23],22:[2,23],23:[2,23],25:[2,23]},{18:[1,39]},{18:[2,27],21:44,24:[2,27],27:40,28:41,29:48,30:42,31:[1,45],32:[1,46],33:[1,47],34:43,35:49,36:[1,50],38:[1,27],39:26},{18:[2,28],24:[2,28]},{18:[2,48],24:[2,48],31:[2,48],32:[2,48],33:[2,48],36:[2,48],38:[2,48],40:[1,51]},{21:52,36:[1,28],39:26},{18:[2,50],24:[2,50],31:[2,50],32:[2,50],33:[2,50],36:[2,50],38:[2,50],40:[2,50]},{10:53,20:[1,54]},{10:55,20:[1,54]},{18:[1,56]},{18:[1,57]},{24:[1,58]},{18:[1,59],21:60,36:[1,28],39:26},{18:[2,44],36:[2,44]},{18:[2,45],36:[2,45]},{18:[2,46],36:[2,46]},{5:[2,3],8:21,9:7,11:8,12:9,13:10,14:[1,11],15:[1,12],16:[1,13],19:[1,19],20:[2,3],22:[1,14],23:[1,15],25:[1,16]},{14:[2,17],15:[2,17],16:[2,17],19:[2,17],20:[2,17],22:[2,17],23:[2,17],25:[2,17]},{18:[2,25],21:44,24:[2,25],28:61,29:48,30:62,31:[1,45],32:[1,46],33:[1,47],34:43,35:49,36:[1,50],38:[1,27],39:26},{18:[2,26],24:[2,26]},{18:[2,30],24:[2,30],31:[2,30],32:[2,30],33:[2,30],36:[2,30],38:[2,30]},{18:[2,36],24:[2,36],35:63,36:[1,64]},{18:[2,31],24:[2,31],31:[2,31],32:[2,31],33:[2,31],36:[2,31],38:[2,31]},{18:[2,32],24:[2,32],31:[2,32],32:[2,32],33:[2,32],36:[2,32],38:[2,32]},{18:[2,33],24:[2,33],31:[2,33],32:[2,33],33:[2,33],36:[2,33],38:[2,33]},{18:[2,34],24:[2,34],31:[2,34],32:[2,34],33:[2,34],36:[2,34],38:[2,34]},{18:[2,35],24:[2,35],31:[2,35],32:[2,35],33:[2,35],36:[2,35],38:[2,35]},{18:[2,38],24:[2,38],36:[2,38]},{18:[2,50],24:[2,50],31:[2,50],32:[2,50],33:[2,50],36:[2,50],37:[1,65],38:[2,50],40:[2,50]},{36:[1,66]},{18:[2,47],24:[2,47],31:[2,47],32:[2,47],33:[2,47],36:[2,47],38:[2,47]},{5:[2,10],14:[2,10],15:[2,10],16:[2,10],19:[2,10],20:[2,10],22:[2,10],23:[2,10],25:[2,10]},{21:67,36:[1,28],39:26},{5:[2,11],14:[2,11],15:[2,11],16:[2,11],19:[2,11],20:[2,11],22:[2,11],23:[2,11],25:[2,11]},{14:[2,16],15:[2,16],16:[2,16],19:[2,16],20:[2,16],22:[2,16],23:[2,16],25:[2,16]},{5:[2,19],14:[2,19],15:[2,19],16:[2,19],19:[2,19],20:[2,19],22:[2,19],23:[2,19],25:[2,19]},{5:[2,20],14:[2,20],15:[2,20],16:[2,20],19:[2,20],20:[2,20],22:[2,20],23:[2,20],25:[2,20]},{5:[2,21],14:[2,21],15:[2,21],16:[2,21],19:[2,21],20:[2,21],22:[2,21],23:[2,21],25:[2,21]},{18:[1,68]},{18:[2,24],24:[2,24]},{18:[2,29],24:[2,29],31:[2,29],32:[2,29],33:[2,29],36:[2,29],38:[2,29]},{18:[2,37],24:[2,37],36:[2,37]},{37:[1,65]},{21:69,29:73,31:[1,70],32:[1,71],33:[1,72],36:[1,28],38:[1,27],39:26},{18:[2,49],24:[2,49],31:[2,49],32:[2,49],33:[2,49],36:[2,49],38:[2,49],40:[2,49]},{18:[1,74]},{5:[2,22],14:[2,22],15:[2,22],16:[2,22],19:[2,22],20:[2,22],22:[2,22],23:[2,22],25:[2,22]},{18:[2,39],24:[2,39],36:[2,39]},{18:[2,40],24:[2,40],36:[2,40]},{18:[2,41],24:[2,41],36:[2,41]},{18:[2,42],24:[2,42],36:[2,42]},{18:[2,43],24:[2,43],36:[2,43]},{5:[2,18],14:[2,18],15:[2,18],16:[2,18],19:[2,18],20:[2,18],22:[2,18],23:[2,18],25:[2,18]}],
+defaultActions: {17:[2,1]},
+parseError: function parseError(str, hash) {
+    throw new Error(str);
+},
+parse: function parse(input) {
+    var self = this, stack = [0], vstack = [null], lstack = [], table = this.table, yytext = "", yylineno = 0, yyleng = 0, recovering = 0, TERROR = 2, EOF = 1;
+    this.lexer.setInput(input);
+    this.lexer.yy = this.yy;
+    this.yy.lexer = this.lexer;
+    this.yy.parser = this;
+    if (typeof this.lexer.yylloc == "undefined")
+        this.lexer.yylloc = {};
+    var yyloc = this.lexer.yylloc;
+    lstack.push(yyloc);
+    var ranges = this.lexer.options && this.lexer.options.ranges;
+    if (typeof this.yy.parseError === "function")
+        this.parseError = this.yy.parseError;
+    function popStack(n) {
+        stack.length = stack.length - 2 * n;
+        vstack.length = vstack.length - n;
+        lstack.length = lstack.length - n;
+    }
+    function lex() {
+        var token;
+        token = self.lexer.lex() || 1;
+        if (typeof token !== "number") {
+            token = self.symbols_[token] || token;
+        }
+        return token;
+    }
+    var symbol, preErrorSymbol, state, action, a, r, yyval = {}, p, len, newState, expected;
+    while (true) {
+        state = stack[stack.length - 1];
+        if (this.defaultActions[state]) {
+            action = this.defaultActions[state];
+        } else {
+            if (symbol === null || typeof symbol == "undefined") {
+                symbol = lex();
+            }
+            action = table[state] && table[state][symbol];
+        }
+        if (typeof action === "undefined" || !action.length || !action[0]) {
+            var errStr = "";
+            if (!recovering) {
+                expected = [];
+                for (p in table[state])
+                    if (this.terminals_[p] && p > 2) {
+                        expected.push("'" + this.terminals_[p] + "'");
+                    }
+                if (this.lexer.showPosition) {
+                    errStr = "Parse error on line " + (yylineno + 1) + ":\n" + this.lexer.showPosition() + "\nExpecting " + expected.join(", ") + ", got '" + (this.terminals_[symbol] || symbol) + "'";
+                } else {
+                    errStr = "Parse error on line " + (yylineno + 1) + ": Unexpected " + (symbol == 1?"end of input":"'" + (this.terminals_[symbol] || symbol) + "'");
+                }
+                this.parseError(errStr, {text: this.lexer.match, token: this.terminals_[symbol] || symbol, line: this.lexer.yylineno, loc: yyloc, expected: expected});
+            }
+        }
+        if (action[0] instanceof Array && action.length > 1) {
+            throw new Error("Parse Error: multiple actions possible at state: " + state + ", token: " + symbol);
+        }
+        switch (action[0]) {
+        case 1:
+            stack.push(symbol);
+            vstack.push(this.lexer.yytext);
+            lstack.push(this.lexer.yylloc);
+            stack.push(action[1]);
+            symbol = null;
+            if (!preErrorSymbol) {
+                yyleng = this.lexer.yyleng;
+                yytext = this.lexer.yytext;
+                yylineno = this.lexer.yylineno;
+                yyloc = this.lexer.yylloc;
+                if (recovering > 0)
+                    recovering--;
+            } else {
+                symbol = preErrorSymbol;
+                preErrorSymbol = null;
+            }
+            break;
+        case 2:
+            len = this.productions_[action[1]][1];
+            yyval.$ = vstack[vstack.length - len];
+            yyval._$ = {first_line: lstack[lstack.length - (len || 1)].first_line, last_line: lstack[lstack.length - 1].last_line, first_column: lstack[lstack.length - (len || 1)].first_column, last_column: lstack[lstack.length - 1].last_column};
+            if (ranges) {
+                yyval._$.range = [lstack[lstack.length - (len || 1)].range[0], lstack[lstack.length - 1].range[1]];
+            }
+            r = this.performAction.call(yyval, yytext, yyleng, yylineno, this.yy, action[1], vstack, lstack);
+            if (typeof r !== "undefined") {
+                return r;
+            }
+            if (len) {
+                stack = stack.slice(0, -1 * len * 2);
+                vstack = vstack.slice(0, -1 * len);
+                lstack = lstack.slice(0, -1 * len);
+            }
+            stack.push(this.productions_[action[1]][0]);
+            vstack.push(yyval.$);
+            lstack.push(yyval._$);
+            newState = table[stack[stack.length - 2]][stack[stack.length - 1]];
+            stack.push(newState);
+            break;
+        case 3:
+            return true;
+        }
+    }
+    return true;
+}
+};
+/* Jison generated lexer */
+var lexer = (function(){
+var lexer = ({EOF:1,
+parseError:function parseError(str, hash) {
+        if (this.yy.parser) {
+            this.yy.parser.parseError(str, hash);
+        } else {
+            throw new Error(str);
+        }
+    },
+setInput:function (input) {
+        this._input = input;
+        this._more = this._less = this.done = false;
+        this.yylineno = this.yyleng = 0;
+        this.yytext = this.matched = this.match = '';
+        this.conditionStack = ['INITIAL'];
+        this.yylloc = {first_line:1,first_column:0,last_line:1,last_column:0};
+        if (this.options.ranges) this.yylloc.range = [0,0];
+        this.offset = 0;
+        return this;
+    },
+input:function () {
+        var ch = this._input[0];
+        this.yytext += ch;
+        this.yyleng++;
+        this.offset++;
+        this.match += ch;
+        this.matched += ch;
+        var lines = ch.match(/(?:\r\n?|\n).*/g);
+        if (lines) {
+            this.yylineno++;
+            this.yylloc.last_line++;
+        } else {
+            this.yylloc.last_column++;
+        }
+        if (this.options.ranges) this.yylloc.range[1]++;
+
+        this._input = this._input.slice(1);
+        return ch;
+    },
+unput:function (ch) {
+        var len = ch.length;
+        var lines = ch.split(/(?:\r\n?|\n)/g);
+
+        this._input = ch + this._input;
+        this.yytext = this.yytext.substr(0, this.yytext.length-len-1);
+        //this.yyleng -= len;
+        this.offset -= len;
+        var oldLines = this.match.split(/(?:\r\n?|\n)/g);
+        this.match = this.match.substr(0, this.match.length-1);
+        this.matched = this.matched.substr(0, this.matched.length-1);
+
+        if (lines.length-1) this.yylineno -= lines.length-1;
+        var r = this.yylloc.range;
+
+        this.yylloc = {first_line: this.yylloc.first_line,
+          last_line: this.yylineno+1,
+          first_column: this.yylloc.first_column,
+          last_column: lines ?
+              (lines.length === oldLines.length ? this.yylloc.first_column : 0) + oldLines[oldLines.length - lines.length].length - lines[0].length:
+              this.yylloc.first_column - len
+          };
+
+        if (this.options.ranges) {
+            this.yylloc.range = [r[0], r[0] + this.yyleng - len];
+        }
+        return this;
+    },
+more:function () {
+        this._more = true;
+        return this;
+    },
+less:function (n) {
+        this.unput(this.match.slice(n));
+    },
+pastInput:function () {
+        var past = this.matched.substr(0, this.matched.length - this.match.length);
+        return (past.length > 20 ? '...':'') + past.substr(-20).replace(/\n/g, "");
+    },
+upcomingInput:function () {
+        var next = this.match;
+        if (next.length < 20) {
+            next += this._input.substr(0, 20-next.length);
+        }
+        return (next.substr(0,20)+(next.length > 20 ? '...':'')).replace(/\n/g, "");
+    },
+showPosition:function () {
+        var pre = this.pastInput();
+        var c = new Array(pre.length + 1).join("-");
+        return pre + this.upcomingInput() + "\n" + c+"^";
+    },
+next:function () {
+        if (this.done) {
+            return this.EOF;
+        }
+        if (!this._input) this.done = true;
+
+        var token,
+            match,
+            tempMatch,
+            index,
+            col,
+            lines;
+        if (!this._more) {
+            this.yytext = '';
+            this.match = '';
+        }
+        var rules = this._currentRules();
+        for (var i=0;i < rules.length; i++) {
+            tempMatch = this._input.match(this.rules[rules[i]]);
+            if (tempMatch && (!match || tempMatch[0].length > match[0].length)) {
+                match = tempMatch;
+                index = i;
+                if (!this.options.flex) break;
+            }
+        }
+        if (match) {
+            lines = match[0].match(/(?:\r\n?|\n).*/g);
+            if (lines) this.yylineno += lines.length;
+            this.yylloc = {first_line: this.yylloc.last_line,
+                           last_line: this.yylineno+1,
+                           first_column: this.yylloc.last_column,
+                           last_column: lines ? lines[lines.length-1].length-lines[lines.length-1].match(/\r?\n?/)[0].length : this.yylloc.last_column + match[0].length};
+            this.yytext += match[0];
+            this.match += match[0];
+            this.matches = match;
+            this.yyleng = this.yytext.length;
+            if (this.options.ranges) {
+                this.yylloc.range = [this.offset, this.offset += this.yyleng];
+            }
+            this._more = false;
+            this._input = this._input.slice(match[0].length);
+            this.matched += match[0];
+            token = this.performAction.call(this, this.yy, this, rules[index],this.conditionStack[this.conditionStack.length-1]);
+            if (this.done && this._input) this.done = false;
+            if (token) return token;
+            else return;
+        }
+        if (this._input === "") {
+            return this.EOF;
+        } else {
+            return this.parseError('Lexical error on line '+(this.yylineno+1)+'. Unrecognized text.\n'+this.showPosition(),
+                    {text: "", token: null, line: this.yylineno});
+        }
+    },
+lex:function lex() {
+        var r = this.next();
+        if (typeof r !== 'undefined') {
+            return r;
+        } else {
+            return this.lex();
+        }
+    },
+begin:function begin(condition) {
+        this.conditionStack.push(condition);
+    },
+popState:function popState() {
+        return this.conditionStack.pop();
+    },
+_currentRules:function _currentRules() {
+        return this.conditions[this.conditionStack[this.conditionStack.length-1]].rules;
+    },
+topState:function () {
+        return this.conditionStack[this.conditionStack.length-2];
+    },
+pushState:function begin(condition) {
+        this.begin(condition);
+    }});
+lexer.options = {};
+lexer.performAction = function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
+
+var YYSTATE=YY_START
+switch($avoiding_name_collisions) {
+case 0: yy_.yytext = "\\"; return 14;
+break;
+case 1:
+                                   if(yy_.yytext.slice(-1) !== "\\") this.begin("mu");
+                                   if(yy_.yytext.slice(-1) === "\\") yy_.yytext = yy_.yytext.substr(0,yy_.yyleng-1), this.begin("emu");
+                                   if(yy_.yytext) return 14;
+
+break;
+case 2: return 14;
+break;
+case 3:
+                                   if(yy_.yytext.slice(-1) !== "\\") this.popState();
+                                   if(yy_.yytext.slice(-1) === "\\") yy_.yytext = yy_.yytext.substr(0,yy_.yyleng-1);
+                                   return 14;
+
+break;
+case 4: yy_.yytext = yy_.yytext.substr(0, yy_.yyleng-4); this.popState(); return 15;
+break;
+case 5: return 25;
+break;
+case 6: return 16;
+break;
+case 7: return 20;
+break;
+case 8: return 19;
+break;
+case 9: return 19;
+break;
+case 10: return 23;
+break;
+case 11: return 22;
+break;
+case 12: this.popState(); this.begin('com');
+break;
+case 13: yy_.yytext = yy_.yytext.substr(3,yy_.yyleng-5); this.popState(); return 15;
+break;
+case 14: return 22;
+break;
+case 15: return 37;
+break;
+case 16: return 36;
+break;
+case 17: return 36;
+break;
+case 18: return 40;
+break;
+case 19: /*ignore whitespace*/
+break;
+case 20: this.popState(); return 24;
+break;
+case 21: this.popState(); return 18;
+break;
+case 22: yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2).replace(/\\"/g,'"'); return 31;
+break;
+case 23: yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2).replace(/\\'/g,"'"); return 31;
+break;
+case 24: return 38;
+break;
+case 25: return 33;
+break;
+case 26: return 33;
+break;
+case 27: return 32;
+break;
+case 28: return 36;
+break;
+case 29: yy_.yytext = yy_.yytext.substr(1, yy_.yyleng-2); return 36;
+break;
+case 30: return 'INVALID';
+break;
+case 31: return 5;
+break;
+}
+};
+lexer.rules = [/^(?:\\\\(?=(\{\{)))/,/^(?:[^\x00]*?(?=(\{\{)))/,/^(?:[^\x00]+)/,/^(?:[^\x00]{2,}?(?=(\{\{|$)))/,/^(?:[\s\S]*?--\}\})/,/^(?:\{\{>)/,/^(?:\{\{#)/,/^(?:\{\{\/)/,/^(?:\{\{\^)/,/^(?:\{\{\s*else\b)/,/^(?:\{\{\{)/,/^(?:\{\{&)/,/^(?:\{\{!--)/,/^(?:\{\{![\s\S]*?\}\})/,/^(?:\{\{)/,/^(?:=)/,/^(?:\.(?=[}\/ ]))/,/^(?:\.\.)/,/^(?:[\/.])/,/^(?:\s+)/,/^(?:\}\}\})/,/^(?:\}\})/,/^(?:"(\\["]|[^"])*")/,/^(?:'(\\[']|[^'])*')/,/^(?:@)/,/^(?:true(?=[}\s]))/,/^(?:false(?=[}\s]))/,/^(?:-?[0-9]+(?=[}\s]))/,/^(?:[^\s!"#%-,\.\/;->@\[-\^`\{-~]+(?=[=}\s\/.]))/,/^(?:\[[^\]]*\])/,/^(?:.)/,/^(?:$)/];
+lexer.conditions = {"mu":{"rules":[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],"inclusive":false},"emu":{"rules":[3],"inclusive":false},"com":{"rules":[4],"inclusive":false},"INITIAL":{"rules":[0,1,2,31],"inclusive":true}};
+return lexer;})()
+parser.lexer = lexer;
+function Parser () { this.yy = {}; }Parser.prototype = parser;parser.Parser = Parser;
+return new Parser;
+})();;
+// lib/handlebars/compiler/base.js
+
+Handlebars.Parser = handlebars;
+
+Handlebars.parse = function(input) {
+
+  // Just return if an already-compile AST was passed in.
+  if(input.constructor === Handlebars.AST.ProgramNode) { return input; }
+
+  Handlebars.Parser.yy = Handlebars.AST;
+  return Handlebars.Parser.parse(input);
+};
+;
+// lib/handlebars/compiler/ast.js
+Handlebars.AST = {};
+
+Handlebars.AST.ProgramNode = function(statements, inverse) {
+  this.type = "program";
+  this.statements = statements;
+  if(inverse) { this.inverse = new Handlebars.AST.ProgramNode(inverse); }
+};
+
+Handlebars.AST.MustacheNode = function(rawParams, hash, unescaped) {
+  this.type = "mustache";
+  this.escaped = !unescaped;
+  this.hash = hash;
+
+  var id = this.id = rawParams[0];
+  var params = this.params = rawParams.slice(1);
+
+  // a mustache is an eligible helper if:
+  // * its id is simple (a single part, not `this` or `..`)
+  var eligibleHelper = this.eligibleHelper = id.isSimple;
+
+  // a mustache is definitely a helper if:
+  // * it is an eligible helper, and
+  // * it has at least one parameter or hash segment
+  this.isHelper = eligibleHelper && (params.length || hash);
+
+  // if a mustache is an eligible helper but not a definite
+  // helper, it is ambiguous, and will be resolved in a later
+  // pass or at runtime.
+};
+
+Handlebars.AST.PartialNode = function(partialName, context) {
+  this.type         = "partial";
+  this.partialName  = partialName;
+  this.context      = context;
+};
+
+Handlebars.AST.BlockNode = function(mustache, program, inverse, close) {
+  var verifyMatch = function(open, close) {
+    if(open.original !== close.original) {
+      throw new Handlebars.Exception(open.original + " doesn't match " + close.original);
+    }
+  };
+
+  verifyMatch(mustache.id, close);
+  this.type = "block";
+  this.mustache = mustache;
+  this.program  = program;
+  this.inverse  = inverse;
+
+  if (this.inverse && !this.program) {
+    this.isInverse = true;
+  }
+};
+
+Handlebars.AST.ContentNode = function(string) {
+  this.type = "content";
+  this.string = string;
+};
+
+Handlebars.AST.HashNode = function(pairs) {
+  this.type = "hash";
+  this.pairs = pairs;
+};
+
+Handlebars.AST.IdNode = function(parts) {
+  this.type = "ID";
+
+  var original = "",
+      dig = [],
+      depth = 0;
+
+  for(var i=0,l=parts.length; i<l; i++) {
+    var part = parts[i].part;
+    original += (parts[i].separator || '') + part;
+
+    if (part === ".." || part === "." || part === "this") {
+      if (dig.length > 0) { throw new Handlebars.Exception("Invalid path: " + original); }
+      else if (part === "..") { depth++; }
+      else { this.isScoped = true; }
+    }
+    else { dig.push(part); }
+  }
+
+  this.original = original;
+  this.parts    = dig;
+  this.string   = dig.join('.');
+  this.depth    = depth;
+
+  // an ID is simple if it only has one part, and that part is not
+  // `..` or `this`.
+  this.isSimple = parts.length === 1 && !this.isScoped && depth === 0;
+
+  this.stringModeValue = this.string;
+};
+
+Handlebars.AST.PartialNameNode = function(name) {
+  this.type = "PARTIAL_NAME";
+  this.name = name.original;
+};
+
+Handlebars.AST.DataNode = function(id) {
+  this.type = "DATA";
+  this.id = id;
+};
+
+Handlebars.AST.StringNode = function(string) {
+  this.type = "STRING";
+  this.original =
+    this.string =
+    this.stringModeValue = string;
+};
+
+Handlebars.AST.IntegerNode = function(integer) {
+  this.type = "INTEGER";
+  this.original =
+    this.integer = integer;
+  this.stringModeValue = Number(integer);
+};
+
+Handlebars.AST.BooleanNode = function(bool) {
+  this.type = "BOOLEAN";
+  this.bool = bool;
+  this.stringModeValue = bool === "true";
+};
+
+Handlebars.AST.CommentNode = function(comment) {
+  this.type = "comment";
+  this.comment = comment;
+};
+;
+// lib/handlebars/utils.js
+
+var errorProps = ['description', 'fileName', 'lineNumber', 'message', 'name', 'number', 'stack'];
+
+Handlebars.Exception = function(message) {
+  var tmp = Error.prototype.constructor.apply(this, arguments);
+
+  // Unfortunately errors are not enumerable in Chrome (at least), so `for prop in tmp` doesn't work.
+  for (var idx = 0; idx < errorProps.length; idx++) {
+    this[errorProps[idx]] = tmp[errorProps[idx]];
+  }
+};
+Handlebars.Exception.prototype = new Error();
+
+// Build out our basic SafeString type
+Handlebars.SafeString = function(string) {
+  this.string = string;
+};
+Handlebars.SafeString.prototype.toString = function() {
+  return this.string.toString();
+};
+
+var escape = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#x27;",
+  "`": "&#x60;"
+};
+
+var badChars = /[&<>"'`]/g;
+var possible = /[&<>"'`]/;
+
+var escapeChar = function(chr) {
+  return escape[chr] || "&amp;";
+};
+
+Handlebars.Utils = {
+  extend: function(obj, value) {
+    for(var key in value) {
+      if(value.hasOwnProperty(key)) {
+        obj[key] = value[key];
+      }
+    }
+  },
+
+  escapeExpression: function(string) {
+    // don't escape SafeStrings, since they're already safe
+    if (string instanceof Handlebars.SafeString) {
+      return string.toString();
+    } else if (string == null || string === false) {
+      return "";
+    }
+
+    // Force a string conversion as this will be done by the append regardless and
+    // the regex test will do this transparently behind the scenes, causing issues if
+    // an object's to string has escaped characters in it.
+    string = string.toString();
+
+    if(!possible.test(string)) { return string; }
+    return string.replace(badChars, escapeChar);
+  },
+
+  isEmpty: function(value) {
+    if (!value && value !== 0) {
+      return true;
+    } else if(toString.call(value) === "[object Array]" && value.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+};
+;
+// lib/handlebars/compiler/compiler.js
+
+/*jshint eqnull:true*/
+var Compiler = Handlebars.Compiler = function() {};
+var JavaScriptCompiler = Handlebars.JavaScriptCompiler = function() {};
+
+// the foundHelper register will disambiguate helper lookup from finding a
+// function in a context. This is necessary for mustache compatibility, which
+// requires that context functions in blocks are evaluated by blockHelperMissing,
+// and then proceed as if the resulting value was provided to blockHelperMissing.
+
+Compiler.prototype = {
+  compiler: Compiler,
+
+  disassemble: function() {
+    var opcodes = this.opcodes, opcode, out = [], params, param;
+
+    for (var i=0, l=opcodes.length; i<l; i++) {
+      opcode = opcodes[i];
+
+      if (opcode.opcode === 'DECLARE') {
+        out.push("DECLARE " + opcode.name + "=" + opcode.value);
+      } else {
+        params = [];
+        for (var j=0; j<opcode.args.length; j++) {
+          param = opcode.args[j];
+          if (typeof param === "string") {
+            param = "\"" + param.replace("\n", "\\n") + "\"";
+          }
+          params.push(param);
+        }
+        out.push(opcode.opcode + " " + params.join(" "));
+      }
+    }
+
+    return out.join("\n");
+  },
+  equals: function(other) {
+    var len = this.opcodes.length;
+    if (other.opcodes.length !== len) {
+      return false;
+    }
+
+    for (var i = 0; i < len; i++) {
+      var opcode = this.opcodes[i],
+          otherOpcode = other.opcodes[i];
+      if (opcode.opcode !== otherOpcode.opcode || opcode.args.length !== otherOpcode.args.length) {
+        return false;
+      }
+      for (var j = 0; j < opcode.args.length; j++) {
+        if (opcode.args[j] !== otherOpcode.args[j]) {
+          return false;
+        }
+      }
+    }
+
+    len = this.children.length;
+    if (other.children.length !== len) {
+      return false;
+    }
+    for (i = 0; i < len; i++) {
+      if (!this.children[i].equals(other.children[i])) {
+        return false;
+      }
+    }
+
+    return true;
+  },
+
+  guid: 0,
+
+  compile: function(program, options) {
+    this.children = [];
+    this.depths = {list: []};
+    this.options = options;
+
+    // These changes will propagate to the other compiler components
+    var knownHelpers = this.options.knownHelpers;
+    this.options.knownHelpers = {
+      'helperMissing': true,
+      'blockHelperMissing': true,
+      'each': true,
+      'if': true,
+      'unless': true,
+      'with': true,
+      'log': true
+    };
+    if (knownHelpers) {
+      for (var name in knownHelpers) {
+        this.options.knownHelpers[name] = knownHelpers[name];
+      }
+    }
+
+    return this.program(program);
+  },
+
+  accept: function(node) {
+    return this[node.type](node);
+  },
+
+  program: function(program) {
+    var statements = program.statements, statement;
+    this.opcodes = [];
+
+    for(var i=0, l=statements.length; i<l; i++) {
+      statement = statements[i];
+      this[statement.type](statement);
+    }
+    this.isSimple = l === 1;
+
+    this.depths.list = this.depths.list.sort(function(a, b) {
+      return a - b;
+    });
+
+    return this;
+  },
+
+  compileProgram: function(program) {
+    var result = new this.compiler().compile(program, this.options);
+    var guid = this.guid++, depth;
+
+    this.usePartial = this.usePartial || result.usePartial;
+
+    this.children[guid] = result;
+
+    for(var i=0, l=result.depths.list.length; i<l; i++) {
+      depth = result.depths.list[i];
+
+      if(depth < 2) { continue; }
+      else { this.addDepth(depth - 1); }
+    }
+
+    return guid;
+  },
+
+  block: function(block) {
+    var mustache = block.mustache,
+        program = block.program,
+        inverse = block.inverse;
+
+    if (program) {
+      program = this.compileProgram(program);
+    }
+
+    if (inverse) {
+      inverse = this.compileProgram(inverse);
+    }
+
+    var type = this.classifyMustache(mustache);
+
+    if (type === "helper") {
+      this.helperMustache(mustache, program, inverse);
+    } else if (type === "simple") {
+      this.simpleMustache(mustache);
+
+      // now that the simple mustache is resolved, we need to
+      // evaluate it by executing `blockHelperMissing`
+      this.opcode('pushProgram', program);
+      this.opcode('pushProgram', inverse);
+      this.opcode('emptyHash');
+      this.opcode('blockValue');
+    } else {
+      this.ambiguousMustache(mustache, program, inverse);
+
+      // now that the simple mustache is resolved, we need to
+      // evaluate it by executing `blockHelperMissing`
+      this.opcode('pushProgram', program);
+      this.opcode('pushProgram', inverse);
+      this.opcode('emptyHash');
+      this.opcode('ambiguousBlockValue');
+    }
+
+    this.opcode('append');
+  },
+
+  hash: function(hash) {
+    var pairs = hash.pairs, pair, val;
+
+    this.opcode('pushHash');
+
+    for(var i=0, l=pairs.length; i<l; i++) {
+      pair = pairs[i];
+      val  = pair[1];
+
+      if (this.options.stringParams) {
+        if(val.depth) {
+          this.addDepth(val.depth);
+        }
+        this.opcode('getContext', val.depth || 0);
+        this.opcode('pushStringParam', val.stringModeValue, val.type);
+      } else {
+        this.accept(val);
+      }
+
+      this.opcode('assignToHash', pair[0]);
+    }
+    this.opcode('popHash');
+  },
+
+  partial: function(partial) {
+    var partialName = partial.partialName;
+    this.usePartial = true;
+
+    if(partial.context) {
+      this.ID(partial.context);
+    } else {
+      this.opcode('push', 'depth0');
+    }
+
+    this.opcode('invokePartial', partialName.name);
+    this.opcode('append');
+  },
+
+  content: function(content) {
+    this.opcode('appendContent', content.string);
+  },
+
+  mustache: function(mustache) {
+    var options = this.options;
+    var type = this.classifyMustache(mustache);
+
+    if (type === "simple") {
+      this.simpleMustache(mustache);
+    } else if (type === "helper") {
+      this.helperMustache(mustache);
+    } else {
+      this.ambiguousMustache(mustache);
+    }
+
+    if(mustache.escaped && !options.noEscape) {
+      this.opcode('appendEscaped');
+    } else {
+      this.opcode('append');
+    }
+  },
+
+  ambiguousMustache: function(mustache, program, inverse) {
+    var id = mustache.id,
+        name = id.parts[0],
+        isBlock = program != null || inverse != null;
+
+    this.opcode('getContext', id.depth);
+
+    this.opcode('pushProgram', program);
+    this.opcode('pushProgram', inverse);
+
+    this.opcode('invokeAmbiguous', name, isBlock);
+  },
+
+  simpleMustache: function(mustache) {
+    var id = mustache.id;
+
+    if (id.type === 'DATA') {
+      this.DATA(id);
+    } else if (id.parts.length) {
+      this.ID(id);
+    } else {
+      // Simplified ID for `this`
+      this.addDepth(id.depth);
+      this.opcode('getContext', id.depth);
+      this.opcode('pushContext');
+    }
+
+    this.opcode('resolvePossibleLambda');
+  },
+
+  helperMustache: function(mustache, program, inverse) {
+    var params = this.setupFullMustacheParams(mustache, program, inverse),
+        name = mustache.id.parts[0];
+
+    if (this.options.knownHelpers[name]) {
+      this.opcode('invokeKnownHelper', params.length, name);
+    } else if (this.options.knownHelpersOnly) {
+      throw new Error("You specified knownHelpersOnly, but used the unknown helper " + name);
+    } else {
+      this.opcode('invokeHelper', params.length, name);
+    }
+  },
+
+  ID: function(id) {
+    this.addDepth(id.depth);
+    this.opcode('getContext', id.depth);
+
+    var name = id.parts[0];
+    if (!name) {
+      this.opcode('pushContext');
+    } else {
+      this.opcode('lookupOnContext', id.parts[0]);
+    }
+
+    for(var i=1, l=id.parts.length; i<l; i++) {
+      this.opcode('lookup', id.parts[i]);
+    }
+  },
+
+  DATA: function(data) {
+    this.options.data = true;
+    if (data.id.isScoped || data.id.depth) {
+      throw new Handlebars.Exception('Scoped data references are not supported: ' + data.original);
+    }
+
+    this.opcode('lookupData');
+    var parts = data.id.parts;
+    for(var i=0, l=parts.length; i<l; i++) {
+      this.opcode('lookup', parts[i]);
+    }
+  },
+
+  STRING: function(string) {
+    this.opcode('pushString', string.string);
+  },
+
+  INTEGER: function(integer) {
+    this.opcode('pushLiteral', integer.integer);
+  },
+
+  BOOLEAN: function(bool) {
+    this.opcode('pushLiteral', bool.bool);
+  },
+
+  comment: function() {},
+
+  // HELPERS
+  opcode: function(name) {
+    this.opcodes.push({ opcode: name, args: [].slice.call(arguments, 1) });
+  },
+
+  declare: function(name, value) {
+    this.opcodes.push({ opcode: 'DECLARE', name: name, value: value });
+  },
+
+  addDepth: function(depth) {
+    if(isNaN(depth)) { throw new Error("EWOT"); }
+    if(depth === 0) { return; }
+
+    if(!this.depths[depth]) {
+      this.depths[depth] = true;
+      this.depths.list.push(depth);
+    }
+  },
+
+  classifyMustache: function(mustache) {
+    var isHelper   = mustache.isHelper;
+    var isEligible = mustache.eligibleHelper;
+    var options    = this.options;
+
+    // if ambiguous, we can possibly resolve the ambiguity now
+    if (isEligible && !isHelper) {
+      var name = mustache.id.parts[0];
+
+      if (options.knownHelpers[name]) {
+        isHelper = true;
+      } else if (options.knownHelpersOnly) {
+        isEligible = false;
+      }
+    }
+
+    if (isHelper) { return "helper"; }
+    else if (isEligible) { return "ambiguous"; }
+    else { return "simple"; }
+  },
+
+  pushParams: function(params) {
+    var i = params.length, param;
+
+    while(i--) {
+      param = params[i];
+
+      if(this.options.stringParams) {
+        if(param.depth) {
+          this.addDepth(param.depth);
+        }
+
+        this.opcode('getContext', param.depth || 0);
+        this.opcode('pushStringParam', param.stringModeValue, param.type);
+      } else {
+        this[param.type](param);
+      }
+    }
+  },
+
+  setupMustacheParams: function(mustache) {
+    var params = mustache.params;
+    this.pushParams(params);
+
+    if(mustache.hash) {
+      this.hash(mustache.hash);
+    } else {
+      this.opcode('emptyHash');
+    }
+
+    return params;
+  },
+
+  // this will replace setupMustacheParams when we're done
+  setupFullMustacheParams: function(mustache, program, inverse) {
+    var params = mustache.params;
+    this.pushParams(params);
+
+    this.opcode('pushProgram', program);
+    this.opcode('pushProgram', inverse);
+
+    if(mustache.hash) {
+      this.hash(mustache.hash);
+    } else {
+      this.opcode('emptyHash');
+    }
+
+    return params;
+  }
+};
+
+var Literal = function(value) {
+  this.value = value;
+};
+
+JavaScriptCompiler.prototype = {
+  // PUBLIC API: You can override these methods in a subclass to provide
+  // alternative compiled forms for name lookup and buffering semantics
+  nameLookup: function(parent, name /* , type*/) {
+    if (/^[0-9]+$/.test(name)) {
+      return parent + "[" + name + "]";
+    } else if (JavaScriptCompiler.isValidJavaScriptVariableName(name)) {
+      return parent + "." + name;
+    }
+    else {
+      return parent + "['" + name + "']";
+    }
+  },
+
+  appendToBuffer: function(string) {
+    if (this.environment.isSimple) {
+      return "return " + string + ";";
+    } else {
+      return {
+        appendToBuffer: true,
+        content: string,
+        toString: function() { return "buffer += " + string + ";"; }
+      };
+    }
+  },
+
+  initializeBuffer: function() {
+    return this.quotedString("");
+  },
+
+  namespace: "Handlebars",
+  // END PUBLIC API
+
+  compile: function(environment, options, context, asObject) {
+    this.environment = environment;
+    this.options = options || {};
+
+    Handlebars.log(Handlebars.logger.DEBUG, this.environment.disassemble() + "\n\n");
+
+    this.name = this.environment.name;
+    this.isChild = !!context;
+    this.context = context || {
+      programs: [],
+      environments: [],
+      aliases: { }
+    };
+
+    this.preamble();
+
+    this.stackSlot = 0;
+    this.stackVars = [];
+    this.registers = { list: [] };
+    this.compileStack = [];
+    this.inlineStack = [];
+
+    this.compileChildren(environment, options);
+
+    var opcodes = environment.opcodes, opcode;
+
+    this.i = 0;
+
+    for(l=opcodes.length; this.i<l; this.i++) {
+      opcode = opcodes[this.i];
+
+      if(opcode.opcode === 'DECLARE') {
+        this[opcode.name] = opcode.value;
+      } else {
+        this[opcode.opcode].apply(this, opcode.args);
+      }
+    }
+
+    return this.createFunctionContext(asObject);
+  },
+
+  nextOpcode: function() {
+    var opcodes = this.environment.opcodes;
+    return opcodes[this.i + 1];
+  },
+
+  eat: function() {
+    this.i = this.i + 1;
+  },
+
+  preamble: function() {
+    var out = [];
+
+    if (!this.isChild) {
+      var namespace = this.namespace;
+
+      var copies = "helpers = this.merge(helpers, " + namespace + ".helpers);";
+      if (this.environment.usePartial) { copies = copies + " partials = this.merge(partials, " + namespace + ".partials);"; }
+      if (this.options.data) { copies = copies + " data = data || {};"; }
+      out.push(copies);
+    } else {
+      out.push('');
+    }
+
+    if (!this.environment.isSimple) {
+      out.push(", buffer = " + this.initializeBuffer());
+    } else {
+      out.push("");
+    }
+
+    // track the last context pushed into place to allow skipping the
+    // getContext opcode when it would be a noop
+    this.lastContext = 0;
+    this.source = out;
+  },
+
+  createFunctionContext: function(asObject) {
+    var locals = this.stackVars.concat(this.registers.list);
+
+    if(locals.length > 0) {
+      this.source[1] = this.source[1] + ", " + locals.join(", ");
+    }
+
+    // Generate minimizer alias mappings
+    if (!this.isChild) {
+      for (var alias in this.context.aliases) {
+        if (this.context.aliases.hasOwnProperty(alias)) {
+          this.source[1] = this.source[1] + ', ' + alias + '=' + this.context.aliases[alias];
+        }
+      }
+    }
+
+    if (this.source[1]) {
+      this.source[1] = "var " + this.source[1].substring(2) + ";";
+    }
+
+    // Merge children
+    if (!this.isChild) {
+      this.source[1] += '\n' + this.context.programs.join('\n') + '\n';
+    }
+
+    if (!this.environment.isSimple) {
+      this.source.push("return buffer;");
+    }
+
+    var params = this.isChild ? ["depth0", "data"] : ["Handlebars", "depth0", "helpers", "partials", "data"];
+
+    for(var i=0, l=this.environment.depths.list.length; i<l; i++) {
+      params.push("depth" + this.environment.depths.list[i]);
+    }
+
+    // Perform a second pass over the output to merge content when possible
+    var source = this.mergeSource();
+
+    if (!this.isChild) {
+      var revision = Handlebars.COMPILER_REVISION,
+          versions = Handlebars.REVISION_CHANGES[revision];
+      source = "this.compilerInfo = ["+revision+",'"+versions+"'];\n"+source;
+    }
+
+    if (asObject) {
+      params.push(source);
+
+      return Function.apply(this, params);
+    } else {
+      var functionSource = 'function ' + (this.name || '') + '(' + params.join(',') + ') {\n  ' + source + '}';
+      Handlebars.log(Handlebars.logger.DEBUG, functionSource + "\n\n");
+      return functionSource;
+    }
+  },
+  mergeSource: function() {
+    // WARN: We are not handling the case where buffer is still populated as the source should
+    // not have buffer append operations as their final action.
+    var source = '',
+        buffer;
+    for (var i = 0, len = this.source.length; i < len; i++) {
+      var line = this.source[i];
+      if (line.appendToBuffer) {
+        if (buffer) {
+          buffer = buffer + '\n    + ' + line.content;
+        } else {
+          buffer = line.content;
+        }
+      } else {
+        if (buffer) {
+          source += 'buffer += ' + buffer + ';\n  ';
+          buffer = undefined;
+        }
+        source += line + '\n  ';
+      }
+    }
+    return source;
+  },
+
+  // [blockValue]
+  //
+  // On stack, before: hash, inverse, program, value
+  // On stack, after: return value of blockHelperMissing
+  //
+  // The purpose of this opcode is to take a block of the form
+  // `{{#foo}}...{{/foo}}`, resolve the value of `foo`, and
+  // replace it on the stack with the result of properly
+  // invoking blockHelperMissing.
+  blockValue: function() {
+    this.context.aliases.blockHelperMissing = 'helpers.blockHelperMissing';
+
+    var params = ["depth0"];
+    this.setupParams(0, params);
+
+    this.replaceStack(function(current) {
+      params.splice(1, 0, current);
+      return "blockHelperMissing.call(" + params.join(", ") + ")";
+    });
+  },
+
+  // [ambiguousBlockValue]
+  //
+  // On stack, before: hash, inverse, program, value
+  // Compiler value, before: lastHelper=value of last found helper, if any
+  // On stack, after, if no lastHelper: same as [blockValue]
+  // On stack, after, if lastHelper: value
+  ambiguousBlockValue: function() {
+    this.context.aliases.blockHelperMissing = 'helpers.blockHelperMissing';
+
+    var params = ["depth0"];
+    this.setupParams(0, params);
+
+    var current = this.topStack();
+    params.splice(1, 0, current);
+
+    // Use the options value generated from the invocation
+    params[params.length-1] = 'options';
+
+    this.source.push("if (!" + this.lastHelper + ") { " + current + " = blockHelperMissing.call(" + params.join(", ") + "); }");
+  },
+
+  // [appendContent]
+  //
+  // On stack, before: ...
+  // On stack, after: ...
+  //
+  // Appends the string value of `content` to the current buffer
+  appendContent: function(content) {
+    this.source.push(this.appendToBuffer(this.quotedString(content)));
+  },
+
+  // [append]
+  //
+  // On stack, before: value, ...
+  // On stack, after: ...
+  //
+  // Coerces `value` to a String and appends it to the current buffer.
+  //
+  // If `value` is truthy, or 0, it is coerced into a string and appended
+  // Otherwise, the empty string is appended
+  append: function() {
+    // Force anything that is inlined onto the stack so we don't have duplication
+    // when we examine local
+    this.flushInline();
+    var local = this.popStack();
+    this.source.push("if(" + local + " || " + local + " === 0) { " + this.appendToBuffer(local) + " }");
+    if (this.environment.isSimple) {
+      this.source.push("else { " + this.appendToBuffer("''") + " }");
+    }
+  },
+
+  // [appendEscaped]
+  //
+  // On stack, before: value, ...
+  // On stack, after: ...
+  //
+  // Escape `value` and append it to the buffer
+  appendEscaped: function() {
+    this.context.aliases.escapeExpression = 'this.escapeExpression';
+
+    this.source.push(this.appendToBuffer("escapeExpression(" + this.popStack() + ")"));
+  },
+
+  // [getContext]
+  //
+  // On stack, before: ...
+  // On stack, after: ...
+  // Compiler value, after: lastContext=depth
+  //
+  // Set the value of the `lastContext` compiler value to the depth
+  getContext: function(depth) {
+    if(this.lastContext !== depth) {
+      this.lastContext = depth;
+    }
+  },
+
+  // [lookupOnContext]
+  //
+  // On stack, before: ...
+  // On stack, after: currentContext[name], ...
+  //
+  // Looks up the value of `name` on the current context and pushes
+  // it onto the stack.
+  lookupOnContext: function(name) {
+    this.push(this.nameLookup('depth' + this.lastContext, name, 'context'));
+  },
+
+  // [pushContext]
+  //
+  // On stack, before: ...
+  // On stack, after: currentContext, ...
+  //
+  // Pushes the value of the current context onto the stack.
+  pushContext: function() {
+    this.pushStackLiteral('depth' + this.lastContext);
+  },
+
+  // [resolvePossibleLambda]
+  //
+  // On stack, before: value, ...
+  // On stack, after: resolved value, ...
+  //
+  // If the `value` is a lambda, replace it on the stack by
+  // the return value of the lambda
+  resolvePossibleLambda: function() {
+    this.context.aliases.functionType = '"function"';
+
+    this.replaceStack(function(current) {
+      return "typeof " + current + " === functionType ? " + current + ".apply(depth0) : " + current;
+    });
+  },
+
+  // [lookup]
+  //
+  // On stack, before: value, ...
+  // On stack, after: value[name], ...
+  //
+  // Replace the value on the stack with the result of looking
+  // up `name` on `value`
+  lookup: function(name) {
+    this.replaceStack(function(current) {
+      return current + " == null || " + current + " === false ? " + current + " : " + this.nameLookup(current, name, 'context');
+    });
+  },
+
+  // [lookupData]
+  //
+  // On stack, before: ...
+  // On stack, after: data[id], ...
+  //
+  // Push the result of looking up `id` on the current data
+  lookupData: function(id) {
+    this.push('data');
+  },
+
+  // [pushStringParam]
+  //
+  // On stack, before: ...
+  // On stack, after: string, currentContext, ...
+  //
+  // This opcode is designed for use in string mode, which
+  // provides the string value of a parameter along with its
+  // depth rather than resolving it immediately.
+  pushStringParam: function(string, type) {
+    this.pushStackLiteral('depth' + this.lastContext);
+
+    this.pushString(type);
+
+    if (typeof string === 'string') {
+      this.pushString(string);
+    } else {
+      this.pushStackLiteral(string);
+    }
+  },
+
+  emptyHash: function() {
+    this.pushStackLiteral('{}');
+
+    if (this.options.stringParams) {
+      this.register('hashTypes', '{}');
+      this.register('hashContexts', '{}');
+    }
+  },
+  pushHash: function() {
+    this.hash = {values: [], types: [], contexts: []};
+  },
+  popHash: function() {
+    var hash = this.hash;
+    this.hash = undefined;
+
+    if (this.options.stringParams) {
+      this.register('hashContexts', '{' + hash.contexts.join(',') + '}');
+      this.register('hashTypes', '{' + hash.types.join(',') + '}');
+    }
+    this.push('{\n    ' + hash.values.join(',\n    ') + '\n  }');
+  },
+
+  // [pushString]
+  //
+  // On stack, before: ...
+  // On stack, after: quotedString(string), ...
+  //
+  // Push a quoted version of `string` onto the stack
+  pushString: function(string) {
+    this.pushStackLiteral(this.quotedString(string));
+  },
+
+  // [push]
+  //
+  // On stack, before: ...
+  // On stack, after: expr, ...
+  //
+  // Push an expression onto the stack
+  push: function(expr) {
+    this.inlineStack.push(expr);
+    return expr;
+  },
+
+  // [pushLiteral]
+  //
+  // On stack, before: ...
+  // On stack, after: value, ...
+  //
+  // Pushes a value onto the stack. This operation prevents
+  // the compiler from creating a temporary variable to hold
+  // it.
+  pushLiteral: function(value) {
+    this.pushStackLiteral(value);
+  },
+
+  // [pushProgram]
+  //
+  // On stack, before: ...
+  // On stack, after: program(guid), ...
+  //
+  // Push a program expression onto the stack. This takes
+  // a compile-time guid and converts it into a runtime-accessible
+  // expression.
+  pushProgram: function(guid) {
+    if (guid != null) {
+      this.pushStackLiteral(this.programExpression(guid));
+    } else {
+      this.pushStackLiteral(null);
+    }
+  },
+
+  // [invokeHelper]
+  //
+  // On stack, before: hash, inverse, program, params..., ...
+  // On stack, after: result of helper invocation
+  //
+  // Pops off the helper's parameters, invokes the helper,
+  // and pushes the helper's return value onto the stack.
+  //
+  // If the helper is not found, `helperMissing` is called.
+  invokeHelper: function(paramSize, name) {
+    this.context.aliases.helperMissing = 'helpers.helperMissing';
+
+    var helper = this.lastHelper = this.setupHelper(paramSize, name, true);
+    var nonHelper = this.nameLookup('depth' + this.lastContext, name, 'context');
+
+    this.push(helper.name + ' || ' + nonHelper);
+    this.replaceStack(function(name) {
+      return name + ' ? ' + name + '.call(' +
+          helper.callParams + ") " + ": helperMissing.call(" +
+          helper.helperMissingParams + ")";
+    });
+  },
+
+  // [invokeKnownHelper]
+  //
+  // On stack, before: hash, inverse, program, params..., ...
+  // On stack, after: result of helper invocation
+  //
+  // This operation is used when the helper is known to exist,
+  // so a `helperMissing` fallback is not required.
+  invokeKnownHelper: function(paramSize, name) {
+    var helper = this.setupHelper(paramSize, name);
+    this.push(helper.name + ".call(" + helper.callParams + ")");
+  },
+
+  // [invokeAmbiguous]
+  //
+  // On stack, before: hash, inverse, program, params..., ...
+  // On stack, after: result of disambiguation
+  //
+  // This operation is used when an expression like `{{foo}}`
+  // is provided, but we don't know at compile-time whether it
+  // is a helper or a path.
+  //
+  // This operation emits more code than the other options,
+  // and can be avoided by passing the `knownHelpers` and
+  // `knownHelpersOnly` flags at compile-time.
+  invokeAmbiguous: function(name, helperCall) {
+    this.context.aliases.functionType = '"function"';
+
+    this.pushStackLiteral('{}');    // Hash value
+    var helper = this.setupHelper(0, name, helperCall);
+
+    var helperName = this.lastHelper = this.nameLookup('helpers', name, 'helper');
+
+    var nonHelper = this.nameLookup('depth' + this.lastContext, name, 'context');
+    var nextStack = this.nextStack();
+
+    this.source.push('if (' + nextStack + ' = ' + helperName + ') { ' + nextStack + ' = ' + nextStack + '.call(' + helper.callParams + '); }');
+    this.source.push('else { ' + nextStack + ' = ' + nonHelper + '; ' + nextStack + ' = typeof ' + nextStack + ' === functionType ? ' + nextStack + '.apply(depth0) : ' + nextStack + '; }');
+  },
+
+  // [invokePartial]
+  //
+  // On stack, before: context, ...
+  // On stack after: result of partial invocation
+  //
+  // This operation pops off a context, invokes a partial with that context,
+  // and pushes the result of the invocation back.
+  invokePartial: function(name) {
+    var params = [this.nameLookup('partials', name, 'partial'), "'" + name + "'", this.popStack(), "helpers", "partials"];
+
+    if (this.options.data) {
+      params.push("data");
+    }
+
+    this.context.aliases.self = "this";
+    this.push("self.invokePartial(" + params.join(", ") + ")");
+  },
+
+  // [assignToHash]
+  //
+  // On stack, before: value, hash, ...
+  // On stack, after: hash, ...
+  //
+  // Pops a value and hash off the stack, assigns `hash[key] = value`
+  // and pushes the hash back onto the stack.
+  assignToHash: function(key) {
+    var value = this.popStack(),
+        context,
+        type;
+
+    if (this.options.stringParams) {
+      type = this.popStack();
+      context = this.popStack();
+    }
+
+    var hash = this.hash;
+    if (context) {
+      hash.contexts.push("'" + key + "': " + context);
+    }
+    if (type) {
+      hash.types.push("'" + key + "': " + type);
+    }
+    hash.values.push("'" + key + "': (" + value + ")");
+  },
+
+  // HELPERS
+
+  compiler: JavaScriptCompiler,
+
+  compileChildren: function(environment, options) {
+    var children = environment.children, child, compiler;
+
+    for(var i=0, l=children.length; i<l; i++) {
+      child = children[i];
+      compiler = new this.compiler();
+
+      var index = this.matchExistingProgram(child);
+
+      if (index == null) {
+        this.context.programs.push('');     // Placeholder to prevent name conflicts for nested children
+        index = this.context.programs.length;
+        child.index = index;
+        child.name = 'program' + index;
+        this.context.programs[index] = compiler.compile(child, options, this.context);
+        this.context.environments[index] = child;
+      } else {
+        child.index = index;
+        child.name = 'program' + index;
+      }
+    }
+  },
+  matchExistingProgram: function(child) {
+    for (var i = 0, len = this.context.environments.length; i < len; i++) {
+      var environment = this.context.environments[i];
+      if (environment && environment.equals(child)) {
+        return i;
+      }
+    }
+  },
+
+  programExpression: function(guid) {
+    this.context.aliases.self = "this";
+
+    if(guid == null) {
+      return "self.noop";
+    }
+
+    var child = this.environment.children[guid],
+        depths = child.depths.list, depth;
+
+    var programParams = [child.index, child.name, "data"];
+
+    for(var i=0, l = depths.length; i<l; i++) {
+      depth = depths[i];
+
+      if(depth === 1) { programParams.push("depth0"); }
+      else { programParams.push("depth" + (depth - 1)); }
+    }
+
+    return (depths.length === 0 ? "self.program(" : "self.programWithDepth(") + programParams.join(", ") + ")";
+  },
+
+  register: function(name, val) {
+    this.useRegister(name);
+    this.source.push(name + " = " + val + ";");
+  },
+
+  useRegister: function(name) {
+    if(!this.registers[name]) {
+      this.registers[name] = true;
+      this.registers.list.push(name);
+    }
+  },
+
+  pushStackLiteral: function(item) {
+    return this.push(new Literal(item));
+  },
+
+  pushStack: function(item) {
+    this.flushInline();
+
+    var stack = this.incrStack();
+    if (item) {
+      this.source.push(stack + " = " + item + ";");
+    }
+    this.compileStack.push(stack);
+    return stack;
+  },
+
+  replaceStack: function(callback) {
+    var prefix = '',
+        inline = this.isInline(),
+        stack;
+
+    // If we are currently inline then we want to merge the inline statement into the
+    // replacement statement via ','
+    if (inline) {
+      var top = this.popStack(true);
+
+      if (top instanceof Literal) {
+        // Literals do not need to be inlined
+        stack = top.value;
+      } else {
+        // Get or create the current stack name for use by the inline
+        var name = this.stackSlot ? this.topStackName() : this.incrStack();
+
+        prefix = '(' + this.push(name) + ' = ' + top + '),';
+        stack = this.topStack();
+      }
+    } else {
+      stack = this.topStack();
+    }
+
+    var item = callback.call(this, stack);
+
+    if (inline) {
+      if (this.inlineStack.length || this.compileStack.length) {
+        this.popStack();
+      }
+      this.push('(' + prefix + item + ')');
+    } else {
+      // Prevent modification of the context depth variable. Through replaceStack
+      if (!/^stack/.test(stack)) {
+        stack = this.nextStack();
+      }
+
+      this.source.push(stack + " = (" + prefix + item + ");");
+    }
+    return stack;
+  },
+
+  nextStack: function() {
+    return this.pushStack();
+  },
+
+  incrStack: function() {
+    this.stackSlot++;
+    if(this.stackSlot > this.stackVars.length) { this.stackVars.push("stack" + this.stackSlot); }
+    return this.topStackName();
+  },
+  topStackName: function() {
+    return "stack" + this.stackSlot;
+  },
+  flushInline: function() {
+    var inlineStack = this.inlineStack;
+    if (inlineStack.length) {
+      this.inlineStack = [];
+      for (var i = 0, len = inlineStack.length; i < len; i++) {
+        var entry = inlineStack[i];
+        if (entry instanceof Literal) {
+          this.compileStack.push(entry);
+        } else {
+          this.pushStack(entry);
+        }
+      }
+    }
+  },
+  isInline: function() {
+    return this.inlineStack.length;
+  },
+
+  popStack: function(wrapped) {
+    var inline = this.isInline(),
+        item = (inline ? this.inlineStack : this.compileStack).pop();
+
+    if (!wrapped && (item instanceof Literal)) {
+      return item.value;
+    } else {
+      if (!inline) {
+        this.stackSlot--;
+      }
+      return item;
+    }
+  },
+
+  topStack: function(wrapped) {
+    var stack = (this.isInline() ? this.inlineStack : this.compileStack),
+        item = stack[stack.length - 1];
+
+    if (!wrapped && (item instanceof Literal)) {
+      return item.value;
+    } else {
+      return item;
+    }
+  },
+
+  quotedString: function(str) {
+    return '"' + str
+      .replace(/\\/g, '\\\\')
+      .replace(/"/g, '\\"')
+      .replace(/\n/g, '\\n')
+      .replace(/\r/g, '\\r')
+      .replace(/\u2028/g, '\\u2028')   // Per Ecma-262 7.3 + 7.8.4
+      .replace(/\u2029/g, '\\u2029') + '"';
+  },
+
+  setupHelper: function(paramSize, name, missingParams) {
+    var params = [];
+    this.setupParams(paramSize, params, missingParams);
+    var foundHelper = this.nameLookup('helpers', name, 'helper');
+
+    return {
+      params: params,
+      name: foundHelper,
+      callParams: ["depth0"].concat(params).join(", "),
+      helperMissingParams: missingParams && ["depth0", this.quotedString(name)].concat(params).join(", ")
+    };
+  },
+
+  // the params and contexts arguments are passed in arrays
+  // to fill in
+  setupParams: function(paramSize, params, useRegister) {
+    var options = [], contexts = [], types = [], param, inverse, program;
+
+    options.push("hash:" + this.popStack());
+
+    inverse = this.popStack();
+    program = this.popStack();
+
+    // Avoid setting fn and inverse if neither are set. This allows
+    // helpers to do a check for `if (options.fn)`
+    if (program || inverse) {
+      if (!program) {
+        this.context.aliases.self = "this";
+        program = "self.noop";
+      }
+
+      if (!inverse) {
+       this.context.aliases.self = "this";
+        inverse = "self.noop";
+      }
+
+      options.push("inverse:" + inverse);
+      options.push("fn:" + program);
+    }
+
+    for(var i=0; i<paramSize; i++) {
+      param = this.popStack();
+      params.push(param);
+
+      if(this.options.stringParams) {
+        types.push(this.popStack());
+        contexts.push(this.popStack());
+      }
+    }
+
+    if (this.options.stringParams) {
+      options.push("contexts:[" + contexts.join(",") + "]");
+      options.push("types:[" + types.join(",") + "]");
+      options.push("hashContexts:hashContexts");
+      options.push("hashTypes:hashTypes");
+    }
+
+    if(this.options.data) {
+      options.push("data:data");
+    }
+
+    options = "{" + options.join(",") + "}";
+    if (useRegister) {
+      this.register('options', options);
+      params.push('options');
+    } else {
+      params.push(options);
+    }
+    return params.join(", ");
+  }
+};
+
+var reservedWords = (
+  "break else new var" +
+  " case finally return void" +
+  " catch for switch while" +
+  " continue function this with" +
+  " default if throw" +
+  " delete in try" +
+  " do instanceof typeof" +
+  " abstract enum int short" +
+  " boolean export interface static" +
+  " byte extends long super" +
+  " char final native synchronized" +
+  " class float package throws" +
+  " const goto private transient" +
+  " debugger implements protected volatile" +
+  " double import public let yield"
+).split(" ");
+
+var compilerWords = JavaScriptCompiler.RESERVED_WORDS = {};
+
+for(var i=0, l=reservedWords.length; i<l; i++) {
+  compilerWords[reservedWords[i]] = true;
+}
+
+JavaScriptCompiler.isValidJavaScriptVariableName = function(name) {
+  if(!JavaScriptCompiler.RESERVED_WORDS[name] && /^[a-zA-Z_$][0-9a-zA-Z_$]+$/.test(name)) {
+    return true;
+  }
+  return false;
+};
+
+Handlebars.precompile = function(input, options) {
+  if (input == null || (typeof input !== 'string' && input.constructor !== Handlebars.AST.ProgramNode)) {
+    throw new Handlebars.Exception("You must pass a string or Handlebars AST to Handlebars.precompile. You passed " + input);
+  }
+
+  options = options || {};
+  if (!('data' in options)) {
+    options.data = true;
+  }
+  var ast = Handlebars.parse(input);
+  var environment = new Compiler().compile(ast, options);
+  return new JavaScriptCompiler().compile(environment, options);
+};
+
+Handlebars.compile = function(input, options) {
+  if (input == null || (typeof input !== 'string' && input.constructor !== Handlebars.AST.ProgramNode)) {
+    throw new Handlebars.Exception("You must pass a string or Handlebars AST to Handlebars.compile. You passed " + input);
+  }
+
+  options = options || {};
+  if (!('data' in options)) {
+    options.data = true;
+  }
+  var compiled;
+  function compile() {
+    var ast = Handlebars.parse(input);
+    var environment = new Compiler().compile(ast, options);
+    var templateSpec = new JavaScriptCompiler().compile(environment, options, undefined, true);
+    return Handlebars.template(templateSpec);
+  }
+
+  // Template is only compiled on first use and cached after that point.
+  return function(context, options) {
+    if (!compiled) {
+      compiled = compile();
+    }
+    return compiled.call(this, context, options);
+  };
+};
+
+;
+// lib/handlebars/runtime.js
+
+Handlebars.VM = {
+  template: function(templateSpec) {
+    // Just add water
+    var container = {
+      escapeExpression: Handlebars.Utils.escapeExpression,
+      invokePartial: Handlebars.VM.invokePartial,
+      programs: [],
+      program: function(i, fn, data) {
+        var programWrapper = this.programs[i];
+        if(data) {
+          programWrapper = Handlebars.VM.program(i, fn, data);
+        } else if (!programWrapper) {
+          programWrapper = this.programs[i] = Handlebars.VM.program(i, fn);
+        }
+        return programWrapper;
+      },
+      merge: function(param, common) {
+        var ret = param || common;
+
+        if (param && common) {
+          ret = {};
+          Handlebars.Utils.extend(ret, common);
+          Handlebars.Utils.extend(ret, param);
+        }
+        return ret;
+      },
+      programWithDepth: Handlebars.VM.programWithDepth,
+      noop: Handlebars.VM.noop,
+      compilerInfo: null
+    };
+
+    return function(context, options) {
+      options = options || {};
+      var result = templateSpec.call(container, Handlebars, context, options.helpers, options.partials, options.data);
+
+      var compilerInfo = container.compilerInfo || [],
+          compilerRevision = compilerInfo[0] || 1,
+          currentRevision = Handlebars.COMPILER_REVISION;
+
+      if (compilerRevision !== currentRevision) {
+        if (compilerRevision < currentRevision) {
+          var runtimeVersions = Handlebars.REVISION_CHANGES[currentRevision],
+              compilerVersions = Handlebars.REVISION_CHANGES[compilerRevision];
+          throw "Template was precompiled with an older version of Handlebars than the current runtime. "+
+                "Please update your precompiler to a newer version ("+runtimeVersions+") or downgrade your runtime to an older version ("+compilerVersions+").";
+        } else {
+          // Use the embedded version info since the runtime doesn't know about this revision yet
+          throw "Template was precompiled with a newer version of Handlebars than the current runtime. "+
+                "Please update your runtime to a newer version ("+compilerInfo[1]+").";
+        }
+      }
+
+      return result;
+    };
+  },
+
+  programWithDepth: function(i, fn, data /*, $depth */) {
+    var args = Array.prototype.slice.call(arguments, 3);
+
+    var program = function(context, options) {
+      options = options || {};
+
+      return fn.apply(this, [context, options.data || data].concat(args));
+    };
+    program.program = i;
+    program.depth = args.length;
+    return program;
+  },
+  program: function(i, fn, data) {
+    var program = function(context, options) {
+      options = options || {};
+
+      return fn(context, options.data || data);
+    };
+    program.program = i;
+    program.depth = 0;
+    return program;
+  },
+  noop: function() { return ""; },
+  invokePartial: function(partial, name, context, helpers, partials, data) {
+    var options = { helpers: helpers, partials: partials, data: data };
+
+    if(partial === undefined) {
+      throw new Handlebars.Exception("The partial " + name + " could not be found");
+    } else if(partial instanceof Function) {
+      return partial(context, options);
+    } else if (!Handlebars.compile) {
+      throw new Handlebars.Exception("The partial " + name + " could not be compiled when running in runtime-only mode");
+    } else {
+      partials[name] = Handlebars.compile(partial, {data: data !== undefined});
+      return partials[name](context, options);
+    }
+  }
+};
+
+Handlebars.template = Handlebars.VM.template;
+;
+// lib/handlebars/browser-suffix.js
+})(Handlebars);
+;
+define("Handlebars", (function (global) {
+    return function () {
+        var ret, fn;
+        return ret || global.Handlebars;
+    };
+}(this)));
 
 /**
  * @license
@@ -22713,6 +24751,473 @@ define("ext/jquery", function(){});
     root._ = _;
   }
 }.call(this));
+;
+/**
+ * @license Handlebars hbs 0.4.0 - Alex Sexton, but Handlebars has it's own licensing junk
+ *
+ * Available via the MIT or new BSD license.
+ * see: http://github.com/jrburke/require-cs for details on the plugin this was based off of
+ */
+
+/* Yes, deliciously evil. */
+/*jslint evil: true, strict: false, plusplus: false, regexp: false */
+/*global require: false, XMLHttpRequest: false, ActiveXObject: false,
+define: false, process: false, window: false */
+define('hbs',[
+], function (
+) {
+
+      return {
+
+        get: function () {
+            return Handlebars;
+        },
+
+        write: function (pluginName, name, write) {
+
+            if ( (name + customNameExtension ) in buildMap) {
+                var text = buildMap[name + customNameExtension];
+                write.asModule(pluginName + "!" + name, text);
+            }
+        },
+
+        version: '0.4.0',
+
+        load: function (name, parentRequire, load, config) {
+                  }
+      };
+});
+/* END_hbs_PLUGIN */
+;
+/* START_TEMPLATE */
+define('hbs!templates/confirmation_dialog',['hbs','Handlebars'], function( hbs, Handlebars ){ 
+var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers);
+  
+
+
+  return "<div class=\"jqmConfirm\">\n  <div id=\"ex3b\" class=\"jqmConfirmWindow panel panel-default\">\n    <div class=\"panel-heading\">\n      <h4>Confirm your action</h4>\n    </div>\n\n    <div class=\"jqmConfirmContent panel-body\">\n      <p class=\"jqmConfirmMsg\"></p>\n    </div>\n\n    <div class=\"panel\">\n      <input type=\"submit\" id=\"confirm_rejected\" class=\"btn btn-default\" value=\"Cancel\" />\n      <input type=\"submit\" id=\"confirm_accepted\" class=\"btn btn-primary\" value=\"Yes\" />\n    </div>\n\n  </div>\n</div>";
+  });
+Handlebars.registerPartial('templates_confirmation_dialog', t);
+return t;
+});
+/* END_TEMPLATE */
+;
+define('util/confirmation_dialog',[ 'jquery', 'hbs!templates/confirmation_dialog' ], function($, Template) {
+  var $dialog = $(Template({})).appendTo($('body'));
+
+  /**
+   * Attempts to locate a method by its fully-qualified name, ie
+   * `dynamism.foo.bar`.
+   */
+  function method_from_fqn(fqn) {
+    var parts = fqn.split('.');
+    if (parts.length == 0 && !window[fqn])
+      return null;
+
+    var method = window[parts[0]];
+    for (var i = 1; i < parts.length; ++i) {
+      if (!method)
+        return null
+
+      method = method[parts[i]];
+    }
+
+    return method;
+  } // dynamism::method_from_fqn()
+
+  $(function() {
+    var will_be_moving  = false,
+        old_root        = null,
+        was_hidden      = false;
+
+    algol.confirm = function(msg, heading, callback) {
+      var accept_dialogue = function() {
+        if (will_be_moving) {
+          old_root.append( $dialog.find('p.jqmConfirmMsg').children().detach() );
+          // $("#confirm p.jqmConfirmMsg").html('');
+          if (was_hidden) {
+            old_root.children(":last").hide();
+          }
+        }
+
+        if($(this).attr("id") == 'confirm_accepted') {
+          if (typeof callback == "string") {
+            window.location.href = callback;
+          } else {
+            // try {
+              callback();
+            // } catch (script_error) {
+            //   ui.report_error(script_error);
+            // }
+          }
+        }
+
+        will_be_moving  = false;
+        old_root        = null;
+        was_hidden      = false;
+
+        $dialog.jqmHide();
+
+        return false;
+      }
+
+      $dialog
+        .jqmShow()
+        .find('h4')
+          .html(heading || "Confirmation")
+        .end()
+        .find('p.jqmConfirmMsg')
+          .html(msg)
+        .end()
+        .find('#confirm_accepted, #confirm_rejected')
+          .off('click')
+          .click(accept_dialogue);
+
+      $dialog.find('input[type=text]:first').focus();
+    }
+
+    $dialog.jqm({
+      overlay: 88,
+      modal: true,
+      trigger: false
+    });
+
+    $(document.body).on('click', '.confirm, a.bad, a[data-confirm]', function(e) {
+      var a = $(e.currentTarget);
+
+      try {
+        var msg = a.attr("data-confirm");
+
+        if (!msg) {
+          var sibling = a.next("[data-confirm]");
+
+          if (!sibling.length) {
+            sibling = $( a.attr('data-confirm-target') || '' );
+          }
+
+          console.log(sibling);
+
+          if (sibling.length > 0) {
+            if (sibling.attr("data-confirm") == 'move') {
+              will_be_moving = true;
+              old_root = sibling.parent();
+              was_hidden = sibling.is(":hidden");
+
+              if (was_hidden)
+                sibling.show();
+
+              msg = sibling.detach();
+            } else {
+              msg = sibling.html();
+            }
+          }
+        }
+
+        var heading = a.attr('data-confirm-heading') || 'Confirmation';
+        var accept_label = a.attr('data-confirm-accept') || 'Yes';
+
+        if (!msg || msg.length == "") {
+          var confirmable_parent = a.parents('[data-confirmable]:first');
+          obj = confirmable_parent;
+
+          if (confirmable_parent.length > 0) {
+            var id = confirmable_parent.attr('data-confirmable');
+            var infix = confirmable_parent.attr('data-confirmable-infix') ||
+              a.html().toLowerCase();
+
+            id += '_' + infix + '_';
+            id += 'confirmation';
+
+            confirmable = $('#' + id);
+
+            heading = confirmable.find('> h1:first').html();
+            msg = confirmable.find('> p:first').html();
+
+            if (confirmable.find('span[data-label]').length > 0) {
+              accept_label = confirmable.find('span[data-label]:first').html()
+            }
+          }
+        }
+
+        $dialog.find('#confirm_accepted').attr('value', accept_label);
+
+        if (!a.attr('data-confirm-cb')) {
+          algol.confirm(msg, heading, a.attr('href'));
+        } else {
+          algol.confirm(msg, heading, function() {
+            var method = method_from_fqn(a.attr('data-confirm-cb'));
+            if (method) {
+              return method(a);
+            } else {
+              console.log('ERROR: invalid confirmation callback: ' + a.attr('data-confirm-cb'));
+            }
+          });
+        }
+      } catch (e) {
+        console.log('ERROR: something bad happened while showing the cnfm dialog: ')
+        console.log(e);
+
+        $dialog.jqmHide();
+        ui.report_error(e)
+      }
+
+      return false;
+    });
+
+  });
+});
+define('ext/jquery',[
+  'jquery',
+  'bootstrap',
+  'util/confirmation_dialog'
+], function($) {
+  $.consume = function(e) {
+    e.preventDefault();
+
+    if (e.stopPropagation) { e.stopPropagation(); }
+    if (e.stopImmediatePropagation) { e.stopImmediatePropagation(); }
+
+    return false;
+  };
+
+  $.ajaxJSON = function(options) {
+    return $.ajax(_.extend(options, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }));
+  };
+
+  var $modalWrapper = $([
+    '<div class="modal fade">',
+      '<div class="modal-dialog">',
+        '<div class="modal-content">',
+          '<div class="modal-header">',
+            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>',
+          '</div>',
+          '<div class="modal-body"></div>',
+          '<div class="modal-footer">',
+            '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
+          '</div>',
+        '</div>',
+      '</div>',
+    '</div>'
+  ].join(''));
+
+  $.fn.asModal = function() {
+    var $el = $modalWrapper.clone();
+    var $this = $(this).clone();
+    var $header, $footer;
+
+    $header = $this.find('.modal-title').detach();
+    $footer = $this.find('.modal-actions').detach();
+
+    $this.find('.modal-content').removeClass('modal-content');
+
+    $el.find('.modal-header').append($header);
+    $el.find('.modal-body').append($this.show());
+    $el.find('.modal-footer').append($footer.children());
+
+    $footer.remove();
+
+    return $el;
+  };
+
+  /**
+   * @method serializeObject
+   *
+   * Serialize an HTML form element into a JSON construct, with proper type
+   * conversions (ie, "true" to true.)
+   */
+  $.fn.serializeObject = function() {
+    var self = this,
+        json = {},
+        push_counters = {},
+        patterns = {
+          'validate': /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+          'key':      /[a-zA-Z0-9_]+|(?=\[\])/g,
+          'push':     /^$/,
+          'fixed':    /^\d+$/,
+          'named':    /^[a-zA-Z0-9_]+$/
+        };
+
+    this.build = function(base, key, value){
+        base[key] = value;
+        return base;
+    };
+
+    this.push_counter = function(key){
+        if(push_counters[key] === undefined){
+            push_counters[key] = 0;
+        }
+        return push_counters[key]++;
+    };
+
+    $.each($(this).serializeArray(), function() {
+      // skip invalid keys
+      if (!patterns.validate.test(this.name)) {
+        return;
+      }
+
+      var k,
+          keys = this.name.match(patterns.key),
+          merge = this.value,
+          reverse_key = this.name;
+
+      while ((k = keys.pop()) !== void 0) {
+        // adjust reverse_key
+        reverse_key = reverse_key.replace(new RegExp('\\[' + k + '\\]$'), '');
+
+        // push
+        if ( k.match(patterns.push) ) {
+          merge = self.build([], self.push_counter(reverse_key), merge);
+        }
+        // fixed
+        else if ( k.match(patterns.fixed) ){
+          merge = self.build([], k, merge);
+        }
+        // named
+        else if ( k.match(patterns.named) ){
+          merge = self.build({}, k, merge);
+        }
+      }
+
+      json = $.extend(true, json, merge);
+    });
+
+    return json;
+  };
+
+
+  $.fn.extend({
+    formParams: function (params) {
+
+      var convert;
+
+      // Quick way to determine if something is a boolean
+      if ( !! params === params) {
+        convert = params;
+        params = null;
+      }
+
+      if (params) {
+        return this.setParams(params);
+      } else {
+        return this.getParams(convert);
+      }
+    },
+    setParams: function (params, options) {
+      options = options || {};
+
+      // Find all the inputs
+      this.find("[name]").each(function () {
+        var $this = $(this);
+        var name = $this.attr('name');
+        var myval;
+
+        if (options.deindexize) {
+          name = name.replace(/\[\]/, '');
+        }
+
+        var value = params[name];
+
+        // Don't do all this work if there's no value
+        if (value !== undefined) {
+
+          // Nested these if statements for performance
+          if ($this.is(":radio")) {
+            if ($this.val() == value) {
+              $this.prop("checked", true);
+            }
+          } else if ($this.is(":checkbox")) {
+            myval = $this.val();
+
+            // Convert single value to an array to reduce complexity
+            value = $.isArray(value) ? value : [value];
+
+            if (options.stringify) {
+              myval = String(myval);
+
+              for (var i = 0; i < value.length; ++i) {
+                value[i] = String(value[i]);
+              }
+            }
+            else if (options.convert) {
+              if (!!Number(myval)) {
+                myval = Number(myval);
+              }
+              else if (String(myval) === 'true') {
+                myval = true;
+              }
+              else if (String(myval) === 'false') {
+                myval = false;
+              }
+            }
+
+            if (value.indexOf(myval) > -1) {
+              $this.prop("checked", true);
+            }
+
+            if (value.length == 1 && String(value[0]) === 'true') {
+              $this.prop("checked", true);
+            }
+
+          } else {
+            $this.val(value);
+          }
+        }
+      });
+
+      return $(this);
+    },
+    getParams: function (convert) {
+      var data = {},
+        // This is used to keep track of the checkbox names that we've
+        // already seen, so we know that we should return an array if
+        // we see it multiple times. Fixes last checkbox checked bug.
+        seen = {},
+        current;
+
+      this.find("[name]:not(:disabled)").each(function () {
+        var $this = $(this),
+          type = $this.attr("type"),
+          name = $this.attr("name"),
+          value = $this.val(),
+          parts;
+
+        // Don't accumulate submit buttons and nameless elements
+        if (type == "submit" || !name) {
+          return;
+        }
+
+        // Figure out name parts
+        parts = name.match(keyBreaker);
+        if (!parts.length) {
+          parts = [name];
+        }
+
+        // Convert the value
+        if (convert) {
+          value = convertValue(value, $this);
+
+          if (value === undefined)
+            return;
+        }
+
+        // Assign data recursively
+        nestData($this, type, data, parts, value, seen);
+
+      });
+
+      return data;
+    }
+  });
+
+  return $;
+});
 //     Backbone.js 1.1.0
 
 //     (c) 2010-2011 Jeremy Ashkenas, DocumentCloud Inc.
@@ -24301,36 +26806,765 @@ define("backbone", ["lodash"], (function (global) {
     };
 }(this)));
 
+/*
+Copyright (c) 2010 Ryan Schuft (ryan.schuft@gmail.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+/*
+  This code is based in part on the work done in Ruby to support
+  infection as part of Ruby on Rails in the ActiveSupport's Inflector
+  and Inflections classes.  It was initally ported to Javascript by
+  Ryan Schuft (ryan.schuft@gmail.com) in 2007.
+
+  The code is available at http://code.google.com/p/inflection-js/
+
+  The basic usage is:
+    1. Include this script on your web page.
+    2. Call functions on any String object in Javascript
+
+  Currently implemented functions:
+
+    String.pluralize(plural) == String
+      renders a singular English language noun into its plural form
+      normal results can be overridden by passing in an alternative
+
+    String.singularize(singular) == String
+      renders a plural English language noun into its singular form
+      normal results can be overridden by passing in an alterative
+
+    String.camelize(lowFirstLetter) == String
+      renders a lower case underscored word into camel case
+      the first letter of the result will be upper case unless you pass true
+      also translates "/" into "::" (underscore does the opposite)
+
+    String.underscore() == String
+      renders a camel cased word into words seperated by underscores
+      also translates "::" back into "/" (camelize does the opposite)
+
+    String.humanize(lowFirstLetter) == String
+      renders a lower case and underscored word into human readable form
+      defaults to making the first letter capitalized unless you pass true
+
+    String.capitalize() == String
+      renders all characters to lower case and then makes the first upper
+
+    String.dasherize() == String
+      renders all underbars and spaces as dashes
+
+    String.titleize() == String
+      renders words into title casing (as for book titles)
+
+    String.demodulize() == String
+      renders class names that are prepended by modules into just the class
+
+    String.tableize() == String
+      renders camel cased singular words into their underscored plural form
+
+    String.classify() == String
+      renders an underscored plural word into its camel cased singular form
+
+    String.foreign_key(dropIdUbar) == String
+      renders a class name (camel cased singular noun) into a foreign key
+      defaults to seperating the class from the id with an underbar unless
+      you pass true
+
+    String.ordinalize() == String
+      renders all numbers found in the string into their sequence like "22nd"
+*/
+
+/*
+  This sets up a container for some constants in its own namespace
+  We use the window (if available) to enable dynamic loading of this script
+  Window won't necessarily exist for non-browsers.
+*/
+if (window && !window.InflectionJS)
+{
+    window.InflectionJS = null;
+}
+
+/*
+  This sets up some constants for later use
+  This should use the window namespace variable if available
+*/
+InflectionJS =
+{
+    /*
+      This is a list of nouns that use the same form for both singular and plural.
+      This list should remain entirely in lower case to correctly match Strings.
+    */
+    uncountable_words: [
+        'equipment', 'information', 'rice', 'money', 'species', 'series',
+        'fish', 'sheep', 'moose', 'deer', 'news'
+    ],
+
+    /*
+      These rules translate from the singular form of a noun to its plural form.
+    */
+    plural_rules: [
+        [new RegExp('(m)an$', 'gi'),                 '$1en'],
+        [new RegExp('(pe)rson$', 'gi'),              '$1ople'],
+        [new RegExp('(child)$', 'gi'),               '$1ren'],
+        [new RegExp('^(ox)$', 'gi'),                 '$1en'],
+        [new RegExp('(ax|test)is$', 'gi'),           '$1es'],
+        [new RegExp('(octop|vir)us$', 'gi'),         '$1i'],
+        [new RegExp('(alias|status)$', 'gi'),        '$1es'],
+        [new RegExp('(bu)s$', 'gi'),                 '$1ses'],
+        [new RegExp('(buffal|tomat|potat)o$', 'gi'), '$1oes'],
+        [new RegExp('([ti])um$', 'gi'),              '$1a'],
+        [new RegExp('sis$', 'gi'),                   'ses'],
+        [new RegExp('(?:([^f])fe|([lr])f)$', 'gi'),  '$1$2ves'],
+        [new RegExp('(hive)$', 'gi'),                '$1s'],
+        [new RegExp('([^aeiouy]|qu)y$', 'gi'),       '$1ies'],
+        [new RegExp('(x|ch|ss|sh)$', 'gi'),          '$1es'],
+        [new RegExp('(matr|vert|ind)ix|ex$', 'gi'),  '$1ices'],
+        [new RegExp('([m|l])ouse$', 'gi'),           '$1ice'],
+        [new RegExp('(quiz)$', 'gi'),                '$1zes'],
+        [new RegExp('s$', 'gi'),                     's'],
+        [new RegExp('$', 'gi'),                      's']
+    ],
+
+    /*
+      These rules translate from the plural form of a noun to its singular form.
+    */
+    singular_rules: [
+        [new RegExp('(m)en$', 'gi'),                                                       '$1an'],
+        [new RegExp('(pe)ople$', 'gi'),                                                    '$1rson'],
+        [new RegExp('(child)ren$', 'gi'),                                                  '$1'],
+        [new RegExp('([ti])a$', 'gi'),                                                     '$1um'],
+        [new RegExp('((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$','gi'), '$1$2sis'],
+        [new RegExp('(hive)s$', 'gi'),                                                     '$1'],
+        [new RegExp('(tive)s$', 'gi'),                                                     '$1'],
+        [new RegExp('(curve)s$', 'gi'),                                                    '$1'],
+        [new RegExp('([lr])ves$', 'gi'),                                                   '$1f'],
+        [new RegExp('([^fo])ves$', 'gi'),                                                  '$1fe'],
+        [new RegExp('([^aeiouy]|qu)ies$', 'gi'),                                           '$1y'],
+        [new RegExp('(s)eries$', 'gi'),                                                    '$1eries'],
+        [new RegExp('(m)ovies$', 'gi'),                                                    '$1ovie'],
+        [new RegExp('(x|ch|ss|sh)es$', 'gi'),                                              '$1'],
+        [new RegExp('([m|l])ice$', 'gi'),                                                  '$1ouse'],
+        [new RegExp('(bus)es$', 'gi'),                                                     '$1'],
+        [new RegExp('(o)es$', 'gi'),                                                       '$1'],
+        [new RegExp('(shoe)s$', 'gi'),                                                     '$1'],
+        [new RegExp('(cris|ax|test)es$', 'gi'),                                            '$1is'],
+        [new RegExp('(octop|vir)i$', 'gi'),                                                '$1us'],
+        [new RegExp('(alias|status)es$', 'gi'),                                            '$1'],
+        [new RegExp('^(ox)en', 'gi'),                                                      '$1'],
+        [new RegExp('(vert|ind)ices$', 'gi'),                                              '$1ex'],
+        [new RegExp('(matr)ices$', 'gi'),                                                  '$1ix'],
+        [new RegExp('(quiz)zes$', 'gi'),                                                   '$1'],
+        [new RegExp('s$', 'gi'),                                                           '']
+    ],
+
+    /*
+      This is a list of words that should not be capitalized for title case
+    */
+    non_titlecased_words: [
+        'and', 'or', 'nor', 'a', 'an', 'the', 'so', 'but', 'to', 'of', 'at',
+        'by', 'from', 'into', 'on', 'onto', 'off', 'out', 'in', 'over',
+        'with', 'for'
+    ],
+
+    /*
+      These are regular expressions used for converting between String formats
+    */
+    id_suffix: new RegExp('(_ids|_id)$', 'g'),
+    underbar: new RegExp('_', 'g'),
+    space_or_underbar: new RegExp('[\ _]', 'g'),
+    uppercase: new RegExp('([A-Z])', 'g'),
+    underbar_prefix: new RegExp('^_'),
+
+    /*
+      This is a helper method that applies rules based replacement to a String
+      Signature:
+        InflectionJS.apply_rules(str, rules, skip, override) == String
+      Arguments:
+        str - String - String to modify and return based on the passed rules
+        rules - Array: [RegExp, String] - Regexp to match paired with String to use for replacement
+        skip - Array: [String] - Strings to skip if they match
+        override - String (optional) - String to return as though this method succeeded (used to conform to APIs)
+      Returns:
+        String - passed String modified by passed rules
+      Examples:
+        InflectionJS.apply_rules("cows", InflectionJs.singular_rules) === 'cow'
+    */
+    apply_rules: function(str, rules, skip, override)
+    {
+        if (override)
+        {
+            str = override;
+        }
+        else
+        {
+            var ignore = (skip.indexOf(str.toLowerCase()) > -1);
+            if (!ignore)
+            {
+                for (var x = 0; x < rules.length; x++)
+                {
+                    if (str.match(rules[x][0]))
+                    {
+                        str = str.replace(rules[x][0], rules[x][1]);
+                        break;
+                    }
+                }
+            }
+        }
+        return str;
+    }
+};
+
+/*
+  This lets us detect if an Array contains a given element
+  Signature:
+    Array.indexOf(item, fromIndex, compareFunc) == Integer
+  Arguments:
+    item - Object - object to locate in the Array
+    fromIndex - Integer (optional) - starts checking from this position in the Array
+    compareFunc - Function (optional) - function used to compare Array item vs passed item
+  Returns:
+    Integer - index position in the Array of the passed item
+  Examples:
+    ['hi','there'].indexOf("guys") === -1
+    ['hi','there'].indexOf("hi") === 0
+*/
+if (!Array.prototype.indexOf)
+{
+    Array.prototype.indexOf = function(item, fromIndex, compareFunc)
+    {
+        if (!fromIndex)
+        {
+            fromIndex = -1;
+        }
+        var index = -1;
+        for (var i = fromIndex; i < this.length; i++)
+        {
+            if (this[i] === item || compareFunc && compareFunc(this[i], item))
+            {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    };
+}
+
+/*
+  You can override this list for all Strings or just one depending on if you
+  set the new values on prototype or on a given String instance.
+*/
+if (!String.prototype._uncountable_words)
+{
+    String.prototype._uncountable_words = InflectionJS.uncountable_words;
+}
+
+/*
+  You can override this list for all Strings or just one depending on if you
+  set the new values on prototype or on a given String instance.
+*/
+if (!String.prototype._plural_rules)
+{
+    String.prototype._plural_rules = InflectionJS.plural_rules;
+}
+
+/*
+  You can override this list for all Strings or just one depending on if you
+  set the new values on prototype or on a given String instance.
+*/
+if (!String.prototype._singular_rules)
+{
+    String.prototype._singular_rules = InflectionJS.singular_rules;
+}
+
+/*
+  You can override this list for all Strings or just one depending on if you
+  set the new values on prototype or on a given String instance.
+*/
+if (!String.prototype._non_titlecased_words)
+{
+    String.prototype._non_titlecased_words = InflectionJS.non_titlecased_words;
+}
+
+/*
+  This function adds plurilization support to every String object
+    Signature:
+      String.pluralize(plural) == String
+    Arguments:
+      plural - String (optional) - overrides normal output with said String
+    Returns:
+      String - singular English language nouns are returned in plural form
+    Examples:
+      "person".pluralize() == "people"
+      "octopus".pluralize() == "octopi"
+      "Hat".pluralize() == "Hats"
+      "person".pluralize("guys") == "guys"
+*/
+if (!String.prototype.pluralize)
+{
+    String.prototype.pluralize = function(plural)
+    {
+        return InflectionJS.apply_rules(
+            this,
+            this._plural_rules,
+            this._uncountable_words,
+            plural
+        );
+    };
+}
+
+/*
+  This function adds singularization support to every String object
+    Signature:
+      String.singularize(singular) == String
+    Arguments:
+      singular - String (optional) - overrides normal output with said String
+    Returns:
+      String - plural English language nouns are returned in singular form
+    Examples:
+      "people".singularize() == "person"
+      "octopi".singularize() == "octopus"
+      "Hats".singularize() == "Hat"
+      "guys".singularize("person") == "person"
+*/
+if (!String.prototype.singularize)
+{
+    String.prototype.singularize = function(singular)
+    {
+        return InflectionJS.apply_rules(
+            this,
+            this._singular_rules,
+            this._uncountable_words,
+            singular
+        );
+    };
+}
+
+/*
+  This function adds camelization support to every String object
+    Signature:
+      String.camelize(lowFirstLetter) == String
+    Arguments:
+      lowFirstLetter - boolean (optional) - default is to capitalize the first
+        letter of the results... passing true will lowercase it
+    Returns:
+      String - lower case underscored words will be returned in camel case
+        additionally '/' is translated to '::'
+    Examples:
+      "message_properties".camelize() == "MessageProperties"
+      "message_properties".camelize(true) == "messageProperties"
+*/
+if (!String.prototype.camelize)
+{
+     String.prototype.camelize = function(lowFirstLetter)
+     {
+        var str = this.toLowerCase();
+        var str_path = str.split('/');
+        for (var i = 0; i < str_path.length; i++)
+        {
+            var str_arr = str_path[i].split('_');
+            var initX = ((lowFirstLetter && i + 1 === str_path.length) ? (1) : (0));
+            for (var x = initX; x < str_arr.length; x++)
+            {
+                str_arr[x] = str_arr[x].charAt(0).toUpperCase() + str_arr[x].substring(1);
+            }
+            str_path[i] = str_arr.join('');
+        }
+        str = str_path.join('::');
+        return str;
+    };
+}
+
+/*
+  This function adds underscore support to every String object
+    Signature:
+      String.underscore() == String
+    Arguments:
+      N/A
+    Returns:
+      String - camel cased words are returned as lower cased and underscored
+        additionally '::' is translated to '/'
+    Examples:
+      "MessageProperties".camelize() == "message_properties"
+      "messageProperties".underscore() == "message_properties"
+*/
+if (!String.prototype.underscore)
+{
+     String.prototype.underscore = function()
+     {
+        var str = this;
+        var str_path = str.split('::');
+        for (var i = 0; i < str_path.length; i++)
+        {
+            str_path[i] = str_path[i].replace(InflectionJS.uppercase, '_$1');
+            str_path[i] = str_path[i].replace(InflectionJS.underbar_prefix, '');
+        }
+        str = str_path.join('/').toLowerCase();
+        return str;
+    };
+}
+
+/*
+  This function adds humanize support to every String object
+    Signature:
+      String.humanize(lowFirstLetter) == String
+    Arguments:
+      lowFirstLetter - boolean (optional) - default is to capitalize the first
+        letter of the results... passing true will lowercase it
+    Returns:
+      String - lower case underscored words will be returned in humanized form
+    Examples:
+      "message_properties".humanize() == "Message properties"
+      "message_properties".humanize(true) == "message properties"
+*/
+if (!String.prototype.humanize)
+{
+    String.prototype.humanize = function(lowFirstLetter)
+    {
+        var str = this.toLowerCase();
+        str = str.replace(InflectionJS.id_suffix, '');
+        str = str.replace(InflectionJS.underbar, ' ');
+        if (!lowFirstLetter)
+        {
+            str = str.capitalize();
+        }
+        return str;
+    };
+}
+
+/*
+  This function adds capitalization support to every String object
+    Signature:
+      String.capitalize() == String
+    Arguments:
+      N/A
+    Returns:
+      String - all characters will be lower case and the first will be upper
+    Examples:
+      "message_properties".capitalize() == "Message_properties"
+      "message properties".capitalize() == "Message properties"
+*/
+if (!String.prototype.capitalize)
+{
+    String.prototype.capitalize = function()
+    {
+        var str = this.toLowerCase();
+        str = str.substring(0, 1).toUpperCase() + str.substring(1);
+        return str;
+    };
+}
+
+/*
+  This function adds dasherization support to every String object
+    Signature:
+      String.dasherize() == String
+    Arguments:
+      N/A
+    Returns:
+      String - replaces all spaces or underbars with dashes
+    Examples:
+      "message_properties".capitalize() == "message-properties"
+      "Message Properties".capitalize() == "Message-Properties"
+*/
+if (!String.prototype.dasherize)
+{
+    String.prototype.dasherize = function()
+    {
+        var str = this;
+        str = str.replace(InflectionJS.space_or_underbar, '-');
+        return str;
+    };
+}
+
+/*
+  This function adds titleize support to every String object
+    Signature:
+      String.titleize() == String
+    Arguments:
+      N/A
+    Returns:
+      String - capitalizes words as you would for a book title
+    Examples:
+      "message_properties".titleize() == "Message Properties"
+      "message properties to keep".titleize() == "Message Properties to Keep"
+*/
+if (!String.prototype.titleize)
+{
+    String.prototype.titleize = function()
+    {
+        var str = this.toLowerCase();
+        str = str.replace(InflectionJS.underbar, ' ');
+        var str_arr = str.split(' ');
+        for (var x = 0; x < str_arr.length; x++)
+        {
+            var d = str_arr[x].split('-');
+            for (var i = 0; i < d.length; i++)
+            {
+                if (this._non_titlecased_words.indexOf(d[i].toLowerCase()) < 0)
+                {
+                    d[i] = d[i].capitalize();
+                }
+            }
+            str_arr[x] = d.join('-');
+        }
+        str = str_arr.join(' ');
+        str = str.substring(0, 1).toUpperCase() + str.substring(1);
+        return str;
+    };
+}
+
+/*
+  This function adds demodulize support to every String object
+    Signature:
+      String.demodulize() == String
+    Arguments:
+      N/A
+    Returns:
+      String - removes module names leaving only class names (Ruby style)
+    Examples:
+      "Message::Bus::Properties".demodulize() == "Properties"
+*/
+if (!String.prototype.demodulize)
+{
+    String.prototype.demodulize = function()
+    {
+        var str = this;
+        var str_arr = str.split('::');
+        str = str_arr[str_arr.length - 1];
+        return str;
+    };
+}
+
+/*
+  This function adds tableize support to every String object
+    Signature:
+      String.tableize() == String
+    Arguments:
+      N/A
+    Returns:
+      String - renders camel cased words into their underscored plural form
+    Examples:
+      "MessageBusProperty".tableize() == "message_bus_properties"
+*/
+if (!String.prototype.tableize)
+{
+    String.prototype.tableize = function()
+    {
+        var str = this;
+        str = str.underscore().pluralize();
+        return str;
+    };
+}
+
+/*
+  This function adds classification support to every String object
+    Signature:
+      String.classify() == String
+    Arguments:
+      N/A
+    Returns:
+      String - underscored plural nouns become the camel cased singular form
+    Examples:
+      "message_bus_properties".classify() == "MessageBusProperty"
+*/
+if (!String.prototype.classify)
+{
+    String.prototype.classify = function()
+    {
+        var str = this;
+        str = str.camelize().singularize();
+        return str;
+    };
+}
+
+/*
+  This function adds foreign key support to every String object
+    Signature:
+      String.foreign_key(dropIdUbar) == String
+    Arguments:
+      dropIdUbar - boolean (optional) - default is to seperate id with an
+        underbar at the end of the class name, you can pass true to skip it
+    Returns:
+      String - camel cased singular class names become underscored with id
+    Examples:
+      "MessageBusProperty".foreign_key() == "message_bus_property_id"
+      "MessageBusProperty".foreign_key(true) == "message_bus_propertyid"
+*/
+if (!String.prototype.foreign_key)
+{
+    String.prototype.foreign_key = function(dropIdUbar)
+    {
+        var str = this;
+        str = str.demodulize().underscore() + ((dropIdUbar) ? ('') : ('_')) + 'id';
+        return str;
+    };
+}
+
+/*
+  This function adds ordinalize support to every String object
+    Signature:
+      String.ordinalize() == String
+    Arguments:
+      N/A
+    Returns:
+      String - renders all found numbers their sequence like "22nd"
+    Examples:
+      "the 1 pitch".ordinalize() == "the 1st pitch"
+*/
+if (!String.prototype.ordinalize)
+{
+    String.prototype.ordinalize = function()
+    {
+        var str = this;
+        var str_arr = str.split(' ');
+        for (var x = 0; x < str_arr.length; x++)
+        {
+            var i = parseInt(str_arr[x]);
+            if (i === NaN)
+            {
+                var ltd = str_arr[x].substring(str_arr[x].length - 2);
+                var ld = str_arr[x].substring(str_arr[x].length - 1);
+                var suf = "th";
+                if (ltd != "11" && ltd != "12" && ltd != "13")
+                {
+                    if (ld === "1")
+                    {
+                        suf = "st";
+                    }
+                    else if (ld === "2")
+                    {
+                        suf = "nd";
+                    }
+                    else if (ld === "3")
+                    {
+                        suf = "rd";
+                    }
+                }
+                str_arr[x] += suf;
+            }
+        }
+        str = str_arr.join(' ');
+        return str;
+    };
+}
+
+if (!String.prototype.vowelize)
+{
+  var vowels = ['a','o','u','i','e'];
+  String.prototype.vowelize = function()
+  {
+    var str = this;
+
+    if (vowels.indexOf(str[0]) != -1) {
+      str = 'an ' + str;
+    } else {
+      str = 'a ' + str;
+    }
+
+    return str;
+  };
+}
+;
+define("inflection", function(){});
+
+define('bundles/navigation',[ 'ext/jquery' ], function($) {
+  var $nav = $('.nav ');
+  var url = location.pathname;
+
+  if (url.match(/clients/)) {
+    $nav.find('[href*=clients]').parent().addClass('active');
+  }
+  else if (url.match(/projects/)) {
+    $nav.find('[href*=projects]').parent().addClass('active');
+  }
+  else if (url.match(/settings/)) {
+    $nav.find('[href*=settings]').parent().addClass('active');
+  }
+  else if (url.match(/tasks\/(current|history)|reports/)) {
+    $nav.find('#navbar_review').parent().addClass('active');
+  }
+  else {
+    $nav.find('#navbar_dashboard').parent().addClass('active');
+  }
+
+});
 requirejs.config({
-  baseUrl: 'app/assets/src/js',
+  baseUrl: '/app/assets/src/js',
   paths: {
-    'text':       '../../vendor/js/require/text',
-    'jquery':     '../../vendor/js/jquery-2.0.3',
-    'jquery-ui':     '../../vendor/js/jquery-ui-1.10.3.custom',
+    /**
+     * require.js
+     */
     'requireLib': '../../vendor/js/require',
+    'text':       '../../vendor/js/require/text',
+
+    /**
+     * jQuery and friends
+     */
+    'jquery': '../../vendor/js/jquery-2.0.3',
+    'jquery-ui': '../../vendor/js/jquery-ui-1.10.3.custom',
+    'jqModal': '../../vendor/js/jqModal',
+    'bootstrap': '../../vendor/js/bootstrap-3.0.0',
+
+    /**
+     * Backbone and friends
+     */
     'backbone':   '../../vendor/js/backbone',
     'lodash':     '../../vendor/js/lodash.custom',
-    'Handlebars':             '../../vendor/js/handlebars-1.0.0',
-    'hbs':                    '../../vendor/js/hbs/hbs',
-    'hbs/i18nprecompile':     '../../vendor/js/hbs/i18nprecompile',
-    'jqModal':     '../../vendor/js/jqModal',
-    'inflection':     '../../vendor/js/inflection',
-    'moment':     '../../vendor/js/moment-2.4.0',
-    'bootstrap':     '../../vendor/js/bootstrap-3.0.0'
+
+    /**
+     * Handlebars
+     */
+    'Handlebars': '../../vendor/js/handlebars-1.0.0',
+    'hbs': '../../vendor/js/hbs/hbs',
+    'hbs/i18nprecompile': '../../vendor/js/hbs/i18nprecompile',
+
+    /**
+     * Utility
+     */
+    'inflection': '../../vendor/js/inflection',
+    'moment': '../../vendor/js/moment-2.4.0'
   },
 
   shim: {
+    /**
+     * jQuery and friends
+     */
     'jquery': { exports: '$' },
-    'jquery-ui': { deps: [ 'jquery' ] },
+    'jquery-ui': [ 'jquery' ],
+    'bootstrap': [ 'jquery' ],
+    'jqModal': [ 'jquery' ],
+
+    /**
+     * Backbone and friends
+     */
+    'lodash': { exports: '_' },
     'backbone': {
       deps: [ 'lodash' ],
       exports: 'Backbone'
     },
-    'lodash': { exports: '_' },
+
+    'Handlebars': { exports: 'Handlebars' },
+
+    /**
+     * Utility
+     */
     'inflection': {},
-    'bootstrap': [ 'jquery' ],
     'moment': { exports: 'moment' },
-    'jqModal': [ 'jquery' ]
   },
 
   hbs: {
@@ -24344,12 +27578,17 @@ require([
   'text',
   'jquery',
   'jquery-ui',
-  'bootstrap',
   'jqModal',
+  'bootstrap',
   'algol',
   'algol_ui',
   'ext/jquery',
   'lodash',
-  'backbone'
-], function() {});
+  'backbone',
+  'Handlebars',
+  'inflection',
+  'bundles/navigation'
+], function() {
+  console.debug('thebuttonapp dependencies loaded.')
+});
 define("main", function(){});

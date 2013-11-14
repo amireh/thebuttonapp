@@ -7,8 +7,11 @@ define([
   return Backbone.View.extend({
     template: _.template('<span><%= seconds %></span>'),
 
-    render: function(anchor) {
+    render: function() {
+      var anchor = ENV.WORK_SESSION.started_at;
       var now = moment.utc();
+      var $container = $('#wsTimer');
+
       this.anchor = moment.utc(anchor);
 
       this.$el = $( this.template( { seconds: 0 } ) );
@@ -24,6 +27,8 @@ define([
 
       console.debug(this.timestamp.format('HH:mm:ss'));
       this.start();
+
+      this.$el.appendTo($container);
     },
 
     start: function() {

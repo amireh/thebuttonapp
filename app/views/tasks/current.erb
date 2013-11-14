@@ -3,20 +3,6 @@
   pending_tasks = @user.tasks.all({ :conditions => { :status => :pending }, order: [ :created_at.desc]  })
 %>
 
-<% content_for :deferred_js do %>
-  <script>
-    $(function() {
-      $("button").click(function() {
-        $(".notes").toggle();
-        var alt = $(this).attr("data-alt");
-        $(this).attr("data-alt", $(this).html());
-        $(this).html(alt);
-
-      });
-    })
-  </script>
-<% end %>
-
 <div class="row">
 
   <div class="col-md-3">
