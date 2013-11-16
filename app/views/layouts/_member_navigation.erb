@@ -8,6 +8,7 @@
         <li><a href="/clients/new">New Client</a></li>
       <% else %>
         <% @user.clients.each do |client| %>
+          <% next unless client.saved? %>
           <li><a href="<%= client.url %>"><%= client.name[0..30] %></a></li>
         <% end %>
         <li class="divider"></li>
