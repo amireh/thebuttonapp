@@ -43,14 +43,13 @@ gem 'pagehub-markdown', '>=0.1.3', :require => 'pagehub-markdown'
 gem 'pdfkit'
 gem 'wkhtmltopdf-binary'
 gem 'sinatra-api', '>=1.1.7'
+gem 'rake'
 
 group :development do
   gem 'thin'
-  # gem 'rake'
 end
 
 group :test do
-  gem 'rake'
   gem 'rspec'
   gem 'rspec-core'
   # gem 'capybara-webkit', '>= 0.13.0', :git => 'https://github.com/thoughtbot/capybara-webkit'
