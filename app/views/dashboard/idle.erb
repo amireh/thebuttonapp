@@ -1,5 +1,10 @@
 <% content_for :layout_classes do %>dashboard<% end %>
+<% content_for :js do %>
+  <script src="/js/highcharts-all.js"></script>
+  <script src="/js/chartkick.js"></script>
+<% end %>
 <% js_view 'dashboard/idle' %>
+
 <%
   @work_sessions ||= @user.clients.projects.tasks.work_sessions.all({
     :started_at.gte   => 0.month.ago.beginning_of_month,

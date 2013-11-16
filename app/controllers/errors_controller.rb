@@ -51,7 +51,7 @@ error 500 do
   return handle_json_error if response.content_type && response.content_type.include?('json')
 
   if request.xhr?
-    halt 500, "500 - internal error: " + env['sinatra.error'].name + " => " + env['sinatra.error'].message
+    halt 500, env['sinatra.error'] || 'internal error'
   end
 
   erb :"/errors/500", layout: set_layout

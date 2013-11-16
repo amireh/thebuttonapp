@@ -42,7 +42,7 @@ gem 'omniauth-google-oauth2'
 gem 'pagehub-markdown', '>=0.1.3', :require => 'pagehub-markdown'
 gem 'pdfkit'
 gem 'wkhtmltopdf-binary'
-gem 'sinatra-api'
+gem 'sinatra-api', '>=1.1.7'
 
 group :development do
   gem 'thin'
