@@ -28,6 +28,14 @@ post '/projects/:project_id/tasks', requires: [ :project ] do
   redirect @work_session.url
 end
 
+get '/projects/:project_id/tasks/:task_id', requires: [ :project, :task ] do
+  respond_to do |f|
+    f.json do
+      rabl :"tasks/show", object: @task
+    end
+  end
+end
+
 get '/projects/:project_id/tasks/:task_id/edit', requires: [ :project, :task ] do
   erb :"/tasks/_edit", layout: false
 end

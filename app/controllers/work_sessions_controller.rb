@@ -27,17 +27,16 @@ post '/tasks/:task_id/work_sessions', auth: [ :user ], requires: [ :task ] do
 end
 
 get '/tasks/:task_id/work_sessions/:work_session_id', auth: [ :user ], requires: [ :task,  :work_session ] do
-  unless @work_session.active?
-    return redirect '/'
-  end
 
   respond_to do |f|
+    f.json do
+      rabl :"work_sessions/show", object: @work_session
+    end
+
     f.html do
-      js_env({
-        :user => rabl(:"users/show", object: @user),
-        :task => rabl(:"tasks/show", object: @task),
-        :work_session => rabl(:"work_sessions/show", object: @work_session)
-      })
+      unless @work_session.active?
+        return redirect '/'
+      end
 
       erb :"dashboard/active"
     end

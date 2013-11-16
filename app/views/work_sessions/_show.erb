@@ -1,7 +1,7 @@
 <% with_task = true if with_task.nil? %>
 <% with_actions = false if with_actions.nil? %>
 
-<tr>
+<tr data-workSession="<%= work_session.id %>">
   <td>
     <%= pretty_time work_session.duration %>
     <% if work_session.active? %>

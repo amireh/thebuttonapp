@@ -2,23 +2,9 @@ def set_layout()
   @layout ||= "layouts/#{logged_in? ? 'primary' : 'guest' }".to_sym
 end
 
-def js_env(opts = {})
-  @@js_injections ||= 0
-  @@js_injections += 1
-
-  injection_id = "injection_#{@@js_injections}"
-  injection = opts.map do |k,v|
-    "window.ENV['#{k.upcase}'] = #{v};"
-  end.join("\n")
-
-  content_for :js_injections do
-    """
-    <script id=\"#{injection_id}\">
-      window.ENV = window.ENV || {};
-      #{injection}
-      document.getElementById('#{injection_id}').remove();
-    </script>
-    """
+configure do
+  Sinatra::API.on :resource_located do |resource, name|
+    Sinatra::API.instance.js_inject(resource)
   end
 end
 
@@ -27,12 +13,7 @@ before do
   set_layout
 
   if logged_in?
-    injections = {}
-    injections[:user] = rabl(:"users/show", object: @user)
-    injections[:client] = rabl(:"clients/show", object: @client) if @client
-    injections[:project] = rabl(:"projects/show", object: @project) if @project
-
-    js_env(injections)
+    js_inject(@user)
   end
 end
 

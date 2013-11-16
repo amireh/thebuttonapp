@@ -1,0 +1,26 @@
+<div>
+  <div class="modal-title">
+    <h4>Edit work session</h4>
+  </div>
+
+  <div class="modal-content">
+    <form action="{{media.url}}" method="POST" class="form">
+      <fieldset>
+        <label>
+          Duration (in minutes):
+          <input type="text" autocomplete="off" name="duration" value="{{to_minutes duration}}" class="form-control" />
+        </label>
+
+        <label>
+          Summary:
+          <textarea rows="8" type="text" name="summary" class="form-control">{{summary}}</textarea>
+        </label>
+
+      </fieldset>
+
+    </form>
+  </div>
+  <div class="modal-actions">
+    <input data-action="saveWorkSession" type="submit" value="Update" class="btn btn-success" />
+  </div>
+</div>

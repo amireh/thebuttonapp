@@ -80,15 +80,6 @@ define([
           $(this).find('[name="status"]').closest('fieldset').remove();
         }
       });
-
-      $('#ws_editor').jqm({
-        overlay: 88,
-        ajax: '@href',
-        trigger: 'a.edit-work-session',
-        onLoad: function() {
-          $(this).parent().show();
-        }
-      });
     }
   });
 });

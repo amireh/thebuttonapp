@@ -11,6 +11,7 @@ requirejs.config({
      * jQuery and friends
      */
     'jquery': '../../vendor/js/jquery-2.0.3',
+    'jquerypp': '../../vendor/js/jquerypp-1.0.1',
     'jquery-ui': '../../vendor/js/jquery-ui-1.10.3.custom',
     'jqModal': '../../vendor/js/jqModal',
     'bootstrap': '../../vendor/js/bootstrap-3.0.0',
@@ -41,6 +42,7 @@ requirejs.config({
      * jQuery and friends
      */
     'jquery': { exports: '$' },
+    'jquerypp': [ 'jquery' ],
     'jquery-ui': [ 'jquery' ],
     'bootstrap': [ 'jquery' ],
     'jqModal': [ 'jquery' ],
@@ -74,6 +76,7 @@ requirejs.config({
 require([
   'text',
   'jquery',
+  'jquerypp',
   'jquery-ui',
   'jqModal',
   'toastr',
@@ -84,6 +87,7 @@ require([
   'lodash',
   'backbone',
   'Handlebars',
+  'ext/handlebars',
   'inflection',
   'bundles/navigation'
 ], function() {

@@ -1,6 +1,7 @@
 <% content_for :layout_classes do %>dashboard<% end %>
 <% js_view 'dashboard/active' %>
 <% js_view 'dashboard/timer' %>
+<% js_view 'tasks/edit_modal' %>
 
 <% content_for :page_title do %>
   <div class="row">
@@ -12,7 +13,7 @@
       <small class="label" id="wsTimer"></small>
 
       <button data-action="backtrack" class="btn btn-danger" title="Add or remove time from this work session"><i class="glyphicon glyphicon-backward"></i> </button>
-      <a href="<%= @task.url %>/edit" id="edit_task" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i> </a>
+      <button data-action="editTask" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i> </button>
     </div>
   </div>
 <% end %>
@@ -26,8 +27,7 @@
         data-confirm-accept="Ok"
         data-confirm-target="#end_session"
         data-linked-to="task_name" type="submit" id="thebutton" class="confirm btn btn-danger btn-block">
-        <i class="glyphicon glyphicon-pause"></i>
-        End session
+        <strong>End session</strong>
       </button>
     </div>
   </div>

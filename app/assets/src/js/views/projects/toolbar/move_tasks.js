@@ -86,7 +86,6 @@ define([
       this.$toast = toastr.info('Moving task "' + task.name + '"...');
 
       if (project.id == task.project_id) {
-        // toastr.clear(this.$toast);
         this.$toast = toastr.warning('That task already belongs to that project!')
         return callback(project);
       }

@@ -1,0 +1,51 @@
+<div>
+  <div class="modal-title">
+    <h4>Edit task</h4>
+  </div>
+
+  <div class="modal-content">
+
+    <form method="POST" action="{{media.url}}">
+      <label>Name*
+        <input type="text" name="name" value="{{name}}" class="form-control" />
+      </label>
+
+      <label>Details
+        <textarea rows="8" type="text" name="details" class="form-control">{{details}}</textarea>
+      </label>
+
+      <fieldset>
+        <legend>Status</legend>
+
+        <div class="radio">
+          <label>
+            <input type="radio" name="status" value="active" /> Active
+          </label>
+        </div>
+
+        <div class="radio">
+          <label>
+            <input type="radio" name="status" value="pending" /> Pending
+          </label>
+        </div>
+
+        <div class="radio">
+          <label>
+            <input type="radio" name="status" value="complete" /> Complete
+          </label>
+        </div>
+
+        <div class="radio">
+          <label>
+            <input type="radio" name="status" value="abandoned" /> Abandoned
+          </label>
+        </div>
+      </fieldset>
+
+    </form>
+  </div>
+
+  <div class="modal-actions">
+    <button data-action="saveTask" class="btn btn-success">Save</button>
+  </div>
+</div>
