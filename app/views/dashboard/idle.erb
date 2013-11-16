@@ -5,6 +5,14 @@
     :started_at.gte   => 0.month.ago.beginning_of_month,
     :finished_at.lte  => 0.month.ago.end_of_month
   })
+
+  last_month_sessions = @user.clients.projects.tasks.work_sessions.all({
+    :started_at.gte   => 1.month.ago.beginning_of_month,
+    :finished_at.lte  => 1.month.ago.end_of_month
+  })
+
+  hours = @work_sessions.map(&:duration).reduce(&:+) / 3600
+  last_month_hours = last_month_sessions.map(&:duration).reduce(&:+) / 3600
 %>
 
 <% content_for :page_title do %>
@@ -79,28 +87,65 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h3 class="page-header">Activity Overview</h3>
+      <h3 class="page-header">Output Overview</h3>
     </div>
 
     <div class="col-lg-6">
       <h4 class="page-header"><%= Time.now.strftime('%B') %></h4>
 
       <%= partial "charts/_work_session_durations", locals: {
-        work_sessions: @work_sessions,
-        domain: 'day'
+        work_sessions: @work_sessions
       } %>
     </div>
 
     <div class="col-lg-6">
       <h4 class="page-header"><%= 1.month.ago.strftime('%B') %></h4>
       <%= partial "charts/_work_session_durations", locals: {
-        work_sessions: WorkSession.all({
-          :started_at.gte   => 1.month.ago.beginning_of_month,
-          :finished_at.lte  => 1.month.ago.end_of_month
-        })
+        work_sessions: last_month_sessions
       } %>
     </div>
   </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-lg-6">
+      <%= partial "dashboard/_output", locals: {
+        work_sessions: @work_sessions,
+        hours: hours
+      } %>
+    </div>
+    <div class="col-lg-6">
+      <%= partial "dashboard/_output", locals: {
+        work_sessions: last_month_sessions,
+        hours: last_month_hours
+      } %>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="row dashboard-milestones">
+    <div class="col-md-12">
+      <h3 class="page-header">Milestones</h3>
+      <p>Assuming an ideal output of 40 hours per week and 160 hours per month.</p>
+    </div>
+
+    <div class="col-lg-6">
+      <%= partial "dashboard/_milestone_progress", locals: {
+        work_sessions: @work_sessions,
+        hours: hours
+      } %>
+    </div>
+    <hr class="visible-sm" />
+    <div class="col-lg-6">
+      <%= partial "dashboard/_milestone_progress", locals: {
+        work_sessions: last_month_sessions,
+        hours: last_month_hours
+      } %>
+    </div>
+  </div>
+
 </div>
 
 <form action="/projects/:project_id/tasks" method="POST" id="newTaskForm" hidden>

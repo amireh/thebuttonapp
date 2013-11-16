@@ -221,6 +221,19 @@ module ApplicationHelpers
 
     html += '</div>'
   end
+
+  def colorize_progress(ratio)
+    case ratio
+    when 0..24
+      'progress-bar-danger'
+    when 25..49
+      'progress-bar-warning'
+    when 50..74
+      'progress-bar-info'
+    else
+      'progress-bar-success'
+    end
+  end
 end
 
 helpers ApplicationHelpers

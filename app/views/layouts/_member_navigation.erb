@@ -1,0 +1,70 @@
+<ul class="nav navbar-nav">
+  <li><a id="navbar_dashboard" href="/">Dashboard</a></li>
+
+  <li class="dropdown">
+    <a href="/projects" class="dropdown-toggle" data-toggle="dropdown">Clients <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <% if @user.clients.empty? %>
+        <li><a href="/clients/new">New Client</a></li>
+      <% else %>
+        <% @user.clients.each do |client| %>
+          <li><a href="<%= client.url %>"><%= client.name[0..30] %></a></li>
+        <% end %>
+        <li class="divider"></li>
+        <li><a href="/clients">All Clients</a></li>
+      <% end %>
+    </ul>
+  </li>
+
+  <li class="dropdown">
+    <a href="/projects" class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <% @user.clients.projects.each do |project| %>
+        <li><a href="<%= project.url %>"><%= project.name[0..30] %></a></li>
+      <% end %>
+      <li class="divider"></li>
+      <li><a href="/projects">All Projects</a></li>
+    </ul>
+  </li>
+
+  <li class="dropdown">
+    <a id="navbar_review" href="#" class="dropdown-toggle" data-toggle="dropdown">Review <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="/tasks/current">
+          <i class="glyphicon glyphicon-play"></i> Review active work
+        </a>
+      </li>
+      <li>
+        <a href="/tasks/history">
+          <i class="glyphicon glyphicon-ok"></i> Review finished work
+        </a>
+      </li>
+      <li class="divider"></li>
+      <li>
+        <a href="/reports/new">
+          <i class="glyphicon glyphicon-book"></i> Generate a report
+        </a>
+      </li>
+    </ul>
+  </li>
+
+</ul>
+
+<ul class="nav navbar-nav navbar-right">
+  <li>
+    <a href="/settings/account">
+      <strong class="account_name"><%= current_user.name %></strong>
+      <i class="glyphicon glyphicon-user"></i>
+
+      <%#= gravatar_tag current_user.gravatar_email, :icon, :height => 24 %>
+    </a>
+    <% if current_user.notice_count > 0 %>
+      <a href="/settings/notifications">
+        <span class="notifications blinky" title="You have <%= current_user.notice_count %> pending notifications">
+          <%= current_user.notice_count %>
+        </span>
+      </a>
+    <% end %>
+  </li>
+</ul>

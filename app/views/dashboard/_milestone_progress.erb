@@ -1,0 +1,17 @@
+<%= partial "dashboard/_monthly_milestone_progress", locals: {
+  month: work_sessions.first.started_at.month,
+  hours: hours
+} %>
+
+<div>
+  <% weekly = work_sessions.group_by { |ws| ws.started_at.strftime('%U') } %>
+  <% weekly.each_pair do |week, week_sessions| %>
+    <div class="text-center inline" style="width: <%= (100 / weekly.length)-0.45 %>%">
+      <%= partial "dashboard/_weekly_milestone_progress", locals: {
+        hours: week_sessions.map(&:duration).reduce(&:+) / 3600,
+        week: week,
+        work_sessions: week_sessions
+      } %>
+    </div>
+  <% end %>
+</div>

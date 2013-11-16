@@ -1,0 +1,7 @@
+<% ratio = hours / 40.0 * 100 %>
+<div>
+  <div class="progress">
+    <div class="progress-bar <%= colorize_progress ratio %>" style="width: <%= ratio %>%;"></div>
+  </div>
+  <small>Week <%= week %></small>
+</div>

@@ -1,0 +1,7 @@
+<% ratio = hours / 160.0 * 100 %>
+<div class="text-center">
+  <div class="progress">
+    <div class="progress-bar <%= colorize_progress ratio %>" style="width: <%= ratio %>%;"></div>
+  </div>
+  <small>Month <%= month %></small>
+</div>

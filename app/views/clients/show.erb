@@ -1,7 +1,7 @@
 <% content_for :page_title do %>
   <%= @client.name %>
 
-  <div class="toolbar small pull-right">
+  <div class="small pull-right">
     <a href="/clients/<%= @client.id %>/edit" title="Client settings" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i> </a>
 
     <a href="/clients/<%= @client.id %>/destroy" class="btn btn-danger"><i class="glyphicon glyphicon-trash" title="Remove client"></i> </a>
