@@ -35,7 +35,7 @@
   <!-- Notes -->
   <div class="row">
     <div class="col-lg-6">
-      <h3 class="page-header">Task</h3>
+      <h3 class="page-header">Task Details</h3>
       <p><strong>Client</strong></p>
       <p><%= @task.project.client.name %></p>
 
@@ -53,7 +53,7 @@
       <% end %>
     </div>
     <div class="col-lg-6">
-      <h3 class="page-header">Notes</h3>
+      <h3 class="page-header">Session Notes</h3>
 
       <% if @ws.notes.any? %>
         <%= partial "notes/_listing", locals: {
@@ -61,10 +61,10 @@
           with_actions: true
         } %>
       <% else %>
-        <p>No notes have been entered during this work session.</p>
+        <p>No notes have been entered during this session.</p>
       <% end %>
 
-      <div class="panel-footer">
+      <div class="panel-footexr">
 
         <form method="POST" action="<%= @ws.url true %>/notes" class="form row">
           <div class="col-lg-12">

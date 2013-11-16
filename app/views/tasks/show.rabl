@@ -1,6 +1,6 @@
 object @task => ""
 
-attributes :id, :name, :details, :status, :flagged_at, :created_at
+attributes :id, :name, :details, :status, :flagged_at, :created_at, :project_id
 
 node :work_sessions do |task|
   task.work_sessions.map do |work_session|

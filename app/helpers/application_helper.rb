@@ -1,22 +1,16 @@
 module ApplicationHelpers
-  def js_bundle(id)
-    """
-      <script>
-        require([ 'bundles/#{id}' ], function() {});
-      </script>
-    """
-  end
-
   def js_view(id)
     @js_views ||= []
     @js_views << """
       <script>
-        var root = this;
-        root.App = root.App || {};
+        var Global = this;
 
         require([ 'views/#{id}' ], function(View) {
-          root.View = new View();
-          root.View.render();
+          Global.View = new View();
+
+          if (Global.View.render) {
+            Global.View.render();
+          }
         });
       </script>
     """

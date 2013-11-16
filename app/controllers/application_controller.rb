@@ -6,18 +6,17 @@ def js_env(opts = {})
   @@js_injections ||= 0
   @@js_injections += 1
 
-  script_id = "injection_#{@@js_injections}"
-  env = {}
-  opts.each_pair do |k,v|
-    env[k.upcase] = JSON.parse v
-  end
+  injection_id = "injection_#{@@js_injections}"
+  injection = opts.map do |k,v|
+    "window.ENV['#{k.upcase}'] = #{v};"
+  end.join("\n")
 
   content_for :js_injections do
     """
-    <script id=\"#{script_id}\">
+    <script id=\"#{injection_id}\">
       window.ENV = window.ENV || {};
-      window.ENV = #{env.to_json};
-      document.getElementById('#{script_id}').remove();
+      #{injection}
+      document.getElementById('#{injection_id}').remove();
     </script>
     """
   end
@@ -28,9 +27,12 @@ before do
   set_layout
 
   if logged_in?
-    js_env({
-      :user => rabl(:"users/show", object: @user)
-    })
+    injections = {}
+    injections[:user] = rabl(:"users/show", object: @user)
+    injections[:client] = rabl(:"clients/show", object: @client) if @client
+    injections[:project] = rabl(:"projects/show", object: @project) if @project
+
+    js_env(injections)
   end
 end
 

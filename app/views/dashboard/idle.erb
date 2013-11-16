@@ -1,7 +1,7 @@
 <% content_for :layout_classes do %>dashboard<% end %>
 <% js_view 'dashboard/idle' %>
 <%
-  @work_sessions ||= WorkSession.all({
+  @work_sessions ||= @user.clients.projects.tasks.work_sessions.all({
     :started_at.gte   => 0.month.ago.beginning_of_month,
     :finished_at.lte  => 0.month.ago.end_of_month
   })

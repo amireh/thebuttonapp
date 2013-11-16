@@ -1,11 +1,13 @@
 API_TASK_FIELDS = {
-  name: nil,
-  details: nil,
+  name: :string,
+  details: :string,
   status: lambda { |v|
     unless Task::Statuses.include?((v||'').to_sym)
       halt 400, "Task status must be one of: #{Task::Statuses.join(',')}"
     end
-  }
+  },
+
+  new_project_id: :integer
 }
 
 post '/projects/:project_id/tasks', requires: [ :project ] do
@@ -34,14 +36,23 @@ put '/projects/:project_id/tasks/:task_id', requires: [ :project, :task ] do
   api_optional!(API_TASK_FIELDS)
 
   api_transform!(:status) { |v| v.to_sym }
+  project_id = api_consume!(:new_project_id)
 
-  unless @task.update(api_params)
+  unless @task.update(api_params.merge({ project_id: project_id || @project.id }))
     halt 400, @task.all_errors
   end
 
-  flash[:notice] = "Task #{@task.name} has been updated."
 
-  return redirect '/'
+  respond_to do |f|
+    f.json do
+      rabl :"tasks/show", object: @task
+    end
+
+    f.html do
+      flash[:notice] = "Task #{@task.name} has been updated."
+      redirect '/'
+    end
+  end
 end
 
 

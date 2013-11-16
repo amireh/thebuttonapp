@@ -14,6 +14,7 @@ requirejs.config({
     'jquery-ui': '../../vendor/js/jquery-ui-1.10.3.custom',
     'jqModal': '../../vendor/js/jqModal',
     'bootstrap': '../../vendor/js/bootstrap-3.0.0',
+    'toastr': '../../vendor/js/toastr',
 
     /**
      * Backbone and friends
@@ -43,6 +44,7 @@ requirejs.config({
     'jquery-ui': [ 'jquery' ],
     'bootstrap': [ 'jquery' ],
     'jqModal': [ 'jquery' ],
+    'toastr': [ 'jquery' ],
 
     /**
      * Backbone and friends
@@ -74,6 +76,7 @@ require([
   'jquery',
   'jquery-ui',
   'jqModal',
+  'toastr',
   'bootstrap',
   'algol',
   'algol_ui',
