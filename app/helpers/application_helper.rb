@@ -234,6 +234,21 @@ module ApplicationHelpers
       'progress-bar-success'
     end
   end
+
+  def group_by_weeks(collection, field = :started_at)
+    collection.group_by do |item|
+      case item.send(field).day
+      when 0..7;    1
+      when 8..15;   2
+      when 16..23;  3
+      else;         4
+      end
+    end
+  end
+
+  def total_work_sessions_duration(collection)
+    (collection.map(&:duration).reduce(&:+) / 3600).round(2)
+  end
 end
 
 helpers ApplicationHelpers

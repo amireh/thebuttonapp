@@ -1,4 +1,11 @@
-define([ 'ext/jquery', 'lodash', 'backbone' ], function($, _, Backbone) {
+define([
+  'ext/jquery',
+  'lodash',
+  'backbone',
+  'hbs!templates/tasks/new_modal'
+], function($, _, Backbone, NewTaskModal) {
+  var $resumeTaskForm, $resumeTask;
+
   return Backbone.View.extend({
     events: {
       'change [name="project_id"]': 'onProjectSelection',
@@ -14,7 +21,6 @@ define([ 'ext/jquery', 'lodash', 'backbone' ], function($, _, Backbone) {
       this.setElement('#content');
       this.delegateEvents();
 
-      $newTaskForm = $('#newTaskForm');
       $resumeTaskForm = $('#resumeTaskForm');
       $resumeTask = $('#resumeTask');
 
@@ -33,8 +39,6 @@ define([ 'ext/jquery', 'lodash', 'backbone' ], function($, _, Backbone) {
       }, this);
 
       $resumeTask.prop('disabled', true);
-
-      this.updateTaskForm();
       this.updateTaskList();
     },
 
@@ -49,21 +53,7 @@ define([ 'ext/jquery', 'lodash', 'backbone' ], function($, _, Backbone) {
         '/tasks', taskId, 'work_sessions'
       ].join('/'));
 
-      console.warn(taskId);
       $resumeTask.prop('disabled', false);
-    },
-
-    updateTaskForm: function(projectId) {
-      if (!this.project) {
-        console.error('no project selected, can not update task list.');
-        return false;
-      }
-
-      $newTaskForm.attr('action', [
-        '/projects',
-        this.project.id,
-        'tasks'
-      ].join('/'));
     },
 
     updateTaskList: function() {
@@ -77,8 +67,24 @@ define([ 'ext/jquery', 'lodash', 'backbone' ], function($, _, Backbone) {
       $('[name="task_id"]:visible').trigger('change');
     },
 
+    getSelectedProject: function() {
+      var id = this.$('[name="project_id"] :selected').val();
+      var clients = ENV.USER.clients;
+      var project;
+
+      for (var i = 0; i < clients.length; ++i) {
+        project = _.find(clients[i].projects, { id: id });
+
+        if (project) {
+          break;
+        }
+      }
+
+      return project;
+    },
+
     newTask: function(e) {
-      var $modal = $('#newTaskForm').asModal();
+      var $modal = $(NewTaskModal(this.getSelectedProject())).asModal();
 
       $modal.modal();
       $modal.on('click', 'input[type="submit"]', function() {

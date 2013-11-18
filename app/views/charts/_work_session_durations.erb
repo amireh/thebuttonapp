@@ -1,7 +1,7 @@
 <%
   work_sessions ||= WorkSession.all({
-    :started_at.gte   => 3.month.ago.beginning_of_month,
-    :finished_at.lte  => 3.month.ago.end_of_month
+    :started_at.gte   => Time.now.beginning_of_month,
+    :finished_at.lte  => Time.now.end_of_month
   })
   domain ||= 'day'
   chart_data = {}
@@ -13,7 +13,7 @@
 
   group = group.map do |k, entries|
     hash = {}
-    hash[k] = entries.map(&:duration).reduce(&:+) / 60
+    hash[k] = (entries.map(&:duration).reduce(&:+) / 3600.0).round(2)
     hash
   end
 
@@ -22,4 +22,21 @@
   end
 %>
 
-<%= line_chart(chart_data) %>
+<%= line_chart(chart_data, library: {
+    chart: {
+      reflow: true
+    },
+    exporting: {
+      enabled: false
+    },
+    tooltip: {
+      pointFormat: ' <span style="color:{series.color}; font-weight: bold">{point.y}</span> hours<br/>'
+    },
+    yAxis: {
+      title: {
+        enabled: true,
+        text: 'Hours'
+      }
+    }
+  })
+%>

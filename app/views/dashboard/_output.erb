@@ -1,3 +1,8 @@
+<%
+  nr_days = work_sessions.group_by { |ws| ws.started_at.day }.keys.length || 1
+  nr_weeks = group_by_weeks(work_sessions).keys.length || 1
+%>
+
 <table class="table table-striped">
   <thead>
     <tr>
@@ -13,12 +18,18 @@
 
     <tr>
       <td>Hours per Week</td>
-      <td class="text-right"><%= hours / 4 %></td>
+      <td class="text-right"><%= hours / nr_weeks %></td>
     </tr>
 
     <tr>
       <td>Hours per Day</td>
-      <td class="text-right"><%= hours / Time.days_in_month(Time.now.month) %></td>
+      <td class="text-right"><%= hours / nr_days %></td>
     </tr>
+
+    <tr>
+      <td>Days Logged</td>
+      <td class="text-right"><%= nr_days %></td>
+    </tr>
+
   </tbody>
 </table>

@@ -1,0 +1,25 @@
+<div>
+  <h4 class="modal-title">New Task</h4>
+
+  <div class="modal-content">
+    <div class="row">
+      <div class="col-md-12">
+        <form action="/projects/{{id}}/tasks" method="POST">
+          <label class="control-label">
+            Summary
+            <input type="text" name="name" class="form-control" />
+          </label>
+
+          <label class="control-label">
+            Details <small class="text-muted">(Optional)</small>
+            <textarea name="details" class="form-control" placeholder="Writing specs for thebuttonapp by #algol-labs" style="resize: none;" rows="9"></textarea>
+          </label>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-actions">
+    <input type="submit" class="btn btn-primary" value="Start" />
+  </div>
+</div>

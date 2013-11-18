@@ -83,7 +83,30 @@
       <%= partial "dashboard/_feed", locals: {
         work_sessions: @work_sessions.select do |work_session|
           work_session.duration > (60*5)
-        end.take(10)
+        end.reverse.take(10)
+      } %>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="row dashboard-milestones">
+    <div class="col-md-12">
+      <h3 class="page-header">Milestones</h3>
+      <p>Assuming an ideal output of 40 hours per week and 160 hours per month.</p>
+    </div>
+
+    <div class="col-lg-6">
+      <%= partial "dashboard/_milestone_progress", locals: {
+        work_sessions: @work_sessions,
+        hours: hours
+      } %>
+    </div>
+    <hr class="visible-sm" />
+    <div class="col-lg-6">
+      <%= partial "dashboard/_milestone_progress", locals: {
+        work_sessions: last_month_sessions,
+        hours: last_month_hours
       } %>
     </div>
   </div>
@@ -92,7 +115,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h3 class="page-header">Output Overview</h3>
+      <h3 class="page-header">Output</h3>
     </div>
 
     <div class="col-lg-6">
@@ -128,51 +151,18 @@
     </div>
   </div>
 
-  <hr />
-
-  <div class="row dashboard-milestones">
-    <div class="col-md-12">
-      <h3 class="page-header">Milestones</h3>
-      <p>Assuming an ideal output of 40 hours per week and 160 hours per month.</p>
-    </div>
-
-    <div class="col-lg-6">
-      <%= partial "dashboard/_milestone_progress", locals: {
-        work_sessions: @work_sessions,
-        hours: hours
+  <div class="row">
+    <div class="col-lg-6 text-center">
+      <%= partial "charts/_day_of_week_activity", locals: {
+        work_sessions: @work_sessions
       } %>
     </div>
-    <hr class="visible-sm" />
-    <div class="col-lg-6">
-      <%= partial "dashboard/_milestone_progress", locals: {
-        work_sessions: last_month_sessions,
-        hours: last_month_hours
+    <div class="col-lg-6 text-center">
+      <%= partial "charts/_day_of_week_activity", locals: {
+        work_sessions: last_month_sessions
       } %>
     </div>
+
   </div>
 
-</div>
-
-<form action="/projects/:project_id/tasks" method="POST" id="newTaskForm" hidden>
-  <h4 class="modal-title">New Task</h4>
-
-  <div class="modal-content">
-    <div class="row">
-      <div class="col-md-12">
-        <label class="control-label">
-          Summary
-          <input type="text" name="name" class="form-control" />
-        </label>
-
-        <label class="control-label">
-          Details <small class="text-muted">(Optional)</small>
-          <textarea name="details" class="form-control" placeholder="Writing test specs for thebuttonapp by #algol-labs" style="resize: none;" rows="9"></textarea>
-        </label>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-actions">
-    <input type="submit" class="btn btn-primary" value="Start" />
-  </div>
 </div>

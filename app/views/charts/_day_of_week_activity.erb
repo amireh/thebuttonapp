@@ -1,0 +1,15 @@
+<%
+  by_days_of_week = work_sessions.group_by do |ws|
+    ws.started_at.strftime('%A')
+  end
+
+  by_days_of_week = by_days_of_week.each_pair do |k,v|
+    by_days_of_week[k] = total_work_sessions_duration(v)
+  end
+%>
+
+<%= pie_chart by_days_of_week, library: {
+    exporting: {
+      enabled: false
+    },
+} %>
