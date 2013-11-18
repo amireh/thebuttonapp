@@ -69,17 +69,6 @@ define([
         $("body").append($("#end_session").detach());
         $("#end_session").submit();
       };
-
-      $('#task_editor').jqm({
-        overlay: 88,
-        ajax: $("a#edit_task").attr("href"),
-        trigger: 'a#edit_task',
-        modal: false,
-        onLoad: function() {
-          $(this).parent().show();
-          $(this).find('[name="status"]').closest('fieldset').remove();
-        }
-      });
     }
   });
 });

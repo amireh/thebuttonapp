@@ -1,4 +1,4 @@
-<% content_for :title do %><%= @project.name %> - Project Settings<% end %>
+<% content_for :page_title do %><%= @project.name %> - Project Settings<% end %>
 
 <%= partial "projects/_form", locals: {
   endpoint: @project.url

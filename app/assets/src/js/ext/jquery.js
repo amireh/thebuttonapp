@@ -1,7 +1,6 @@
 define([
   'jquery',
-  'bootstrap',
-  'util/confirmation_dialog'
+  'bootstrap'
 ], function($) {
   $.consume = function(e) {
     e.preventDefault();

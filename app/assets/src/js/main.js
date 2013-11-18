@@ -78,18 +78,16 @@ require([
   'jquery',
   'jquerypp',
   'jquery-ui',
-  'jqModal',
   'toastr',
   'bootstrap',
-  'algol',
-  'algol_ui',
   'ext/jquery',
   'lodash',
   'backbone',
   'Handlebars',
   'ext/handlebars',
   'inflection',
-  'bundles/navigation'
+  'bundles/navigation',
+  'initializers/jquery'
 ], function() {
   console.debug('thebuttonapp dependencies loaded.')
 });

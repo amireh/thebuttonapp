@@ -1,4 +1,4 @@
-define([ 'ext/jquery' ], function($) {
+define([ 'ext/jquery', 'backbone' ], function($, Backbone) {
   return Backbone.View.extend({
     render: function() {
       var $window = $(window)

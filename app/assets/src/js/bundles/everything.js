@@ -9,7 +9,9 @@ require([
   'views/tasks/edit_modal',
   'views/tasks/navigation',
   'views/work_sessions/edit',
-  'views/work_sessions/index'
+  'views/work_sessions/index',
+  'views/work_sessions/end_modal',
 ], function() {
-  console.debug('thebuttonapp everything bundle loaded.')
+  console.debug('thebuttonapp everything bundle loaded.');
+
 });

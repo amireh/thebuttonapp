@@ -3,5 +3,5 @@
   <div class="progress">
     <div class="progress-bar <%= colorize_progress ratio %>" style="width: <%= ratio %>%;"></div>
   </div>
-  <small>Month <%= month %></small>
+  <small><strong><%= Time.new(Time.now.year, month, 1).strftime('%B') %></strong></small>
 </div>

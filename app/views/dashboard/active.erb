@@ -2,6 +2,7 @@
 <% js_view 'dashboard/active' %>
 <% js_view 'dashboard/timer' %>
 <% js_view 'tasks/edit_modal' %>
+<% js_view 'work_sessions/end_modal' %>
 
 <% content_for :page_title do %>
   <div class="row">
@@ -21,12 +22,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-lg-12">
-      <button
-        data-confirm-cb="submit_form"
-        data-confirm-heading="End session"
-        data-confirm-accept="Ok"
-        data-confirm-target="#end_session"
-        data-linked-to="task_name" type="submit" id="thebutton" class="confirm btn btn-danger btn-block">
+      <button data-action="endWorkSession" class="btn btn-danger btn-block">
         <strong>End session</strong>
       </button>
     </div>
@@ -109,41 +105,6 @@
 </div>
 
 
-<div class="hidden">
-  <form method="POST" id="end_session" action="<%= @work_session.url %>" data-confirm="move">
-    <p>Would you like to mark the task?</p>
-
-    <div class="radio">
-      <label>
-        <input type="radio" name="task_status" value="active" <%= 'checked="checked"' if @task.status == :active %> /> Active
-        <% if @task.status == :active %><span class="hint">(current)</span><% end %>
-      </label>
-    </div>
-
-    <div class="radio">
-      <label>
-        <input type="radio" name="task_status" value="pending" <%= 'checked="checked"' if @task.status == :pending %> /> Pending
-      </label>
-    </div>
-
-    <div class="radio">
-      <label>
-        <input type="radio" name="task_status" value="complete" /> Complete
-      </label>
-    </div>
-
-    <div class="radio">
-      <label>
-        <input type="radio" name="task_status" value="abandoned" /> Abandoned
-      </label>
-    </div>
-
-    <label>
-      Summary
-      <textarea name="summary" cols="40" placeholder="A brief summary of what you've done during this session" class="form-control"></textarea>
-    </label>
-  </form>
-</div>
 
 <div class="jqmWrap">
   <div class="jqmWindow" id="task_editor">

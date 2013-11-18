@@ -6,15 +6,6 @@
   }
 %>
 <% if !flash.empty? %>
-  <% content_for :deferred_js do %>
-    <script>
-      $(function() {
-        // $(".flashes button").click(function() { $(this).parent().hide(); });
-        // $(".alert").alert();
-      });
-    </script>
-  <% end %>
-
   <% flash.each_pair do |ctx, messages| %>
     <div class="fade in alert alert-<%= CtxToAlertMapping[ctx] %> alert-dismissable">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>

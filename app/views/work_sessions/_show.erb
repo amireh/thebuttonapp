@@ -33,7 +33,7 @@
   <% if with_actions %>
     <td  class="text-right">
       <a class="edit-work-session" href="<%= work_session.url %>/edit">Edit</a>
-      <a class="confirm" data-confirm="Are you sure you want to delete this work session?" href="<%= work_session.url %>/destroy">Delete</a>
+      <a class="confirmable" href="<%= work_session.url %>/destroy">Delete</a>
     </td>
   <% end %>
 </tr>

@@ -1,8 +1,7 @@
 define([
   'jquery',
-  'backbone',
-  'jqModal'
-], function($, Backbone, jqm) {
+  'backbone'
+], function($, Backbone) {
   return Backbone.View.extend({
     events: {
       'click #selectAll': 'selectAll'

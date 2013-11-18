@@ -1,0 +1,45 @@
+<div>
+  <div class="modal-title">
+    <h4>End Session</h4>
+  </div>
+
+  <div class="modal-content">
+    <form>
+      <label>
+        Summary
+        <textarea autofocus name="summary" placeholder="A brief summary of what you've done during this session" class="form-control" style="resize: vertical"></textarea>
+      </label>
+
+      <label>Task Status</label>
+
+      <div class="radio">
+        <label>
+          <input type="radio" name="task_status" value="active" /> Ongoing
+        </label>
+      </div>
+
+      <div class="radio">
+        <label>
+          <input type="radio" name="task_status" value="pending" /> Pending
+        </label>
+      </div>
+
+      <div class="radio">
+        <label>
+          <input type="radio" name="task_status" value="complete" /> Complete
+        </label>
+      </div>
+
+      <div class="radio">
+        <label>
+          <input type="radio" name="task_status" value="abandoned" /> Abandoned
+        </label>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="modal-actions">
+    <button data-action="saveWorkSession" class="btn btn-success">Ok</button>
+  </div>
+</div>
