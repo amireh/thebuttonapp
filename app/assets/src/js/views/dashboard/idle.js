@@ -13,11 +13,12 @@ define([
       'click [data-action="newTask"]': 'newTask'
     },
 
-    user: ENV.USER,
+    user: null,
     project: null,
     task: null,
 
     render: function() {
+      this.user = ENV.USER;
       this.setElement('#content');
       this.delegateEvents();
 

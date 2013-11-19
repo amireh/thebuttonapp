@@ -9,7 +9,7 @@ define([
       'click [data-action="showTaskMovementDialog"]': 'showModal'
     },
 
-    user: ENV.USER,
+    user: null,
 
     $modal: null,
     $progress: null,
@@ -33,6 +33,7 @@ define([
     },
 
     render: function() {
+      this.user = ENV.USER;
       this.projects = this.getProjects(this.user);
       this.tasks = this.getTasks();
 
