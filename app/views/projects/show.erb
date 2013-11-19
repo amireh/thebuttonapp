@@ -1,4 +1,5 @@
 <% js_view 'projects/show' %>
+<% js_view 'tasks/edit_modal' %>
 
 <% content_for :page_title do %>
   <%= @project.name %>
@@ -17,6 +18,7 @@
   <thead>
     <tr>
       <th><input type="checkbox" id="checkAll" /></th>
+      <th>Status</th>
       <th>Task</th>
       <th>Sessions</th>
       <th>Time Spent</th>
@@ -26,12 +28,21 @@
 
   <tbody>
     <% @project.tasks.each do |task| %>
-      <tr>
+      <tr data-task="<%= task.id %>">
         <td><input type="checkbox" name="tasks[]" value="<%= task.id %>" /></td>
-        <td><%= md task.name %></td>
-        <td><%= task.work_sessions.length %></td>
-        <td><%= pretty_time task.time_spent %></td>
-        <td><a href="<%= task.url(true) %>/work_sessions">Manage</a></td>
+        <td class="text-center">
+          <span
+            title="<%= task.status %>"
+            class="label label-<%= colorize_task_status task.status %>"> </span>
+        </td>
+        <td><p><%= task.name %></p></td>
+        <td class="text-center"><%= task.work_sessions.length %></td>
+        <td class="nowrap"><%= pretty_time task.time_spent %></td>
+        <td class="input-group-btn">
+          <button data-action="editTask" class="btn btn-primary btn-xs">Edit</button>
+          &nbsp;
+          <a class="btn btn-default btn-xs" href="<%= task.url(true) %>/work_sessions">Manage Sessions</a>
+        </td>
       </tr>
     <% end %>
   </tbody>
@@ -39,7 +50,7 @@
   <tfoot>
     <tr>
       <td><strong>Total</strong></td>
-      <td colspan="4" class="text-right"><%= pretty_time @project.tasks.map(&:time_spent).reduce(&:+) || 0 %></td>
+      <td colspan="5" class="text-right"><%= pretty_time @project.tasks.map(&:time_spent).reduce(&:+) || 0 %></td>
     </tr>
   </tfoot>
 </table>

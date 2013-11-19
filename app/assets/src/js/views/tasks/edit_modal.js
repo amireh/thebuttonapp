@@ -21,9 +21,22 @@ define([
     },
 
     loadAndShow: function(e) {
+      var task = null;
+      var $task = $(e.target).closest('[data-task]');
+
+      if ($task.length) {
+        task = _.find(ENV.PROJECT.tasks, { id: $task.attr('data-task') });
+      }
+
+      if (!task) {
+        task = this.getTask();
+      }
+
+      console.debug(task);
+
       $.consume(e);
 
-      this.loadTask(this.getTask(), function(task) {
+      this.loadTask(task, function(task) {
         this.createModal(task);
         this.showModal();
       }, this);

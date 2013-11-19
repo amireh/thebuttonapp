@@ -1,4 +1,4 @@
-object @project
+object @project => ""
 
 attributes :id, :name, :billing_rate, :billing_currency, :billing_basis
 

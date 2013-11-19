@@ -1485,3 +1485,4 @@ label{display:block}
 .toolbar{min-height:20px;padding:19px;margin-bottom:20px;background-color:#ecf0f1;border:1px solid #d7e0e2;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.05);box-shadow:inset 0 1px 1px rgba(0,0,0,0.05);-webkit-box-shadow:none;box-shadow:none;border-width:0;padding:10px}.toolbar .btn{padding:6px 9px;font-size:13px;line-height:1.5;border-radius:3px}
 .dashboard-milestones .progress{margin-bottom:0}
 .dashboard-milestones small{line-height:40px}
+.nowrap{white-space:nowrap}

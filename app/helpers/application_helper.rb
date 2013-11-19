@@ -249,6 +249,19 @@ module ApplicationHelpers
   def total_work_sessions_duration(collection)
     (collection.map(&:duration).reduce(&:+) / 3600).round(2)
   end
+
+  def colorize_task_status(status)
+    case status.to_s.downcase
+    when 'active'
+      'info'
+    when 'complete'
+      'success'
+    when 'abandoned'
+      'danger'
+    when 'pending'
+      'warning'
+    end
+  end
 end
 
 helpers ApplicationHelpers

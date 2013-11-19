@@ -32,8 +32,6 @@ define([
 
       $modal.on('click', '[data-action="save"]', _.bind(this.backtrack, this));
       $modal.on('submit', 'form', _.bind(this.backtrack, this));
-
-      this._legacyCode();
     },
 
     showBacktrackingModal: function() {
@@ -62,13 +60,6 @@ define([
       });
 
       return $.consume(e);
-    },
-
-    _legacyCode: function() {
-      var submit_form = window.submit_form = function() {
-        $("body").append($("#end_session").detach());
-        $("#end_session").submit();
-      };
     }
   });
 });
