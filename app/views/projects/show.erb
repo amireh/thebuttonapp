@@ -27,7 +27,7 @@
   </thead>
 
   <tbody>
-    <% @project.tasks.each do |task| %>
+    <% @project.tasks.all({ order: [ :name.asc ] }).each do |task| %>
       <tr data-task="<%= task.id %>">
         <td><input type="checkbox" name="tasks[]" value="<%= task.id %>" /></td>
         <td class="text-center">

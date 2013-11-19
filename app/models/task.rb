@@ -1,7 +1,7 @@
 class Task
   include DataMapper::Resource
 
-  default_scope(:default).update(:order => [ :flagged_at.desc ])
+  default_scope(:default).update(:order => [ :flagged_at.desc, :name.asc ])
 
   Statuses = [ :active, :pending, :abandoned, :complete ]
 
