@@ -57,10 +57,8 @@
     <a href="/settings/account">
       <strong class="account_name"><%= current_user.name %></strong>
       <i class="glyphicon glyphicon-user"></i>
-
-      <%#= gravatar_tag current_user.gravatar_email, :icon, :height => 24 %>
     </a>
-    <% if current_user.notice_count > 0 %>
+    <% if false && current_user.notice_count > 0 %>
       <a href="/settings/notifications">
         <span class="notifications blinky" title="You have <%= current_user.notice_count %> pending notifications">
           <%= current_user.notice_count %>

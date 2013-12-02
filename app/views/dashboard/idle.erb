@@ -16,8 +16,8 @@
     :finished_at.lte  => 1.month.ago.end_of_month
   })
 
-  hours = @work_sessions.map(&:duration).reduce(&:+) / 3600
-  last_month_hours = last_month_sessions.map(&:duration).reduce(&:+) / 3600
+  hours = total_work_sessions_duration(@work_sessions)
+  last_month_hours = total_work_sessions_duration(last_month_sessions)
 %>
 
 <% content_for :page_title do %>

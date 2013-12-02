@@ -520,18 +520,18 @@
 	"buffers":
 	[
 		{
-			"file": "app/views/clients/new.erb",
+			"file": "app/assets/src/js/views/dashboard/idle.js",
 			"settings":
 			{
-				"buffer_size": 83,
+				"buffer_size": 2294,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "app/views/layouts/_member_navigation.erb",
+			"file": "app/assets/src/js/views/projects/toolbar/move_tasks.js",
 			"settings":
 			{
-				"buffer_size": 2295,
+				"buffer_size": 3850,
 				"line_ending": "Unix"
 			}
 		}
@@ -696,6 +696,20 @@
 	},
 	"file_history":
 	[
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/models/task.rb",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/controllers/projects_controller.rb",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/projects/show.erb",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/views/projects/show.js",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/views/dashboard/active.js",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/views/tasks/edit_modal.js",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/dashboard/active.erb",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/vendor/css/bootstrap-3.0.0.less",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/helpers/application_helper.rb",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/css/app.less",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/projects/show.rabl",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/reports/show.erb",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/clients/new.erb",
+		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/layouts/_member_navigation.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/clients/_form.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/Gemfile",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/controllers/tasks_controller.rb",
@@ -711,31 +725,22 @@
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/dashboard/_weekly_milestone_progress.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/dashboard/_monthly_milestone_progress.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/dashboard/_output.erb",
-		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/vendor/css/bootstrap-3.0.0.less",
-		"/home/kandie/Workspace/Projects/thebuttonapp/app/helpers/application_helper.rb",
-		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/css/app.less",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/clients/show.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/layouts/header.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/bundles/navigation.js",
-		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/layouts/_member_navigation.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/tasks/_navigation.erb",
-		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/dashboard/active.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/controllers/application_controller.rb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/helpers/javascript_helpers.rb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/work_sessions/index.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/ext/jquery.js",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/views/work_sessions/edit.js",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/work_sessions/_index.erb",
-		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/views/dashboard/active.js",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/templates/tasks/edit_modal.hbs",
-		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/views/tasks/edit_modal.js",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/tasks/_edit.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/controllers/work_sessions_controller.rb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/views/work_sessions/toolbar/edit_work_session.js",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/views/work_sessions/index.js",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/templates/work_sessions/edit.hbs",
-		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/views/projects/show.js",
-		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/projects/show.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/work_sessions/_show.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/tasks/show.rabl",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/work_sessions/_listing.erb",
@@ -744,14 +749,12 @@
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/templates/projects/toolbar/move_tasks.hbs",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/assets/src/js/views/projects/toolbar/move_tasks.js",
 		"/home/kandie/Workspace/Projects/thebuttonapp/config/initializers/api.rb",
-		"/home/kandie/Workspace/Projects/thebuttonapp/app/models/task.rb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/ext/sinatra/content_for.rb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/ext/sinatra/templates.rb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/ext/sinatra/base.rb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/ext/core/string.rb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/ext/core/hash.rb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/ext/common.rb",
-		"/home/kandie/Workspace/Projects/thebuttonapp/app/controllers/projects_controller.rb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/dashboard.erb",
 		"/home/kandie/Workspace/Projects/thebuttonapp/config/database.yml",
 		"/home/kandie/Workspace/Projects/thebuttonapp/app/views/dashboard/_feed.erb",
@@ -820,10 +823,7 @@
 		"/home/kandie/Workspace/Projects/Pibi.js/www/src/js/templates/web/recurrings/editor_actions.hbs",
 		"/home/kandie/Workspace/Projects/Pibi.js/www/src/js/templates/sessions/new.hbs",
 		"/home/kandie/Workspace/Projects/Pibi.js/www/src/js/templates/web/recurrings/editor.hbs",
-		"/home/kandie/Workspace/Projects/Pibi.js/www/src/js/templates/web/recurrings/actionbar.hbs",
-		"/home/kandie/Workspace/Projects/Pibi.js/www/src/js/templates/users/new.hbs",
-		"/home/kandie/Workspace/Projects/Pibi.js/www/src/js/templates/web/recurrings/listing.hbs",
-		"/home/kandie/Workspace/Projects/Pibi.js/www/src/js/templates/web/recurrings/entry.hbs"
+		"/home/kandie/Workspace/Projects/Pibi.js/www/src/js/templates/web/recurrings/actionbar.hbs"
 	],
 	"find":
 	{
@@ -845,6 +845,7 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"nowrap",
 			"progress-",
 			"progress-bar",
 			"md-4",
@@ -971,8 +972,7 @@
 			"icon-16",
 			"btn-default",
 			"\">\n",
-			"overflow",
-			", 'notify'"
+			"overflow"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1123,23 +1123,23 @@
 			[
 				{
 					"buffer": 0,
-					"file": "app/views/clients/new.erb",
+					"file": "app/assets/src/js/views/dashboard/idle.js",
 					"settings":
 					{
-						"buffer_size": 83,
+						"buffer_size": 2294,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								53,
-								53
+								393,
+								393
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Rails/HTML (Rails).tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1149,26 +1149,26 @@
 				},
 				{
 					"buffer": 1,
-					"file": "app/views/layouts/_member_navigation.erb",
+					"file": "app/assets/src/js/views/projects/toolbar/move_tasks.js",
 					"settings":
 					{
-						"buffer_size": 2295,
+						"buffer_size": 3850,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								537,
-								537
+								703,
+								703
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Rails/HTML (Rails).tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 396.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1230,6 +1230,62 @@
 		"selected_items":
 		[
 			[
+				"movetasks",
+				"app/assets/src/js/views/projects/toolbar/move_tasks.js"
+			],
+			[
+				"idlejs",
+				"app/assets/src/js/views/dashboard/idle.js"
+			],
+			[
+				"projcontr",
+				"app/controllers/projects_controller.rb"
+			],
+			[
+				"projshow",
+				"app/views/projects/show.erb"
+			],
+			[
+				"modeltask",
+				"app/models/task.rb"
+			],
+			[
+				"boot",
+				"app/assets/vendor/css/bootstrap-3.0.0.less"
+			],
+			[
+				"apple",
+				"app/assets/src/css/app.less"
+			],
+			[
+				"applhel",
+				"app/helpers/application_helper.rb"
+			],
+			[
+				"reposhow",
+				"app/views/reports/show.erb"
+			],
+			[
+				"projshowrab",
+				"app/views/projects/show.rabl"
+			],
+			[
+				"taskeditmoda",
+				"app/assets/src/js/views/tasks/edit_modal.js"
+			],
+			[
+				"activeerb",
+				"app/views/dashboard/active.erb"
+			],
+			[
+				"activejs",
+				"app/assets/src/js/views/dashboard/active.js"
+			],
+			[
+				"projshowjs",
+				"app/assets/src/js/views/projects/show.js"
+			],
+			[
 				"membernavi",
 				"app/views/layouts/_member_navigation.erb"
 			],
@@ -1290,16 +1346,8 @@
 				"app/views/clients/show.erb"
 			],
 			[
-				"apple",
-				"app/assets/src/css/app.less"
-			],
-			[
 				"applhelp",
 				"app/helpers/application_helper.rb"
-			],
-			[
-				"boot",
-				"app/assets/vendor/css/bootstrap-3.0.0.less"
 			],
 			[
 				"idle",
@@ -1346,14 +1394,6 @@
 				"app/controllers/application_controller.rb"
 			],
 			[
-				"projshowjs",
-				"app/assets/src/js/views/projects/show.js"
-			],
-			[
-				"projshow",
-				"app/views/projects/show.erb"
-			],
-			[
 				"worksesshow",
 				"app/views/work_sessions/_show.erb"
 			],
@@ -1390,20 +1430,12 @@
 				"app/assets/vendor/js/toastr.js"
 			],
 			[
-				"modeltask",
-				"app/models/task.rb"
-			],
-			[
 				"extcommo",
 				"ext/common.rb"
 			],
 			[
 				"dashid",
 				"app/views/dashboard/idle.erb"
-			],
-			[
-				"movetasks",
-				"app/assets/src/js/templates/projects/toolbar/move_tasks.hbs"
 			],
 			[
 				"applcon",
@@ -1420,10 +1452,6 @@
 			[
 				"dasher",
 				"app/views/dashboard.erb"
-			],
-			[
-				"projcontr",
-				"app/controllers/projects_controller.rb"
 			],
 			[
 				"dashact",
@@ -1712,34 +1740,6 @@
 			[
 				"qtiples",
 				"www/vendor/css/jquery.qtip.less"
-			],
-			[
-				"changepassword",
-				"www/src/js/templates/users/change_password.hbs"
-			],
-			[
-				"resetpasswordhbs",
-				"www/src/js/templates/users/reset_password.hbs"
-			],
-			[
-				"reset",
-				"www/src/js/templates/users/reset_password.hbs"
-			],
-			[
-				"webroutes",
-				"www/src/js/bundles/web/routes.js"
-			],
-			[
-				"currpicker",
-				"www/src/js/widgets/generic/currency_picker.js"
-			],
-			[
-				"viewtransfer",
-				"www/src/js/views/web/transfers/new.js"
-			],
-			[
-				"newtransfer",
-				"spec/current/new_transfer_view_spec.js"
 			]
 		],
 		"width": 0.0
