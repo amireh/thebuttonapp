@@ -11,3 +11,4 @@ public/app-debug.js
 public/app
 app/assets/vendor/js/highcharts-3.0.7/
 *.mysql
+/.sublime-project.sublime-workspace
