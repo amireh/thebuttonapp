@@ -121,7 +121,7 @@ post '/reports.pdf' do
   generate_report
 
   footer_html = erb :'/reports/_pdf_footer', layout: false
-  footer_path = File.join settings.tmp_folder, 'reports', "#{Time.now.to_i.to_s}_footer_#{ApplicationHelpers::Algol.tiny_salt}.html"
+  footer_path = File.join settings.tmp_folder, 'reports', "#{Time.now.to_i.to_s}_footer_#{Algol.tiny_salt}.html"
   footer_file = File.open(footer_path, 'w')
   footer_file.write(footer_html)
   footer_file.close
@@ -133,7 +133,7 @@ post '/reports.pdf' do
   # cover_file.close
 
   report_title = "Report #{@date[:b].strftime('%m-%d-%y')} - #{@date[:e].strftime('%m-%d-%y')}, #{@user.name}"
-  report_path = File.join settings.tmp_folder, 'reports', "report_#{ApplicationHelpers::Algol.tiny_salt}.pdf"
+  report_path = File.join settings.tmp_folder, 'reports', "report_#{Algol.tiny_salt}.pdf"
 
   html = erb :"/reports/show"
   kit = PDFKit.new(html, {
