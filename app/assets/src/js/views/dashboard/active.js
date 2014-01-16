@@ -6,7 +6,6 @@ define([
   'views/dashboard/timer'
 ], function($, _, Backbone, moment, TimerView) {
   var root = this;
-  var ENV = root.ENV;
   var $newTaskForm;
   var $resumeTaskForm;
   var $resumeTask;
