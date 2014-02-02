@@ -106,7 +106,8 @@
     <div class="col-lg-6">
       <%= partial "dashboard/_milestone_progress", locals: {
         work_sessions: last_month_sessions,
-        hours: last_month_hours
+        hours: last_month_hours,
+        without_daily: true
       } %>
     </div>
   </div>

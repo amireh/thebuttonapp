@@ -1,17 +1,17 @@
 <%
   per_week = 40.0
   per_day = per_week / 5
-  sessions = project.work_sessions.all({
+  work_sessions ||= project.work_sessions.all({
     :started_at.gte   => Time.now.beginning_of_day,
     :finished_at.lte  => Time.now.end_of_day
   })
 
-  hours = total_work_sessions_duration(sessions)
+  hours = total_work_sessions_duration(work_sessions)
   ratio = (hours / (per_day) * 100)
 %>
 
 <p>
-  <strong>Daily Progress</strong>
+  <strong>Today's Progress</strong>
   <span class="pull-right">
     <%= hours %> hours
   </span>

@@ -1,3 +1,5 @@
+<% without_daily ||= false %>
+
 <%= partial "dashboard/_monthly_milestone_progress", locals: {
   month: (work_sessions.first.started_at.month rescue Time.now.month),
   hours: hours
@@ -15,3 +17,16 @@
     </div>
   <% end %>
 </div>
+
+<%
+  today = Time.now.beginning_of_day
+  today_sessions = work_sessions.select do |ws|
+    ws.started_at.beginning_of_day == today
+  end
+%>
+
+<% unless without_daily %>
+  <%= partial "dashboard/_daily_milestone_progress", locals: {
+    work_sessions: today_sessions
+  } %>
+<% end %>
