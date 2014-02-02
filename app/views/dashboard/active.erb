@@ -47,6 +47,10 @@
         <p><strong>Estimate</strong></p>
         <p><%= @task.billing_estimate %> <%= @task.project.billing_currency %></p>
       <% end %>
+
+      <%= partial "dashboard/_daily_milestone_progress", locals: {
+        project: @task.project
+      } %>
     </div>
     <div class="col-lg-6">
       <h3 class="page-header">Session Notes</h3>
@@ -61,7 +65,6 @@
       <% end %>
 
       <div class="panel-footexr">
-
         <form method="POST" action="<%= @ws.url true %>/notes" class="form row">
           <div class="col-lg-12">
 
@@ -103,7 +106,6 @@
     <!-- </div> -->
   <% end %>
 </div>
-
 
 
 <div class="jqmWrap">

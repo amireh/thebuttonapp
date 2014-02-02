@@ -228,7 +228,7 @@ module ApplicationHelpers
 
   def total_work_sessions_duration(collection)
     seconds = collection.map(&:duration).reduce(&:+) || 0
-    (seconds / 3600).round(2)
+    (seconds / 3600.0).round(2)
   end
 
   def colorize_task_status(status)
