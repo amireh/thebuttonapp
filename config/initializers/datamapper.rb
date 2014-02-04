@@ -3,7 +3,7 @@ configure do
 
   dbc = settings.database
   # DataMapper::Logger.new($stdout, :debug)
-  DataMapper.setup(:default, "mysql://#{dbc[:un]}:#{dbc[:pw]}@#{dbc[:host]}/#{dbc[:db]}")
+  DataMapper.setup(:default, "mysql://#{dbc[:un]}:#{dbc[:pw]}@#{dbc[:host]}:#{dbc[:port] || 3306}/#{dbc[:db]}")
 
   # load everything
   [ 'ext', 'app/helpers', 'app/models', 'app/controllers' ].each { |d|
